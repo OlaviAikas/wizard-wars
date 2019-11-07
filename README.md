@@ -6,3 +6,17 @@ This is the repository for our video game Wizard Wars that is heavily inspired b
 Please do this tutorial https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vivace
 Please also read this AND always implement all drawing stuff with the streched buffer method:
 https://wiki.allegro.cc/index.php?title=Achieving_Resolution_Independence
+
+## Project Members (Name, github username, [role])
+- Olavi Äikäs, OlaviAikas (or Oulawi sometimes), [Project leader]
+- Mihails Valtusovs, valtusovs, [Git master]
+- Paul Bavaloine, paulbavaloine, [Organisation master]
+- Seorim Park, seorimpark
+- Damien Briens, DamienBriens
+- Uranchimeg Zamidii, uranchimegz
+- Johannes Kunz, johannes-kunz
+- Wanqi Hong, Wanqi77
+- Yasamin Jalalian, yasamin.jln
+- Ruiyao Jiang, Xtraordinaire9911
+- Chloe Semaan, -- insert git name here --
+- Joci

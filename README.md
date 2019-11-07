@@ -20,3 +20,4 @@ https://wiki.allegro.cc/index.php?title=Achieving_Resolution_Independence
 - Ruiyao Jiang, Xtraordinaire9911
 - Chloe Semaan, -- insert git name here --
 - Joci
+- Ashish Nayak, anayak99

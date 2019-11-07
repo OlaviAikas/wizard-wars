@@ -10,7 +10,7 @@ https://wiki.allegro.cc/index.php?title=Achieving_Resolution_Independence
 ## Project Members (Name, github username, [role])
 - Olavi Äikäs, OlaviAikas (or Oulawi sometimes), [Project leader]
 - Mihails Valtusovs, valtusovs, [Git master]
-- Paul Bavaloine, paulbavaloine, [Organisation master]
+- Paul Balavoine, paulbalavoine, [Organisation master]
 - Seorim Park, seorimpark
 - Damien Briens, DamienBriens
 - Uranchimeg Zamidii, uranchimegz

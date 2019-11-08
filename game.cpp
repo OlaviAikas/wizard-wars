@@ -30,13 +30,13 @@ int main()
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-    ALLEGRO_DISPLAY* disp = al_create_display(1920, 1080);
+    ALLEGRO_DISPLAY* disp = al_create_display(3200, 1800); //Change this resolution to change window size
     must_init(disp, "display");
-    ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080);
+    ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 
     float windowWidth = al_get_display_width(disp);
     float windowHeight = al_get_display_height(disp);
-    float screenWidth = 1920;
+    float screenWidth = 1920; //Do not touch
     float screenHeight = 1080;
 
     float sx = windowWidth / screenWidth;
@@ -62,9 +62,11 @@ int main()
     bool redraw = true;
     ALLEGRO_EVENT event;
 
-    float x, y;
+    int x, y;
     x = 100;
     y = 100;
+    int destination_x = 100;
+    int destination_y = 100;
 
 
     #define KEY_SEEN     1
@@ -82,14 +84,6 @@ int main()
         switch(event.type)
         {
             case ALLEGRO_EVENT_TIMER:
-                if(key[ALLEGRO_KEY_UP])
-                    y--;
-                if(key[ALLEGRO_KEY_DOWN])
-                    y++;
-                if(key[ALLEGRO_KEY_LEFT])
-                    x--;
-                if(key[ALLEGRO_KEY_RIGHT])
-                    x++;
 
                 if(key[ALLEGRO_KEY_ESCAPE])
                     done = true;
@@ -97,12 +91,43 @@ int main()
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
 
+                if (x < destination_x) {
+                    if (abs(x - destination_x) >= 4) {
+                        x += 4;
+                    } else {
+                        x++;
+                    }
+                }
+                if (x > destination_x) {
+                    if (abs(x - destination_x) >= 4) {
+                        x -= 4;
+                    } else {
+                        x--;
+                    }
+                }
+                if (y < destination_y) {
+                    if (abs(y - destination_y) >= 4) {
+                        y += 4;
+                    } else {
+                        y++;
+                    }
+                }
+                if (y > destination_y) {
+                    if (abs(y - destination_y) >= 4) {
+                        y -= 4;
+                    } else {
+                        y--;
+                    }
+                }
+
                 redraw = true;
                 break;
 
-            case ALLEGRO_EVENT_MOUSE_AXES:
-                x = event.mouse.x / sx;
-                y = event.mouse.y / sy;
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                if (event.mouse.button == 2) {
+                    destination_x = event.mouse.x / sx;
+                    destination_y = event.mouse.y / sy;
+                }
                 break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
@@ -125,8 +150,8 @@ int main()
             al_set_target_bitmap(buffer);
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_textf(font, al_map_rgb(255, 255, 255), 0, 0, 0, "X: %.1f Y: %.1f", x, y);
-            al_draw_filled_rectangle(x, y, x + 20, y + 20, al_map_rgb(255, 0, 0));
+            al_draw_textf(font, al_map_rgb(255, 255, 255), 0, 0, 0, "X: %.1i Y: %.1i", x, y);
+            al_draw_filled_rectangle(x, y, x + 64, y + 64, al_map_rgb(255, 0, 0));
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));

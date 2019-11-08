@@ -7,6 +7,8 @@ Please do this tutorial https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vi
 Please also read this AND always implement all drawing stuff with the streched buffer method:
 https://wiki.allegro.cc/index.php?title=Achieving_Resolution_Independence
 
+Notice that the files `main` and `game` are in .gitignore, remove if required.
+
 ## Project Members (Name, github username, [role])
 - Olavi Äikäs, OlaviAikas (or Oulawi sometimes), [Project leader]
 - Mihails Valtusovs, valtusovs, [Git master]

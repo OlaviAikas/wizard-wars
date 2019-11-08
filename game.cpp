@@ -13,7 +13,7 @@ void must_init(bool test, const char *description)
     exit(1);
 }
 
-int main()
+int main(int argc, char **argv)
 {
     must_init(al_init(), "allegro");
     must_init(al_install_keyboard(), "keyboard");

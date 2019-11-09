@@ -5,6 +5,8 @@
 #include <allegro5/allegro_primitives.h>
 #include <algorithm>
 
+void must_init(bool, const char);
+
 void must_init(bool test, const char *description)
 {
     if(test) return;
@@ -140,6 +142,9 @@ int main(int argc, char **argv)
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 done = true;
                 break;
+
+	    default:
+		break;
         }
 
         if(done)

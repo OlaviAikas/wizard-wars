@@ -1,9 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
-#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <algorithm>
+#include "../headers/Map.hpp"
+#include "../headers/Camera.hpp"
+#include "../headers/MapObject.hpp"
+#include "../headers/Player.hpp"
 
 void must_init(bool, const char);
 
@@ -50,10 +54,9 @@ int main(int argc, char **argv)
     float scaleX = (windowWidth - scaleW) / 2;
     float scaleY = (windowHeight - scaleH) / 2;
 
-    ALLEGRO_FONT* font = al_create_builtin_font();
-    must_init(font, "font");
-
     must_init(al_init_primitives_addon(), "primitives");
+
+    must_init(al_init_image_addon(), "Image addon");
 
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
@@ -70,6 +73,8 @@ int main(int argc, char **argv)
     int destination_x = 100;
     int destination_y = 100;
 
+    Map map = Map("resources/map.bmp");
+    Camera camera = Camera(0, 0);
 
     #define KEY_SEEN     1
     #define KEY_RELEASED 2
@@ -89,6 +94,18 @@ int main(int argc, char **argv)
 
                 if(key[ALLEGRO_KEY_ESCAPE])
                     done = true;
+
+                if (key[ALLEGRO_KEY_A])
+                    camera.move_x(-20);
+
+                if (key[ALLEGRO_KEY_D])
+                    camera.move_x(20);
+
+                if (key[ALLEGRO_KEY_W])
+                    camera.move_y(-20);
+
+                if (key[ALLEGRO_KEY_S])
+                    camera.move_y(20);
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
@@ -143,8 +160,8 @@ int main(int argc, char **argv)
                 done = true;
                 break;
 
-	    default:
-		break;
+	        default:
+		        break;
         }
 
         if(done)
@@ -155,7 +172,9 @@ int main(int argc, char **argv)
             al_set_target_bitmap(buffer);
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_textf(font, al_map_rgb(255, 255, 255), 0, 0, 0, "X: %.1i Y: %.1i", x, y);
+
+            map.draw_map(camera.get_x(), camera.get_y());
+
             al_draw_filled_rectangle(x, y, x + 64, y + 64, al_map_rgb(255, 0, 0));
 
             al_set_target_backbuffer(disp);
@@ -167,7 +186,6 @@ int main(int argc, char **argv)
         }
     }
 
-    al_destroy_font(font);
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);

@@ -1,0 +1,1 @@
+Put all the .o files here when you compile. This file is here so git would recognise the directory.

@@ -1,0 +1,1 @@
+Put all the resources here, namely bitmaps. This file is just here so git would recognise the directory.

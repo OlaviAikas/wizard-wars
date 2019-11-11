@@ -3,7 +3,7 @@
 class MapObject {
     public:
         MapObject(int x, int y, int width, int height, bool noclip);
-        void draw();
+        void draw(int camera_x, int camera_y);
         void move();
 
         int get_x();
@@ -11,7 +11,7 @@ class MapObject {
         int get_width();
         int get_height();
 
-    private:
+    protected:
         bool noclip;
 
         int x;

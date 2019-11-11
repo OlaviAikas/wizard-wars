@@ -67,14 +67,9 @@ int main(int argc, char **argv)
     bool redraw = true;
     ALLEGRO_EVENT event;
 
-    int x, y;
-    x = 100;
-    y = 100;
-    int destination_x = 100;
-    int destination_y = 100;
-
     Map map = Map("resources/map.bmp");
     Camera camera = Camera(0, 0);
+    Player player = Player(100, 100);
 
     #define KEY_SEEN     1
     #define KEY_RELEASED 2
@@ -110,42 +105,14 @@ int main(int argc, char **argv)
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
 
-                if (x < destination_x) {
-                    if (abs(x - destination_x) >= 4) {
-                        x += 4;
-                    } else {
-                        x++;
-                    }
-                }
-                if (x > destination_x) {
-                    if (abs(x - destination_x) >= 4) {
-                        x -= 4;
-                    } else {
-                        x--;
-                    }
-                }
-                if (y < destination_y) {
-                    if (abs(y - destination_y) >= 4) {
-                        y += 4;
-                    } else {
-                        y++;
-                    }
-                }
-                if (y > destination_y) {
-                    if (abs(y - destination_y) >= 4) {
-                        y -= 4;
-                    } else {
-                        y--;
-                    }
-                }
+                player.move();
 
                 redraw = true;
                 break;
 
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
-                    destination_x = event.mouse.x / sx;
-                    destination_y = event.mouse.y / sy;
+                    player.set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                 }
                 break;
 
@@ -175,7 +142,8 @@ int main(int argc, char **argv)
 
             map.draw_map(camera.get_x(), camera.get_y());
 
-            al_draw_filled_rectangle(x, y, x + 64, y + 64, al_map_rgb(255, 0, 0));
+            //al_draw_filled_rectangle(x, y, x + 64, y + 64, al_map_rgb(255, 0, 0));
+            player.draw(camera.get_x(), camera.get_y());
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));

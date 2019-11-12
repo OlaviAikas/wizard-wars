@@ -15,17 +15,19 @@ class Map {
         std::list<MapObject> spells;
         std::list<MapObject> statics;
 
-        //template <typename T> void draw_list(std::list<T> list) {
-        //    for (std::list<T>::iterator i = list.begin(); i != list.end(); i++) {
-        //        i.draw();
-        //    }
-        //}
+        template <typename T> void draw_list(std::list<T> list, int camera_x, int camera_y) {
+            for (typename std::list<T>::iterator i = list.begin(); i != list.end(); i++) {
+                i->draw(camera_x, camera_y);
+            }
+        }
 
-        //template <typename T> void move_list(std::list<T> list) {
-        //    for (std::list<T>::iterator i = list.begin(); i != list.end(); i++) {
-        //        i.move();
-        //    }
-        //}
+        template <typename T> void move_list(std::list<T> list) {
+            for (typename std::list<T>::iterator i = list.begin(); i != list.end(); i++) {
+                i->move();
+            }
+        }
+
+        std::list<Player>::iterator fetch_pit(short n);
 
     private:
         ALLEGRO_BITMAP* map;

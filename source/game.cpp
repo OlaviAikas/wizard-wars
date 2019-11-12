@@ -4,6 +4,8 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <algorithm>
+#include <list>
+#include <iostream>
 #include "../headers/Map.hpp"
 #include "../headers/Camera.hpp"
 #include "../headers/MapObject.hpp"
@@ -68,9 +70,12 @@ int main(int argc, char **argv)
     bool redraw = true;
     ALLEGRO_EVENT event;
 
+    short client_number = 2;
     Map map = Map("resources/map.bmp");
+    map.players.push_back(Player(400, 400, 2));
     Camera camera = Camera(0, 0);
-    Player player = Player(100, 100);
+    std::list<Player>::iterator pit = map.fetch_pit(client_number);
+    Player player = Player(100, 100, 1);
 
     #define KEY_SEEN     1
     #define KEY_RELEASED 2
@@ -107,12 +112,18 @@ int main(int argc, char **argv)
                     key[i] &= KEY_SEEN;
 
                 player.move();
+                map.move_list(map.players);
+
+                for (std::list<Player>::iterator it = map.players.begin(); it != map.players.end(); it++) {
+                    std::cout << it->get_x() << std::endl;
+                }
 
                 redraw = true;
                 break;
 
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
+                    pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                     player.set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                 }
                 break;
@@ -145,6 +156,8 @@ int main(int argc, char **argv)
 
             //al_draw_filled_rectangle(x, y, x + 64, y + 64, al_map_rgb(255, 0, 0));
             player.draw(camera.get_x(), camera.get_y());
+
+            map.draw_list(map.players, camera.get_x(), camera.get_y());
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));

@@ -11,6 +11,8 @@ class Map {
 
         void draw_map(int camera_x, int camera_y);
 
+        void check_collisions();
+
         std::list<Player> players;
         std::list<MapObject> spells;
         std::list<MapObject> statics;

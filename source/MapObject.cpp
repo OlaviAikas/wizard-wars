@@ -18,6 +18,38 @@ int MapObject::get_y() {
     return y;
 }
 
+int MapObject::get_width() {
+    return width;
+}
+
+int MapObject::get_height() {
+    return height;
+}
+
+bool MapObject::operator==(MapObject other) {
+    if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
+        if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
+            return true;
+        }
+    }
+    if (this->x + this->width >= other.get_x() && this->x + this->width <= other.get_x() + other.get_width()) {
+        if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
+            return true;
+        }
+    }
+    if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
+        if (this->y + this->height >= other.get_y() && this->y + this->height <= other.get_y() + other.get_height()) {
+            return true;
+        }
+    }
+    if (this->x + this->width >= other.get_x() && this->x + this->width <= other.get_x() + other.get_width()) {
+        if (this->y + this->height >= other.get_y() && this->y + this->height <= other.get_y() + other.get_height()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void MapObject::draw(int camera_x, int camera_y) {
     al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
 }

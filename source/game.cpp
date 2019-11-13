@@ -73,6 +73,7 @@ int main(int argc, char **argv)
     short client_number = 1;
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(Player(400, 400, 1));
+    map->players.push_back(Player(100, 100, 2));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
 

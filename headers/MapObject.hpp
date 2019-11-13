@@ -11,6 +11,8 @@ class MapObject {
         int get_width();
         int get_height();
 
+        bool operator==(MapObject other);
+
     protected:
         bool noclip;
 

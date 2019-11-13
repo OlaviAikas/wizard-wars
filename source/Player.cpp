@@ -28,7 +28,6 @@ void Player::move() {
     if (this->y >= dest_y) {
         this->y = this->y - 10;
     }
-    std::cout << this->get_x() << "function" << std::endl;
 }
 
 void Player::set_dest(int dest_x, int dest_y) {

@@ -70,12 +70,11 @@ int main(int argc, char **argv)
     bool redraw = true;
     ALLEGRO_EVENT event;
 
-    short client_number = 2;
-    Map map = Map("resources/map.bmp");
-    map.players.push_back(Player(400, 400, 2));
+    short client_number = 1;
+    Map* map = new Map("resources/map.bmp");
+    map->players.push_back(Player(400, 400, 1));
     Camera camera = Camera(0, 0);
-    std::list<Player>::iterator pit = map.fetch_pit(client_number);
-    Player player = Player(100, 100, 1);
+    std::list<Player>::iterator pit = map->fetch_pit(client_number);
 
     #define KEY_SEEN     1
     #define KEY_RELEASED 2
@@ -111,12 +110,7 @@ int main(int argc, char **argv)
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
 
-                player.move();
-                map.move_list(map.players);
-
-                for (std::list<Player>::iterator it = map.players.begin(); it != map.players.end(); it++) {
-                    std::cout << it->get_x() << std::endl;
-                }
+                map->move_list(map->players);
 
                 redraw = true;
                 break;
@@ -124,7 +118,6 @@ int main(int argc, char **argv)
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
                     pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
-                    player.set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                 }
                 break;
 
@@ -152,12 +145,9 @@ int main(int argc, char **argv)
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-            map.draw_map(camera.get_x(), camera.get_y());
+            map->draw_map(camera.get_x(), camera.get_y());
 
-            //al_draw_filled_rectangle(x, y, x + 64, y + 64, al_map_rgb(255, 0, 0));
-            player.draw(camera.get_x(), camera.get_y());
-
-            map.draw_list(map.players, camera.get_x(), camera.get_y());
+            map->draw_list(map->players, camera.get_x(), camera.get_y());
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -168,6 +158,7 @@ int main(int argc, char **argv)
         }
     }
 
+    delete map;
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);

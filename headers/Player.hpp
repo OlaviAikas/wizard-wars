@@ -7,6 +7,8 @@ class Player : public MapObject {
 
         void move();
 
+        void on_collision(MapObject other);
+
         void set_dest(int dest_x, int dest_y);
 
         short get_number();

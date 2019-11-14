@@ -112,6 +112,7 @@ int main(int argc, char **argv)
                     key[i] &= KEY_SEEN;
 
                 map->move_list(map->players);
+                map->check_collisions();
 
                 redraw = true;
                 break;

@@ -15,6 +15,13 @@ short Player::get_number() {
     return this->number;
 }
 
+void Player::on_collision(MapObject other) {
+    if (not other.get_nocplip()) {
+        dest_x = x;
+        dest_y = y;
+    }
+}
+
 void Player::move() {
     if (this->x <= dest_x) {
         this->x = this->x + 10;

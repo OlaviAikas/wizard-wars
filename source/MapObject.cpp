@@ -26,6 +26,12 @@ int MapObject::get_height() {
     return height;
 }
 
+bool MapObject::get_nocplip() {
+    return noclip;
+}
+
+void MapObject::on_collision(MapObject other) { }
+
 bool MapObject::operator==(MapObject other) {
     if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {

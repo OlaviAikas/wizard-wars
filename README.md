@@ -22,3 +22,24 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 - Chloe Semaan, chloe-semaan
 - Joci Chen, -- insert git name here --
 - Ashish Nayak, anayak99
+
+## Team assignments:
+### Team 1: Map:
+* Olavi
+* Paul
+* Johannes
+* Ruiyao
+
+### Team 2: UI/HUD:
+* Chloe
+
+### Team 3: Magic:
+* Mihails
+* Yasamin
+* Seorim
+* Wanqi
+
+### Team 4: Networking:
+* Ashish
+* Joci
+* Uranchimeg

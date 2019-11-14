@@ -17,16 +17,16 @@ short Player::get_number() {
 
 void Player::move() {
     if (this->x <= dest_x) {
-        this->x = this->x + 10;
+        this->x = this->x + speed;
     }
     if (this->x >= dest_x) {
-        this->x = this->x - 10;
+        this->x = this->x - speed;
     }
     if (this->y <= dest_y) {
-        this->y = this->y + 10;
+        this->y = this->y + speed;
     }
     if (this->y >= dest_y) {
-        this->y = this->y - 10;
+        this->y = this->y - speed;
     }
 }
 

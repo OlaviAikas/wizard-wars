@@ -12,6 +12,7 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 - Olavi Äikäs, OlaviAikas (or Oulawi sometimes), [Project leader]
 - Mihails Valtusovs, valtusovs, [Git master]
 - Paul Balavoine, paulbalavoine, [Organisation master]
+- Ashish Nayak, anayak99, [IDE Leader]
 - Seorim Park, seorimpark
 - Damien Briens, DamienBriens
 - Uranchimeg Zamidii, uranchimegz
@@ -21,7 +22,7 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 - Ruiyao Jiang, Xtraordinaire9911
 - Chloe Semaan, chloe-semaan
 - Joci Chen, -- insert git name here --
-- Ashish Nayak, anayak99
+
 
 ## Team assignments:
 ### Team 1: Map:

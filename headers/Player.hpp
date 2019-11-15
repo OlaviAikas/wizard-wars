@@ -1,5 +1,6 @@
 #pragma once
 #include "MapObject.hpp"
+#include <list>
 
 class Player : public MapObject {
     public:
@@ -15,9 +16,9 @@ class Player : public MapObject {
 
     private:
         short number;
-        int speed = 20;
-        int dx;
-        int dy;
+        int speed = 15;
+        int old_x;
+        int old_y;
         int dest_x;
         int dest_y;
 };

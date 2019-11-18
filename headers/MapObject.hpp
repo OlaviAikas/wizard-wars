@@ -12,7 +12,7 @@ class MapObject {
         int get_y();
         int get_width();
         int get_height();
-        bool get_nocplip();
+        bool get_noclip();
 
         bool operator==(MapObject other);
 

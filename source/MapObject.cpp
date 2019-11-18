@@ -26,7 +26,7 @@ int MapObject::get_height() {
     return height;
 }
 
-bool MapObject::get_nocplip() {
+bool MapObject::get_noclip() {
     return noclip;
 }
 

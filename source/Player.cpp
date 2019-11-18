@@ -16,9 +16,7 @@ short Player::get_number() {
 }
 
 void Player::on_collision(MapObject other) {
-    if (not other.get_nocplip()) {
-        x = old_x;
-        y = old_y;
+    if (not other.get_noclip()) {
         dest_x = x;
         dest_y = y;
     }

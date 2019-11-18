@@ -39,9 +39,9 @@ int main(int argc, char **argv)
     al_set_new_display_option(ALLEGRO_VSYNC, 2, ALLEGRO_SUGGEST);
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
-#IFDEF FULL_SCREEN
+#ifdef FULL_SCREEN
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-#ENDIF
+#endif
     ALLEGRO_DISPLAY* disp = al_create_display(Y_RESOLUTION, X_RESOLUTION); //Change this resolution to change window size
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch

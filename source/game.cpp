@@ -66,9 +66,69 @@ int main(int argc, char **argv)
     al_register_event_source(queue, al_get_timer_event_source(timer));
     al_register_event_source(queue, al_get_mouse_event_source());
 
-    bool done = false;
+    bool main_menu_on = true;
+    bool done = true;
     bool redraw = true;
     ALLEGRO_EVENT event;
+
+    #define KEY_SEEN     1
+    #define KEY_RELEASED 2
+
+    unsigned char key[ALLEGRO_KEY_MAX];
+    memset(key, 0, sizeof(key));
+
+    al_start_timer(timer);
+
+    while(main_menu_on) {
+        al_wait_for_event(queue, &event);
+        switch(event.type)
+        {
+            case ALLEGRO_EVENT_TIMER:
+
+                if (key[ALLEGRO_KEY_ESCAPE]) {
+                    done = true;
+                    main_menu_on = false;
+                    std::cout << "I did it 1!!!" << std::endl;
+                }
+
+                if (key[ALLEGRO_KEY_ENTER]) {
+                    done = false;
+                    main_menu_on = false;
+                }
+                
+                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
+                    key[i] &= KEY_SEEN;
+
+                redraw = true;
+                break;
+
+            case ALLEGRO_EVENT_KEY_DOWN:
+                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                key[event.keyboard.keycode] &= KEY_RELEASED;
+                break;
+
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                done = true;
+                main_menu_on = false;
+                break;
+        }
+
+        if(redraw && al_is_event_queue_empty(queue))
+        {
+            al_set_target_bitmap(buffer);
+
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+
+            al_set_target_backbuffer(disp);
+            al_clear_to_color(al_map_rgb(0,0,0));
+            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            al_flip_display();
+
+            redraw = false;
+        }
+    }
 
     short client_number = 1;
     Map* map = new Map("resources/map.bmp");
@@ -77,14 +137,6 @@ int main(int argc, char **argv)
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
 
-    #define KEY_SEEN     1
-    #define KEY_RELEASED 2
-
-    unsigned char key[ALLEGRO_KEY_MAX];
-    memset(key, 0, sizeof(key));
-
-
-    al_start_timer(timer);
     while(1)
     {
         al_wait_for_event(queue, &event);
@@ -93,20 +145,25 @@ int main(int argc, char **argv)
         {
             case ALLEGRO_EVENT_TIMER:
 
-                if(key[ALLEGRO_KEY_ESCAPE])
+                if (key[ALLEGRO_KEY_ESCAPE]) {
                     done = true;
+                }
 
-                if (key[ALLEGRO_KEY_A])
+                if (key[ALLEGRO_KEY_A]) {
                     camera.move_x(-20);
+                }
 
-                if (key[ALLEGRO_KEY_D])
+                if (key[ALLEGRO_KEY_D]) {
                     camera.move_x(20);
+                }
 
-                if (key[ALLEGRO_KEY_W])
+                if (key[ALLEGRO_KEY_W]) {
                     camera.move_y(-20);
+                }
 
-                if (key[ALLEGRO_KEY_S])
+                if (key[ALLEGRO_KEY_S]) {
                     camera.move_y(20);
+                }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;

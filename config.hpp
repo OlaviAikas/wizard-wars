@@ -1,3 +1,0 @@
-#define X_RESOLUTION 1080
-#define Y_RESOLUTION 1920
-#define FULL_SCREEN

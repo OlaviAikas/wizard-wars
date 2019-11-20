@@ -10,7 +10,7 @@
 #include "../headers/Camera.hpp"
 #include "../headers/MapObject.hpp"
 #include "../headers/Player.hpp"
-#include "../config.hpp"
+#include "../local_config.hpp"
 
 void must_init(bool, const char);
 
@@ -42,14 +42,15 @@ int main(int argc, char **argv)
 #ifdef FULL_SCREEN
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 #endif
-    ALLEGRO_DISPLAY* disp = al_create_display(Y_RESOLUTION, X_RESOLUTION); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(Y_RESOLUTION, X_RESOLUTION);
+    // To change your resolution, change the constants in local_config.hpp
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 
     float windowWidth = al_get_display_width(disp);
     float windowHeight = al_get_display_height(disp);
     float screenWidth = 1920; //Do not touch
-    float screenHeight = 1080;
+    float screenHeight = 1080; //Do not touch
 
     float sx = windowWidth / screenWidth;
     float sy = windowHeight / screenHeight;

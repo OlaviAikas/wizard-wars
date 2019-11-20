@@ -13,6 +13,7 @@
 #include "../headers/Button.hpp"
 
 void must_init(bool, const char);
+void start(bool &, bool &);
 
 void must_init(bool test, const char *description)
 {
@@ -20,6 +21,11 @@ void must_init(bool test, const char *description)
 
     printf("couldn't initialize %s\n", description);
     exit(1);
+}
+
+void start(bool &done, bool &main_menu_on) {
+    done = false;
+    main_menu_on = false;
 }
 
 int main(int argc, char **argv)
@@ -80,7 +86,9 @@ int main(int argc, char **argv)
 
     al_start_timer(timer);
 
-    Button* start_game = new Button(500, 500, 50, 300, al_map_rgb(0, 0, 255));
+    void (*startptr)(bool &, bool&);
+    startptr = start;
+    Button<bool &, bool &>* start_game = new Button<bool &, bool &>(500, 500, 50, 300, al_map_rgb(0, 0, 255), startptr);
 
     while(main_menu_on) {
         al_wait_for_event(queue, &event);
@@ -95,8 +103,7 @@ int main(int argc, char **argv)
                 }
 
                 if (key[ALLEGRO_KEY_ENTER]) {
-                    done = false;
-                    main_menu_on = false;
+                    start_game->call_callback(done, main_menu_on);
                 }
                 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)

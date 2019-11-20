@@ -34,3 +34,6 @@
 # Linux and Mac executables
 main
 game
+
+# Computer-specific configuratiom
+local_config.hpp

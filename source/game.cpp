@@ -87,6 +87,10 @@ int main(int argc, char **argv)
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
 
+    bool mouse_west = false;
+    bool mouse_east = false;
+    bool mouse_north = false;
+    bool mouse_south = false;
 
     al_start_timer(timer);
     while(1)
@@ -115,12 +119,37 @@ int main(int argc, char **argv)
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
 
+                {
+                    const int amountOfMovement = 20;
+                    if (mouse_west) {
+                        camera.move_x(-amountOfMovement);
+                    }
+                    if (mouse_east) {
+                        camera.move_x(amountOfMovement);
+                    }
+                    if (mouse_north) {
+                        camera.move_y(-amountOfMovement);
+                    }
+                    if (mouse_south) {
+                        camera.move_y(amountOfMovement);
+                    }
+                }
+
                 map->move_list(map->players);
                 map->check_collisions();
 
                 redraw = true;
                 break;
 
+            case ALLEGRO_EVENT_MOUSE_AXES:
+                {
+                    float proportionOfScroll = 0.1;
+                    mouse_west = event.mouse.x < proportionOfScroll*windowWidth;
+                    mouse_east = event.mouse.x > (1-proportionOfScroll)*windowWidth;
+                    mouse_north = event.mouse.y < proportionOfScroll*windowHeight;
+                    mouse_south = event.mouse.y > (1-proportionOfScroll)*windowHeight;
+                    break;
+                }
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
                     pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());

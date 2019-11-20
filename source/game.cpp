@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 #ifdef FULL_SCREEN
     al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 #endif
-    ALLEGRO_DISPLAY* disp = al_create_display(Y_RESOLUTION, X_RESOLUTION);
+    ALLEGRO_DISPLAY* disp = al_create_display(X_RESOLUTION, Y_RESOLUTION);
     // To change your resolution, change the constants in local_config.hpp
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch

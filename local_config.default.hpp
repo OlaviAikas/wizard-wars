@@ -11,6 +11,6 @@
   * 1920x1080 is Full HD
   * 3840x2160 is 4K UHD */
 
-#define Y_RESOLUTION 1920 // Change me to your desired y-resolution
-#define X_RESOLUTION 1080 // Change me to your desired x-resolution
+#define X_RESOLUTION 1920 // Change me to your desired y-resolution
+#define Y_RESOLUTION 1080 // Change me to your desired x-resolution
 // #define FULL_SCREEN // Uncomment me if you want your game to run in full-screen mode.

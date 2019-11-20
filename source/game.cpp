@@ -10,6 +10,7 @@
 #include "../headers/Camera.hpp"
 #include "../headers/MapObject.hpp"
 #include "../headers/Player.hpp"
+#include "../headers/Button.hpp"
 
 void must_init(bool, const char);
 
@@ -79,6 +80,8 @@ int main(int argc, char **argv)
 
     al_start_timer(timer);
 
+    Button* start_game = new Button(500, 500, 50, 300, al_map_rgb(0, 0, 255));
+
     while(main_menu_on) {
         al_wait_for_event(queue, &event);
         switch(event.type)
@@ -120,6 +123,7 @@ int main(int argc, char **argv)
             al_set_target_bitmap(buffer);
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
+            start_game->draw();
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -129,6 +133,7 @@ int main(int argc, char **argv)
             redraw = false;
         }
     }
+    delete start_game;
 
     short client_number = 1;
     Map* map = new Map("resources/map.bmp");

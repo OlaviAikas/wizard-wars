@@ -107,7 +107,9 @@ int main(int argc, char **argv)
 
                 if (key[ALLEGRO_KEY_S])
                     camera.move_y(20);
-
+                
+                if (key[ALLEGRO_KEY_U])
+                    
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
 

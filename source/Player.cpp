@@ -5,10 +5,15 @@
 #include <cstdlib>
 #include <list>
 
-Player::Player(int start_x, int start_y, int number) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, int number, int hit_point) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->number = number;
+    this->hit_point = hit_point;
+}
+
+int get_hit_point() {
+    return hit_point;
 }
 
 short Player::get_number() {

@@ -113,6 +113,10 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 if (key[ALLEGRO_KEY_S]) {
                     camera.move_y(20);
                 }
+                
+                if (key[ALLEGRO_KEY_U]) {
+                    // nothing for now
+                }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;

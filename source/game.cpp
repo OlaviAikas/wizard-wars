@@ -12,8 +12,162 @@
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
 
+#define KEY_SEEN     1
+#define KEY_RELEASED 2
+
 void must_init(bool, const char);
-void start(bool &, bool &);
+void start(short &);
+void main_menu_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
+
+void game_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
+
+void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
+                    const float &scaleY, const float &scaleW, const float &scaleH) {
+    //Load what you need to before the loop:
+    void (*startptr)(short &);
+    startptr = start;
+    Button<short &>* start_game = new Button<short &>(840, 500, 240, 60, al_map_rgb(0, 255, 0), startptr);
+
+    while(state == 1) {
+    al_wait_for_event(queue, &event);
+    switch(event.type)
+        {
+            case ALLEGRO_EVENT_TIMER:
+                if (key[ALLEGRO_KEY_ESCAPE]) {
+                    state = 0;
+                }
+                if (key[ALLEGRO_KEY_ENTER]) {
+                    start_game->call_callback(state);
+                }
+                
+                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
+                    key[i] &= KEY_SEEN;
+                redraw = true;
+                break;
+            case ALLEGRO_EVENT_KEY_DOWN:
+                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                key[event.keyboard.keycode] &= KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                state = 0;
+                break;
+        }
+            if(redraw && al_is_event_queue_empty(queue))
+        {
+            al_set_target_bitmap(buffer);
+
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            start_game->draw();
+
+            al_set_target_backbuffer(disp);
+            al_clear_to_color(al_map_rgb(0,0,0));
+            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            al_flip_display();
+
+            redraw = false;
+        }
+    }
+    //delete what you loaded
+    delete start_game;
+}
+
+void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+    //Load what you need to load
+    short client_number = 1;
+    Map* map = new Map("resources/map.bmp");
+    map->players.push_back(Player(400, 400, 1));
+    map->players.push_back(Player(100, 100, 2));
+    Camera camera = Camera(0, 0);
+    std::list<Player>::iterator pit = map->fetch_pit(client_number);
+    
+    while (state == 2) {
+        al_wait_for_event(queue, &event);
+
+        switch(event.type)
+        {
+            case ALLEGRO_EVENT_TIMER:
+
+                if (key[ALLEGRO_KEY_ESCAPE]) {
+                    state = 1;
+                }
+
+                if (key[ALLEGRO_KEY_A]) {
+                    camera.move_x(-20);
+                }
+
+                if (key[ALLEGRO_KEY_D]) {
+                    camera.move_x(20);
+                }
+
+                if (key[ALLEGRO_KEY_W]) {
+                    camera.move_y(-20);
+                }
+
+                if (key[ALLEGRO_KEY_S]) {
+                    camera.move_y(20);
+                }
+
+                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
+                    key[i] &= KEY_SEEN;
+
+                map->move_list(map->players);
+                map->check_collisions();
+
+                redraw = true;
+                break;
+
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                if (event.mouse.button == 2) {
+                    pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
+                }
+                break;
+
+            case ALLEGRO_EVENT_KEY_DOWN:
+                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                key[event.keyboard.keycode] &= KEY_RELEASED;
+                break;
+
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                state = 0;
+                break;
+
+	        default:
+		        break;
+        }
+
+        if(state == 0)
+            break;
+
+        if(redraw && al_is_event_queue_empty(queue))
+        {
+            al_set_target_bitmap(buffer);
+
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+
+            map->draw_map(camera.get_x(), camera.get_y());
+
+            map->draw_list(map->players, camera.get_x(), camera.get_y());
+
+            al_set_target_backbuffer(disp);
+            al_clear_to_color(al_map_rgb(0,0,0));
+            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            al_flip_display();
+
+            redraw = false;
+        }
+    }
+    //delete what you loaded
+    delete map;
+}
 
 void must_init(bool test, const char *description)
 {
@@ -23,9 +177,8 @@ void must_init(bool test, const char *description)
     exit(1);
 }
 
-void start(bool &done, bool &main_menu_on) {
-    done = false;
-    main_menu_on = false;
+void start(short &state) {
+    state = 2;
 }
 
 int main(int argc, char **argv)
@@ -73,163 +226,35 @@ int main(int argc, char **argv)
     al_register_event_source(queue, al_get_timer_event_source(timer));
     al_register_event_source(queue, al_get_mouse_event_source());
 
-    bool main_menu_on = true;
-    bool done = true;
+    short game_state = 1;
+    /*
+    Game state states:
+    0 => End game
+    1 => main menu
+    2 => game loop
+    3 => settings?
+    4 => ??? Profit??????
+    */
     bool redraw = true;
     ALLEGRO_EVENT event;
-
-    #define KEY_SEEN     1
-    #define KEY_RELEASED 2
 
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
 
     al_start_timer(timer);
 
-    void (*startptr)(bool &, bool&);
-    startptr = start;
-    Button<bool &, bool &>* start_game = new Button<bool &, bool &>(500, 500, 50, 300, al_map_rgb(0, 0, 255), startptr);
-
-    while(main_menu_on) {
-        al_wait_for_event(queue, &event);
-        switch(event.type)
-        {
-            case ALLEGRO_EVENT_TIMER:
-
-                if (key[ALLEGRO_KEY_ESCAPE]) {
-                    done = true;
-                    main_menu_on = false;
-                    std::cout << "I did it 1!!!" << std::endl;
-                }
-
-                if (key[ALLEGRO_KEY_ENTER]) {
-                    start_game->call_callback(done, main_menu_on);
-                }
-                
-                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
-                    key[i] &= KEY_SEEN;
-
-                redraw = true;
-                break;
-
-            case ALLEGRO_EVENT_KEY_DOWN:
-                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
-                break;
-            case ALLEGRO_EVENT_KEY_UP:
-                key[event.keyboard.keycode] &= KEY_RELEASED;
-                break;
-
-            case ALLEGRO_EVENT_DISPLAY_CLOSE:
-                done = true;
-                main_menu_on = false;
-                break;
+    while (game_state != 0) {
+        if (game_state == 1) {
+            main_menu_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
+                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH);
+        }
+        if (game_state == 2) {
+            game_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
+                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
 
-        if(redraw && al_is_event_queue_empty(queue))
-        {
-            al_set_target_bitmap(buffer);
-
-            al_clear_to_color(al_map_rgb(0, 0, 0));
-            start_game->draw();
-
-            al_set_target_backbuffer(disp);
-            al_clear_to_color(al_map_rgb(0,0,0));
-            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
-            al_flip_display();
-
-            redraw = false;
-        }
-    }
-    delete start_game;
-
-    short client_number = 1;
-    Map* map = new Map("resources/map.bmp");
-    map->players.push_back(Player(400, 400, 1));
-    map->players.push_back(Player(100, 100, 2));
-    Camera camera = Camera(0, 0);
-    std::list<Player>::iterator pit = map->fetch_pit(client_number);
-
-    while(1)
-    {
-        al_wait_for_event(queue, &event);
-
-        switch(event.type)
-        {
-            case ALLEGRO_EVENT_TIMER:
-
-                if (key[ALLEGRO_KEY_ESCAPE]) {
-                    done = true;
-                }
-
-                if (key[ALLEGRO_KEY_A]) {
-                    camera.move_x(-20);
-                }
-
-                if (key[ALLEGRO_KEY_D]) {
-                    camera.move_x(20);
-                }
-
-                if (key[ALLEGRO_KEY_W]) {
-                    camera.move_y(-20);
-                }
-
-                if (key[ALLEGRO_KEY_S]) {
-                    camera.move_y(20);
-                }
-
-                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
-                    key[i] &= KEY_SEEN;
-
-                map->move_list(map->players);
-                map->check_collisions();
-
-                redraw = true;
-                break;
-
-            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-                if (event.mouse.button == 2) {
-                    pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
-                }
-                break;
-
-            case ALLEGRO_EVENT_KEY_DOWN:
-                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
-                break;
-            case ALLEGRO_EVENT_KEY_UP:
-                key[event.keyboard.keycode] &= KEY_RELEASED;
-                break;
-
-            case ALLEGRO_EVENT_DISPLAY_CLOSE:
-                done = true;
-                break;
-
-	        default:
-		        break;
-        }
-
-        if(done)
-            break;
-
-        if(redraw && al_is_event_queue_empty(queue))
-        {
-            al_set_target_bitmap(buffer);
-
-            al_clear_to_color(al_map_rgb(0, 0, 0));
-
-            map->draw_map(camera.get_x(), camera.get_y());
-
-            map->draw_list(map->players, camera.get_x(), camera.get_y());
-
-            al_set_target_backbuffer(disp);
-            al_clear_to_color(al_map_rgb(0,0,0));
-            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
-            al_flip_display();
-
-            redraw = false;
-        }
     }
 
-    delete map;
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);

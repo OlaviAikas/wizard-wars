@@ -7,8 +7,8 @@ template <typename ...Args> class Button {
         Button(int loc_x, int loc_y, int span_x, int span_y, ALLEGRO_COLOR color, void (*callback)(Args... args)) {
             this->x = loc_x;
             this->y = loc_y;
-            this->span_x = span_x;
-            this->span_y = span_y;
+            this->span_x = x + span_x;
+            this->span_y = y + span_y;
             this->callback = callback;
             this->color = color;
         }

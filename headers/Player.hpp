@@ -14,6 +14,8 @@ class Player : public MapObject {
 
         short get_number();
 
+        bool get_team();
+
     private:
         short number;
         int speed = 15;
@@ -21,4 +23,7 @@ class Player : public MapObject {
         int old_y;
         int dest_x;
         int dest_y;
+        int lastgoodposx;
+        int lastgoodposy;
+        bool team;
 };

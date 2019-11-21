@@ -3,26 +3,35 @@
 #include <cmath>
 #include <iostream>
 #include <cstdlib>
+#include <stdlib.h>
 #include <list>
 
 Player::Player(int start_x, int start_y, int number) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->number = number;
+    this->lastgoodposx=start_x;
+    this->lastgoodposy=start_y;
 }
 
 short Player::get_number() {
     return this->number;
 }
 
+bool Player::get_team() {
+    return this->team;
+}
+
 void Player::on_collision(MapObject other) {
     if (not other.get_noclip()) {
-        dest_x = x;
-        dest_y = y;
+        dest_x=lastgoodposx;
+        dest_y=lastgoodposy;
     }
 }
 
 void Player::move() {
+    lastgoodposx=x;
+    lastgoodposy=y;
     if (abs(x - dest_x) >= speed && abs(y - dest_y) >= speed) {
         int dx = dest_x - x;
         int dy = dest_y - y;

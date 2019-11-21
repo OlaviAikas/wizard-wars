@@ -87,6 +87,10 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     map->players.push_back(Player(100, 100, 2));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
+    bool mouse_west = false;
+    bool mouse_east = false;
+    bool mouse_north = false;
+    bool mouse_south = false;
     
     while (state == 2) {
         al_wait_for_event(queue, &event);

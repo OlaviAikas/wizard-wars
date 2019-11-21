@@ -24,7 +24,7 @@ void Map::check_collisions() {
                 j->on_collision(*i);
             }
         }
-        for (std::list<MapObject>::iterator j = spells.begin(); j != spells.end(); j++) {
+        for (std::list<Spell>::iterator j = spells.begin(); j != spells.end(); j++) {
             if (*i == *j) {
                 i->on_collision(*j);
                 j->on_collision(*i);
@@ -37,8 +37,8 @@ void Map::check_collisions() {
             }
         }
     }
-    for (std::list<MapObject>::iterator i = spells.begin(); i != spells.end(); i++) {
-        for (std::list<MapObject>::iterator j = i++; j != spells.end(); j++) {
+    for (std::list<Spell>::iterator i = spells.begin(); i != spells.end(); i++) {
+        for (std::list<Spell>::iterator j = i++; j != spells.end(); j++) {
             if (*i == *j) {
                 i->on_collision(*j);
                 j->on_collision(*i);

@@ -11,6 +11,7 @@
 #include "../headers/MapObject.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
+#include "../headers/Spells.hpp"
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
@@ -115,7 +116,11 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
                 
                 if (key[ALLEGRO_KEY_U]) {
-                    // nothing for now
+                    std::cout << "Making spell object" << std::endl;
+                    Spell spell = Spell(pit->get_x(), pit->get_y(), 60, 60, true, 0, 0, pit->get_x(), pit->get_y());
+                    std::cout << "--" << std::endl;
+                    map->spells.push_back(spell);
+                    std::cout << "Done spell" << std::endl;
                 }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
@@ -160,6 +165,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
             map->draw_map(camera.get_x(), camera.get_y());
 
             map->draw_list(map->players, camera.get_x(), camera.get_y());
+
+            map->draw_list(map->spells, camera.get_x(), camera.get_y());
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));

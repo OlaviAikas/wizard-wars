@@ -3,6 +3,7 @@
 #include <list>
 #include "Player.hpp"
 #include "MapObject.hpp"
+#include "Spells.hpp"
 
 class Map {
     public:
@@ -14,7 +15,7 @@ class Map {
         void check_collisions();
 
         std::list<Player> players;
-        std::list<MapObject> spells;
+        std::list<Spell> spells;
         std::list<MapObject> statics;
 
         template <typename T> void draw_list(std::list<T> &list, int camera_x, int camera_y) {

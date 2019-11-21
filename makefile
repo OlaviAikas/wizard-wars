@@ -1,4 +1,4 @@
-all : source/game.cpp source/Map.cpp source/Camera.cpp source/Player.cpp source/MapObject.cpp
+all : source/game.cpp source/Map.cpp source/Camera.cpp source/Player.cpp source/MapObject.cpp source/Spells.cpp
 	g++ -c source/Map.cpp `pkg-config allegro-5 allegro_main-5 allegro_image-5 --libs --cflags`
 	mv Map.o objects/
 	g++ -c source/Camera.cpp
@@ -7,7 +7,9 @@ all : source/game.cpp source/Map.cpp source/Camera.cpp source/Player.cpp source/
 	mv Player.o objects/
 	g++ -c source/MapObject.cpp
 	mv MapObject.o objects/
-	g++ -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
+	g++ -c source/Spells.cpp
+	mv Spells.o objects/
+	g++ -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o objects/Spells.o `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
 
 game : source/game.cpp source/Map.cpp source/Camera.cpp source/Player.cpp source/MapObject.cpp
 	g++ -c source/Map.cpp `pkg-config allegro-5 allegro_main-5 allegro_image-5 --libs --cflags`

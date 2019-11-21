@@ -1,11 +1,13 @@
 #pragma once
+#include <allegro5/allegro5.h>
 
 class MapObject {
     public:
         MapObject(int x, int y, int width, int height, bool noclip);
-        void draw(int camera_x, int camera_y);
+        MapObject(int x, int y, int width, int height, bool noclip, ALLEGRO_BITMAP* sprite);
+        virtual void draw(int camera_x, int camera_y);
         void move();
-        void on_collision(MapObject other);
+        virtual void on_collision(MapObject &other);
 
         int get_x();
         int get_y();
@@ -17,9 +19,12 @@ class MapObject {
 
     protected:
         bool noclip;
-
+        
         int x;
         int y;
         int width;
         int height;
+
+        ALLEGRO_BITMAP* sprite;
+        bool has_sprite;
 };

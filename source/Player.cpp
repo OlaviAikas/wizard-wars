@@ -4,16 +4,17 @@
 #include <iostream>
 #include <cstdlib>
 #include <list>
+#define BASE_HEALTH 20
 
-Player::Player(int start_x, int start_y, int number, int hit_point) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, int number) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->number = number;
-    this->hit_point = hit_point;
+    this->hit_points = BASE_HEALTH;
 }
 
-int get_hit_point() {
-    return hit_point;
+int Player::get_hit_points() {
+    return hit_points;
 }
 
 short Player::get_number() {

@@ -23,7 +23,7 @@ void main_menu_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, AL
 void game_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
 
-void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
+void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH) {
     //Load what you need to before the loop:
@@ -42,7 +42,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
                 if (key[ALLEGRO_KEY_ENTER]) {
                     start_game->call_callback(state);
                 }
-                
+
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
                 redraw = true;
@@ -76,17 +76,18 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     delete start_game;
 }
 
-void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
+void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to load
     short client_number = 1;
+    ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
     Map* map = new Map("resources/map.bmp");
-    map->players.push_back(Player(400, 400, 1));
-    map->players.push_back(Player(100, 100, 2));
+    map->players.push_back(Player(400, 400, 1, sprites));
+    map->players.push_back(Player(100, 100, 2, sprites));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
-    
+
     while (state == 2) {
         al_wait_for_event(queue, &event);
 
@@ -199,7 +200,7 @@ int main(int argc, char **argv)
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-    ALLEGRO_DISPLAY* disp = al_create_display(3200, 1800); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(1280, 720); //Change this resolution to change window size
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 

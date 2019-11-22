@@ -5,13 +5,15 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <list>
+#include <allegro5/allegro.h>
 
-Player::Player(int start_x, int start_y, int number) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->number = number;
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
+    this->sprite = sprite;
 }
 
 short Player::get_number() {
@@ -67,4 +69,8 @@ void Player::move() {
 void Player::set_dest(int dest_x, int dest_y) {
     this->dest_x = dest_x;
     this->dest_y = dest_y;
+}
+
+void Player::draw(int camera_x, int camera_y) {
+  al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
 }

@@ -76,8 +76,9 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     delete start_game;
 }
 
-void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
-                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
+void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
+                    const float &windowWidth, const float &windowHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to load
     short client_number = 1;
@@ -87,7 +88,11 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     map->players.push_back(Player(100, 100, 2, sprites));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
-
+    bool mouse_west = false;
+    bool mouse_east = false;
+    bool mouse_north = false;
+    bool mouse_south = false;
+    
     while (state == 2) {
         al_wait_for_event(queue, &event);
 
@@ -118,12 +123,37 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
 
+                {
+                    const int amountOfMovement = 20;
+                    if (mouse_west) {
+                        camera.move_x(-amountOfMovement);
+                    }
+                    if (mouse_east) {
+                        camera.move_x(amountOfMovement);
+                    }
+                    if (mouse_north) {
+                        camera.move_y(-amountOfMovement);
+                    }
+                    if (mouse_south) {
+                        camera.move_y(amountOfMovement);
+                    }
+                }
+
                 map->move_list(map->players);
                 map->check_collisions();
 
                 redraw = true;
                 break;
 
+            case ALLEGRO_EVENT_MOUSE_AXES:
+                {
+                    float proportionOfScroll = 0.1;
+                    mouse_west = event.mouse.x < proportionOfScroll*windowWidth;
+                    mouse_east = event.mouse.x > (1-proportionOfScroll)*windowWidth;
+                    mouse_north = event.mouse.y < proportionOfScroll*windowHeight;
+                    mouse_south = event.mouse.y > (1-proportionOfScroll)*windowHeight;
+                    break;
+                }
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
                     pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
@@ -251,7 +281,7 @@ int main(int argc, char **argv)
         }
         if (game_state == 2) {
             game_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
-                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+                    screenWidth, screenHeight, windowWidth, windowHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
 
     }

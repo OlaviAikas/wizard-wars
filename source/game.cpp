@@ -24,7 +24,7 @@ void main_menu_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, AL
 void game_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
 
-void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
+void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH) {
     //Load what you need to before the loop:
@@ -43,7 +43,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
                 if (key[ALLEGRO_KEY_ENTER]) {
                     start_game->call_callback(state);
                 }
-                
+
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
                 redraw = true;
@@ -78,17 +78,24 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
 }
 
 void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
-                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
+                    const float &windowWidth, const float &windowHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to load
     short client_number = 1;
+    ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
     Map* map = new Map("resources/map.bmp");
-    map->players.push_back(Player(400, 400, 1));
-    map->players.push_back(Player(100, 100, 2));
+    map->players.push_back(Player(400, 400, 1, sprites));
+    map->players.push_back(Player(100, 100, 2, sprites));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
     unsigned long frameNumber = 0;
 
+    bool mouse_west = false;
+    bool mouse_east = false;
+    bool mouse_north = false;
+    bool mouse_south = false;
+    
     while (state == 2) {
         al_wait_for_event(queue, &event);
 
@@ -127,6 +134,22 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
 
+                {
+                    const int amountOfMovement = 20;
+                    if (mouse_west) {
+                        camera.move_x(-amountOfMovement);
+                    }
+                    if (mouse_east) {
+                        camera.move_x(amountOfMovement);
+                    }
+                    if (mouse_north) {
+                        camera.move_y(-amountOfMovement);
+                    }
+                    if (mouse_south) {
+                        camera.move_y(amountOfMovement);
+                    }
+                }
+
                 map->move_list(map->players);
 
                 std::cout << "Players moved on frame " << frameNumber << std::endl;
@@ -139,6 +162,15 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 redraw = true;
                 break;
 
+            case ALLEGRO_EVENT_MOUSE_AXES:
+                {
+                    float proportionOfScroll = 0.1;
+                    mouse_west = event.mouse.x < proportionOfScroll*windowWidth;
+                    mouse_east = event.mouse.x > (1-proportionOfScroll)*windowWidth;
+                    mouse_north = event.mouse.y < proportionOfScroll*windowHeight;
+                    mouse_south = event.mouse.y > (1-proportionOfScroll)*windowHeight;
+                    break;
+                }
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
                     pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
@@ -217,7 +249,7 @@ int main(int argc, char **argv)
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-    ALLEGRO_DISPLAY* disp = al_create_display(1600, 900); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(1280, 720); //Change this resolution to change window size
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 
@@ -268,7 +300,7 @@ int main(int argc, char **argv)
         }
         if (game_state == 2) {
             game_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
-                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+                    screenWidth, screenHeight, windowWidth, windowHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
 
     }

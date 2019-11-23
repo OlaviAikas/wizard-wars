@@ -3,6 +3,7 @@
 #include <list>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include <iostream>
 
 Map::Map(const char* name) {
     this->map = al_load_bitmap(name);
@@ -17,21 +18,29 @@ void Map::draw_map(int camera_x, int camera_y) {
 }
 
 void Map::check_collisions() {
+    std::cout << "entrance";
     for (std::list<Player>::iterator i = players.begin(); i != players.end(); i++) {
+        std::cout << "for00";
         for (std::list<Player>::iterator j = i++; j != players.end(); j++) {
+            std::cout << "for01";
             if (*i == *j) {
+                std::cout << "for02";
                 i->on_collision(*j);
                 j->on_collision(*i);
             }
         }
         for (std::list<Spell>::iterator j = spells.begin(); j != spells.end(); j++) {
+            std::cout << "for03";
             if (*i == *j) {
+                std::cout << "for04";
                 i->on_collision(*j);
                 j->on_collision(*i);
             }
         }
         for (std::list<MapObject>::iterator j = statics.begin(); j != statics.end(); j++) {
+            std::cout << "for05";
             if (*i == *j) {
+                std::cout << "for06";
                 i->on_collision(*j);
                 j->on_collision(*i);
             }

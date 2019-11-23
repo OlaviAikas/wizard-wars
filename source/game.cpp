@@ -87,7 +87,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     map->players.push_back(Player(100, 100, 2));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
-    
+    unsigned long frameNumber = 0;
+
     while (state == 2) {
         al_wait_for_event(queue, &event);
 
@@ -127,7 +128,13 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     key[i] &= KEY_SEEN;
 
                 map->move_list(map->players);
+
+                std::cout << "Players moved on frame " << frameNumber << std::endl;
+
                 map->check_collisions();
+
+                std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;
+                frameNumber++;
 
                 redraw = true;
                 break;
@@ -210,7 +217,7 @@ int main(int argc, char **argv)
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-    ALLEGRO_DISPLAY* disp = al_create_display(3200, 1800); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(1600, 900); //Change this resolution to change window size
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 

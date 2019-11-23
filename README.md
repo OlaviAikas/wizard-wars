@@ -8,9 +8,6 @@ Please also read [this](https://wiki.allegro.cc/index.php?title=Achieving_Resolu
 
 Notice that the files `main` and `game` are in .gitignore, remove if required.
 
-## Compiling
-`make` will not work by default: make a copy of local_config.hpp (`cp local_config.default.hpp local_config.hpp`) and set your resolution.
-
 ## Project Members (Name, github username, [role])
 - Olavi Äikäs, OlaviAikas (or Oulawi sometimes), [Project leader]
 - Mihails Valtusovs, valtusovs, [Git master]

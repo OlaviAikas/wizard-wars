@@ -3,7 +3,7 @@
 class MapObject {
     public:
         MapObject(int x, int y, int width, int height, bool noclip);
-        void draw(int camera_x, int camera_y);
+        virtual void draw(int camera_x, int camera_y);
         void move();
 
         void on_collision(MapObject other);
@@ -12,7 +12,7 @@ class MapObject {
         int get_y();
         int get_width();
         int get_height();
-        bool get_nocplip();
+        bool get_noclip();
 
         bool operator==(MapObject other);
 

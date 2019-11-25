@@ -1,9 +1,11 @@
 #pragma once
 #include "MapObject.hpp"
+#include <allegro5/allegro.h>
+#include <list>
 
 class Player : public MapObject {
     public:
-        Player(int start_x, int start_y, int number);
+        Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite);
 
         void move();
 
@@ -13,11 +15,19 @@ class Player : public MapObject {
 
         short get_number();
 
+        bool get_team();
+
+        void draw(int camera_x, int camera_y);
+
     private:
         short number;
-        int speed = 20;
-        int dx;
-        int dy;
+        int speed = 15;
+        int old_x;
+        int old_y;
         int dest_x;
         int dest_y;
+        int lastgoodposx;
+        int lastgoodposy;
+        bool team;
+        ALLEGRO_BITMAP* sprite;
 };

@@ -11,6 +11,7 @@
 #include "../headers/MapObject.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
+#include "../headers/Controlpoint.hpp"
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
@@ -86,6 +87,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(Player(400, 400, 1, sprites));
     map->players.push_back(Player(100, 100, 2, sprites));
+    map->statics.push_back(Controlpoint(800, 800, 1, 50, true));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
     bool mouse_west = false;

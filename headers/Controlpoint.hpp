@@ -5,23 +5,19 @@
 
 class Controlpoint : public MapObject {
     public:
-        Controlpoint(int x, int y, int number, int range);
-
-        void capture(Map map);
+        Controlpoint(int x, int y, int number, int side, bool owner);
 
         void set_owner(short newowner);
 
-        bool in_capture_range(MapObject other);
-
-        short get_owner();
+        bool get_owner();
 
         short get_number();
 
+        void on_collision(Player other);
+
     private:
-        short owner;
-        int timetoget=15;
-        int range=200;
-        int x;
-        int y;
+        bool owner;
+        int timegot=0;
+        int timetoget=450;
         int number;
 };

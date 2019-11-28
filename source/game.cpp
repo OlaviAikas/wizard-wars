@@ -11,6 +11,7 @@
 #include "../headers/MapObject.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
+#include "../headers/HUDobject.hpp"
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
@@ -86,6 +87,11 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     map->players.push_back(Player(100, 100, 2));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
+    bool mouse_west = false;
+    bool mouse_east = false;
+    bool mouse_north = false;
+    bool mouse_south = false;
+    HUDobject* minimap = new HUDobject(50, 800, 256, 144);
     
     while (state == 2) {
         al_wait_for_event(queue, &event);
@@ -157,6 +163,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
 
             map->draw_list(map->players, camera.get_x(), camera.get_y());
 
+            minimap->draw();
+
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
             al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
@@ -167,6 +175,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     }
     //delete what you loaded
     delete map;
+    delete minimap;
 }
 
 void must_init(bool test, const char *description)

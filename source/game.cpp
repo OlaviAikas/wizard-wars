@@ -1,3 +1,4 @@
+#define DEBUG_MODE
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -89,8 +90,9 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     map->players.push_back(Player(100, 100, 2, sprites));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
+#ifdef DEBUG_MODE    
     unsigned long frameNumber = 0;
-
+#endif
     bool mouse_west = false;
     bool mouse_east = false;
     bool mouse_north = false;
@@ -124,11 +126,17 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
                 
                 if (key[ALLEGRO_KEY_U]) {
+#ifdef DEBUG_MODE
                     std::cout << "Making spell object" << std::endl;
+#endif
                     Spell spell = Spell(pit->get_x(), pit->get_y(), 60, 60, true, 0, 0, pit->get_x(), pit->get_y());
-                    std::cout << "--" << std::endl;
+#ifdef DEBUG_MODE
+                    std::cout << "Spell at address " << &spell << std::endl;
+#endif
                     map->spells.push_back(spell);
-                    std::cout << "Done spell" << std::endl;
+#ifdef DEBUG_MODE
+                    std::cout << "Done spell at " << &(map->spells) << std::endl;
+#endif
                 }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
@@ -151,14 +159,14 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
 
                 map->move_list(map->players);
-
+#ifdef DEBUG_MODE
                 std::cout << "Players moved on frame " << frameNumber << std::endl;
-
+#endif
                 map->check_collisions();
-
-                std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;
+#ifdef DEBUG_MODE
+                std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;                
                 frameNumber++;
-
+#endif
                 redraw = true;
                 break;
 

@@ -1,3 +1,4 @@
+#define DEBUG_MODE
 #include "../headers/Player.hpp"
 #include "../headers/MapObject.hpp"
 #include <cmath>
@@ -20,9 +21,6 @@ Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite) : M
 
 int Player::get_hit_points() {
     return hit_points;
-    this->lastgoodposx=start_x;
-    this->lastgoodposy=start_y;
-    this->sprite = sprite;
 }
 
 short Player::get_number() {
@@ -33,7 +31,7 @@ bool Player::get_team() {
     return this->team;
 }
 
-void Player::on_collision(MapObject other) {
+void Player::on_collision(MapObject &other) {
     if (not other.get_noclip()) {
         dest_x=lastgoodposx;
         dest_y=lastgoodposy;
@@ -41,6 +39,9 @@ void Player::on_collision(MapObject other) {
 }
 
 void Player::move() {
+#ifdef DEBUG_MODE
+    std::cout << "Moving Player at " << this << std::endl;
+#endif
     lastgoodposx=x;
     lastgoodposy=y;
     if (abs(x - dest_x) >= speed && abs(y - dest_y) >= speed) {
@@ -72,6 +73,10 @@ void Player::move() {
         old_y = y;
         x = dest_x;
         y = dest_y;
+    } else {
+#ifdef DEBUG_MODE
+        std::cout << "Player at " << this << " did not move on this frame" << std::endl;
+#endif
     }
 }
 

@@ -34,3 +34,6 @@
 # Linux and Mac executables
 main
 game
+
+# Visual Studio Code
+.vscode

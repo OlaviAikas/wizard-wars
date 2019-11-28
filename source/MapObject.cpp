@@ -1,52 +1,62 @@
+#define DEBUG_MODE
 #include "../headers/MapObject.hpp"
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
+#include <iostream>
 
-MapObject::MapObject(int x, int y, int width, int height, bool noclip, int damage, int heal) {
+MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->x = x;
     this->y = y;
     this->width = width;
     this->height = height;
     this->noclip = noclip;
-    this->damage = damage;
-    this->heal = heal;
+    this->has_sprite = false;
 }
 
-int MapObject::get_x() {
+MapObject::MapObject(int x, int y, int width, int height, bool noclip, ALLEGRO_BITMAP* sprite) {
+    this->x = x;
+    this->y = y;
+    this->width = width;
+    this->height = height;
+    this->noclip = noclip;
+    if(sprite) {
+        this->sprite = sprite;
+        this->has_sprite = true;
+    } else {
+        this->has_sprite = false;
+    }
+}
+
+int MapObject::get_x() const {
     return x;
 }
 
-int MapObject::get_y() {
+int MapObject::get_y() const {
     return y;
 }
 
-int MapObject::get_width() {
+int MapObject::get_width() const {
     return width;
 }
 
-int MapObject::get_height() {
+int MapObject::get_height() const {
     return height;
 }
 
-int MapObject::get_damage() {
-    return damage;
-}
-
-int MapObject::get_heal() {
-    return heal;
-}
-
-bool MapObject::get_noclip() {
+bool MapObject::get_noclip() const {
     return noclip;
 }
 
 
-void MapObject::on_collision(MapObject other) {
-    
+void MapObject::on_collision(MapObject &other) {
+    // To retrieve from balavoine branch
 }
 
 
-bool MapObject::operator==(MapObject other) {
+bool MapObject::operator==(const MapObject &other) const {
+#ifdef DEBUG_MODE
+    std::cout << "Equality operator at " << this << std::endl;
+#endif
     if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
             return true;
@@ -72,48 +82,4 @@ bool MapObject::operator==(MapObject other) {
 
 void MapObject::draw(int camera_x, int camera_y) {
     al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
-}
-
-void MapObject::draw_arrow(int mouse_x, int mouse_y) {
-        float x1 = i->getX() + (i->getWidth() / 2);
-        float y1 = i->getY() + (i->getHeight() / 2);
-
-        float x2 = screenCentreX;
-        float y2 = ScreenCentreY;
-
-        float dx = x2 - x1;
-        float dy = y2 - y1;
-        float hypotSquared = (dx * dx) + (dy * dy);
-        float hypot = sqrt(hypotSquared);
-
-        float unitX = dx / hypot;
-        float unitY = dy / hypot;
-
-        float rayX = x2 - view->getViewportX();
-        float rayY = y2 - view->getViewportY();
-        float arrowX = 0;
-        float arrowY = 0;
-
-        bool posFound = false;
-        while(posFound == false)
-        {
-            rayX += unitX;
-            rayY += unitY;
-
-            if(rayX <= 0 ||
-                rayX >= screenWidth ||
-                rayY <= 0 ||
-                rayY >= screenHeight)
-            {
-                arrowX = rayX;
-                arrowY = rayY;
-                posFound = true;
-            }
-        }
-
-        al_draw_bitmap(sprite, arrowX - spriteWidth, arrowY - spriteHeight, 0);
-    }
-}
-void MapObject::draw_spell(int spell_x, int spell_y) {
-
 }

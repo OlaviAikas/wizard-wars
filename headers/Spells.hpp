@@ -35,6 +35,8 @@ class Projectile: public Spell {
         int speed = 20;
         int old_x;
         int old_y;
+        int dest_x;
+        int dest_y;
         int target_x;
         int target_y;
         int hitpoint;

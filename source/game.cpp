@@ -86,8 +86,9 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(Player(400, 400, 1, sprites));
-    map->players.push_back(Player(100, 100, 2, sprites));
-    map->statics.push_back(Controlpoint(800, 800, 1, 50, true));
+    map->players.push_back(Player(500, 500, 2, sprites));
+    map->statics.push_back(MapObject(1, 1, 450, 200, false));
+    map->statics.push_back(MapObject(1, 201, 100, 270, false));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
     bool mouse_west = false;

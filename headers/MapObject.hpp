@@ -3,7 +3,6 @@
 
 class MapObject {
     public:
-        MapObject(int x, int y, int width, int height, bool noclip);
         MapObject(int x, int y, int width, int height, bool noclip, ALLEGRO_BITMAP* sprite);
         virtual void draw(int camera_x, int camera_y);
         void move();

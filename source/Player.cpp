@@ -20,6 +20,9 @@ Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite) : M
 
 int Player::get_hit_points() {
     return hit_points;
+    this->lastgoodposx=start_x;
+    this->lastgoodposy=start_y;
+    this->sprite = sprite;
 }
 
 short Player::get_number() {

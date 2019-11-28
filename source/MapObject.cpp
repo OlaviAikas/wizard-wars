@@ -55,7 +55,7 @@ void MapObject::on_collision(MapObject &other) {
 
 bool MapObject::operator==(const MapObject &other) const {
 #ifdef DEBUG_MODE
-    std::cout << "Equality operator at " << this << std::endl;
+    std::cout << "Equality operator at " << this << " vs " << &other << std::endl;
 #endif
     if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {

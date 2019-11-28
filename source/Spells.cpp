@@ -66,7 +66,6 @@ void Arrow::draw(int mouse_x, int mouse_y) {
     
  }
 
-void Spell::draw(int spell_x, int spell_y) {
-    al_draw_circle(spell_x, spell_y, 30, al_map_rgb_f(1, 0, 1), 2);
+void Spell::draw(int camera_x, int camera_y) {
+    al_draw_circle(x - camera_x, y - camera_y, 30, al_map_rgb_f(1, 0, 1), 2);
 }
-

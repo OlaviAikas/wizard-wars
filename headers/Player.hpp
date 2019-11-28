@@ -32,5 +32,5 @@ class Player : public MapObject {
         int lastgoodposx;
         int lastgoodposy;
         bool team;
-        ALLEGRO_BITMAP* sprite;
+        // ALLEGRO_BITMAP* sprite;
 };

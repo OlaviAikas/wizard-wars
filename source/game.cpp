@@ -12,6 +12,7 @@
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
 #include "../headers/HUDobject.hpp"
+#include "../headers/Minimap.hpp"
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
@@ -93,7 +94,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     bool mouse_east = false;
     bool mouse_north = false;
     bool mouse_south = false;
-    HUDobject* minimap = new HUDobject(50, 800, 256, 144);
+    Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     
     while (state == 2) {
         al_wait_for_event(queue, &event);
@@ -235,7 +236,7 @@ int main(int argc, char **argv)
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-    ALLEGRO_DISPLAY* disp = al_create_display(1280, 720); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(1920, 1080); //Change this resolution to change window size
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 

@@ -2,11 +2,11 @@
 
 class HUDobject {
     public:
-        HUDobject(int x, int y, int sx, int sy);
+        HUDobject(int win_x, int win_y);
 
-        void draw();
+        virtual void draw();
 
-    private:
+    protected:
         int x;
         int y;
         int sx;

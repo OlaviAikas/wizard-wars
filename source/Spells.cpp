@@ -2,11 +2,9 @@
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
 
-Spell::Spell(int x, int y, int width, int height, bool noclip, int damage, int healing, int target_x, int target_y) : MapObject::MapObject(x, y, width, height, noclip) {
+Spell::Spell(int x, int y, int width, int height, bool noclip, int damage, int healing) : MapObject::MapObject(x, y, width, height, noclip) {
     this->damage = damage;
     this->healing = healing;
-    this->target_x = target_x;
-    this->target_y = target_y;
 }
 
 int Spell::get_damage() {
@@ -23,50 +21,104 @@ void Spell::on_collision(MapObject &other) {
     std::cout << "colliding Spell at " << this << " with MapObject at " << &other << std::endl;
 }
 
-void Arrow::draw(int mouse_x, int mouse_y) {
-//     float x1 = i->getX() + (i->getWidth() / 2);
-//     float y1 = i->getY() + (i->getHeight() / 2);
+// void Arrow::draw(int mouse_x, int mouse_y) {
+// //     float x1 = i->getX() + (i->getWidth() / 2);
+// //     float y1 = i->getY() + (i->getHeight() / 2);
 
-//     float x2 = screenCentreX;
-//     float y2 = ScreenCentreY;
+// //     float x2 = screenCentreX;
+// //     float y2 = ScreenCentreY;
 
-//     float dx = x2 - x1;
-//     float dy = y2 - y1;
-//     float hypotSquared = (dx * dx) + (dy * dy);
-//     float hypot = sqrt(hypotSquared);
+// //     float dx = x2 - x1;
+// //     float dy = y2 - y1;
+// //     float hypotSquared = (dx * dx) + (dy * dy);
+// //     float hypot = sqrt(hypotSquared);
 
-//     float unitX = dx / hypot;
-//     float unitY = dy / hypot;
+// //     float unitX = dx / hypot;
+// //     float unitY = dy / hypot;
 
-//     float rayX = x2 - view->getViewportX();
-//     float rayY = y2 - view->getViewportY();
-//     float arrowX = 0;
-//     float arrowY = 0;
+// //     float rayX = x2 - view->getViewportX();
+// //     float rayY = y2 - view->getViewportY();
+// //     float arrowX = 0;
+// //     float arrowY = 0;
 
-//     bool posFound = false;
-//     while(posFound == false)
-//     {
-//          rayX += unitX;
-//          rayY += unitY;
+// //     bool posFound = false;
+// //     while(posFound == false)
+// //     {
+// //          rayX += unitX;
+// //          rayY += unitY;
 
-//          if(rayX <= 0 ||
-//              rayX >= screenWidth ||
-//              rayY <= 0 ||
-//              rayY >= screenHeight)
-//          {
-//              arrowX = rayX;
-//              arrowY = rayY;
-//              posFound = true;
-//          }
-//  }
+// //          if(rayX <= 0 ||
+// //              rayX >= screenWidth ||
+// //              rayY <= 0 ||
+// //              rayY >= screenHeight)
+// //          {
+// //              arrowX = rayX;
+// //              arrowY = rayY;
+// //              posFound = true;
+// //          }
+// //  }
 
-//  al_draw_bitmap(sprite, arrowX - spriteWidth, arrowY - spriteHeight, 0);
-//  }
+// //  al_draw_bitmap(sprite, arrowX - spriteWidth, arrowY - spriteHeight, 0);
+// //  }
 
     
- }
+//  }
 
 void Spell::draw(int spell_x, int spell_y) {
     al_draw_circle(spell_x, spell_y, 30, al_map_rgb_f(1, 0, 1), 2);
 }
 
+Projectile::Projectile(int start_x, int start_y, int width, int height, bool noclip, int damage, int healing /*  , int number*/) : Spell::Spell(int start_x, int start_y, int width, int height, bool noclip, int damage, int healing /*  , int number*/) {
+    this->dest_x = start_x;
+    this->dest_y = start_y;
+    // this->number = number;
+}
+
+// short Projectile::get_number() {
+//     return this->number;
+// }
+
+void Projectile::on_collision(MapObject other) {
+    if (not other.get_noclip()) {
+        dest_x = x;
+        dest_y = y;
+    }
+}
+
+void Projectile::move() {
+    if (abs(x - target_x) >= speed && abs(y - target_y) >= speed) {
+        int dx = target_x - x;
+        int dy = target_y - y;
+        int n2 = round(sqrt(dx*dx + dy*dy));
+        old_x = x;
+        old_y = y;
+        x = round(x + dx * speed / n2);
+        y = round(y + dy * speed / n2);
+    } else if (abs(x - target_x) >= speed) {
+        int dx = target_x - x;
+        int dy = target_y - y;
+        int n2 = round(sqrt(dx*dx + dy*dy));
+        old_x = x;
+        old_y = y;
+        x = round(x + dx * speed / n2);
+        y = round(y + dy * speed / n2);
+    } else if(abs(y - target_y) >= speed) {
+        int dx = target_x - x;
+        int dy = target_y - y;
+        int n2 = round(sqrt(dx*dx + dy*dy));
+        old_x = x;
+        old_y = y;
+        x = round(x + dx * speed / n2);
+        y = round(y + dy * speed / n2);
+    } else if (x != target_x && y != target_y) {
+        old_x = x;
+        old_y = y;
+        x = target_x;
+        y = target_y;
+    }
+};
+
+void Projectile::set_target(int target_x, int target_y) {
+    this->target_x = target_x;
+    this->target_y = target_y;
+};

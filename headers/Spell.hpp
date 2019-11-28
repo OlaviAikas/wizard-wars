@@ -1,3 +1,5 @@
+// Original Wanqi's file
+
 #pragma once
 #include "MapObject.hpp"
 #include <list>

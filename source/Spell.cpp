@@ -1,3 +1,5 @@
+// Original Wanqi's file
+
 #include "../headers/Spell.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/MapObject.hpp"

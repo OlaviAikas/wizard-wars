@@ -37,3 +37,6 @@ game
 
 # Visual Studio Code
 .vscode
+
+# Mac .DS_Store
+.DS_Store

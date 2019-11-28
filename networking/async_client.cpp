@@ -64,7 +64,7 @@ public:
 
 
     void handle_send_to(const asio::error_code& error, size_t s/*bytes_sent*/){
-        std:: cout <<"bytes_sent = "<<s<<"." <<std:: endl; 
+        
 
         if (!error){
             // send success, remove from the queue
@@ -100,7 +100,6 @@ public:
     void handle_receive_from(const asio::error_code& error, size_t bytes_recvd)
     {
         if(!error){
-            std::cout<<"handle_receive_from "<<std::endl;
             std::cout<<"recv data(str):"<<show_str(data_.data(), bytes_recvd)<<std::endl;
             if(bytes_recvd > message::header_length)
                 data_.body_length(bytes_recvd-message::header_length);
@@ -126,15 +125,14 @@ int main (int argc, char* argv []) {
     asio::io_service is; 
 
     udp_client c1(is, "localhost", "13");
-    std::string msg1 = "This is Request seq1 from c1.";
+    std::string msg1 = "Hi, this is Bob!";
 
     message msg;
     msg.body_length(msg1.length());
-    memcpy(msg.data(), "Hi this is Bob", message::header_length);
-    memcpy(msg.body(), "This is Request seq1 from c1.", msg.body_length());
+    memcpy(msg.data(), "1234", message::header_length);
+    memcpy(msg.body(), msg1.c_str(), msg.body_length());
 
     c1.send_message(msg);
-    std::cout<< "Hi! I am asynchronos" << std::endl;
     is.run (); 
 
     return 0; 

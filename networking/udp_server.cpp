@@ -1,16 +1,8 @@
-// async_udp_echo_server.cpp
-// ~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-// Copyright (c) 2003-2011 Christopher M. Kohlhoff (chris at kohlhoff dot com)
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-
 #include <cstdlib>
 #include <iostream>
 #include <boost/bind.hpp>
 #include "asio.hpp"
+#include "Server.cpp"
 std::string show_hex(const char* data, size_t size)
 {
     std::string hex;
@@ -35,13 +27,16 @@ std::string show_str(const char* data, size_t size)
 }
 using asio::ip::udp;
 
+
 class udp_server
 {
 public:
-  udp_server(asio::io_service& io_service, short port)
+Server* server;
+  udp_server(asio::io_service& io_service, short port, Server* server)
     : io_service_(io_service),
       socket_(io_service, udp::endpoint(udp::v4(), port))
   {
+      this->server = server;
     memset(data_, 0, max_length);
 
     socket_.async_receive_from(
@@ -58,9 +53,10 @@ public:
     {
         std::cout<<"recv data(size="<<bytes_recvd<<"):"
             <<show_str(data_, bytes_recvd)<<std::endl;
+        std::string request(data_, bytes_recvd);
 
         boost::shared_ptr<std::string> message(
-          new std::string("Hi Bob, this is Alice!"));
+          this->server->generateResponse(request));
         socket_.async_send_to(
             asio::buffer(*message), sender_endpoint_, 
             boost::bind(&udp_server::handle_send_to, this,
@@ -96,28 +92,3 @@ private:
   enum { max_length = 1024 };
   char data_[max_length];
 };
-
-int main(int argc, char* argv[])
-{
-  try
-  {
-    if (argc != 2)
-    {
-      std::cerr << "Usage: async_udp_echo_server <port>\n";
-      return 1;
-    }
-
-    asio::io_service io_service;
-
-    using namespace std; // For atoi.
-    udp_server s(io_service, atoi(argv[1]));
-
-    io_service.run();
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << "Exception: " << e.what() << "\n";
-  }
-
-  return 0;
-}

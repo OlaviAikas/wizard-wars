@@ -14,7 +14,7 @@ class Player : public MapObject {
 
         short get_number();
         
-        int get_hit_point()
+        int get_hit_point();
 
     private:
         short number;

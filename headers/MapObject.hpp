@@ -11,6 +11,8 @@ class MapObject {
         int get_y();
         int get_width();
         int get_height();
+        int get_damage();
+        int get_heal();
         bool get_noclip();
         
         bool operator==(MapObject other);
@@ -22,4 +24,6 @@ class MapObject {
         int y;
         int width;
         int height;
+        int damage;
+        int heal;
 };

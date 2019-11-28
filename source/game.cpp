@@ -131,7 +131,13 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 if (event.mouse.button == 2) {
                     pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                 }
+                if (event.mouse.button == 1) {
+                    map->spells
+                    pit->set_target(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
+                }
+                // target is the shooting directions of the spell by left click//
                 break;
+
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;

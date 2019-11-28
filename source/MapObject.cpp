@@ -8,8 +8,8 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip, int damag
     this->width = width;
     this->height = height;
     this->noclip = noclip;
-    this->damage = damage
-    this->heal = heal
+    this->damage = damage;
+    this->heal = heal;
 }
 
 int MapObject::get_x() {

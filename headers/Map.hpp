@@ -29,6 +29,12 @@ class Map {
             }
         }
 
+				template <typename T> void update_ticks(std::list<T> &list) {
+            for (typename std::list<T>::iterator i = list.begin(); i != list.end(); i++) {
+                i->update_tick();
+            }
+				}
+
         std::list<Player>::iterator fetch_pit(short n);
 
     private:

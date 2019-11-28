@@ -72,8 +72,28 @@ int main(int argc, char **argv)
 
     short client_number = 1;
     Map* map = new Map("resources/map.bmp");
-    map->players.push_back(Player(400, 400, 1));
-    map->players.push_back(Player(100, 100, 2));
+
+    map->players.push_back(Player(400, 400, 1, redsprite)); // add resource
+    map->players.push_back(Player(100, 100, 2, bluesprite));// we can add any number of players that we want --> need to automatize
+
+		redsprite = al_load_bitmap("resources/Sprite-0002.bmp");
+		bluesprite = al_load_bitmap("resources/Sprite-0002.bmp");// Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 12 damaged ?/ 13-??: death animation
+
+		/* ALLEGRO_BITMAP*[12] redsprites; // team red animations   This is for animations, try later
+		ALLEGRO_BITMAP*[12] bluesprites; // team blue animations
+		std::string redpath = "resources/redSprite-";
+		std::string blupath = "resources/bluSprite-";
+		for (size_t i = 0; i < 13; i++) {
+			std::string path = redpath + std:to_string(i)+".bmp";
+			redsprites[i] = al_load_bitmap(path);
+		}
+		for (size_t i = 0; i < 13; i++) {
+			std::string path = blupath + std:to_string(i)+".bmp";
+			blusprites[i] = al_load_bitmap(path);
+		}
+		*/
+
+
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
 
@@ -92,6 +112,10 @@ int main(int argc, char **argv)
         switch(event.type)
         {
             case ALLEGRO_EVENT_TIMER:
+
+								for (std::list<Player>::iterator i = map->players.begin(); i != map->players.end(), i++){
+									map->players.count = map->players.count + 1;
+								} //to fix if needed
 
                 if(key[ALLEGRO_KEY_ESCAPE])
                     done = true;
@@ -147,6 +171,8 @@ int main(int argc, char **argv)
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
             map->draw_map(camera.get_x(), camera.get_y());
+
+						map->update_ticks(map->players)
 
             map->draw_list(map->players, camera.get_x(), camera.get_y());
 

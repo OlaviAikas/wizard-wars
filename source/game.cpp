@@ -1,3 +1,4 @@
+#define DEBUG_MODE
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -11,6 +12,7 @@
 #include "../headers/MapObject.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
+#include "../headers/Spells.hpp"
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
@@ -88,6 +90,9 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     map->players.push_back(Player(100, 100, 2, sprites));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
+#ifdef DEBUG_MODE    
+    unsigned long frameNumber = 0;
+#endif
     bool mouse_west = false;
     bool mouse_east = false;
     bool mouse_north = false;
@@ -119,6 +124,20 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 if (key[ALLEGRO_KEY_S]) {
                     camera.move_y(20);
                 }
+                
+                if (key[ALLEGRO_KEY_U]) {
+#ifdef DEBUG_MODE
+                    std::cout << "Making spell object" << std::endl;
+#endif
+                    Spell spell = Spell(pit->get_x(), pit->get_y(), 60, 60, true, 0, 0, pit->get_x(), pit->get_y());
+#ifdef DEBUG_MODE
+                    std::cout << "Spell at address " << &spell << std::endl;
+#endif
+                    map->spells.push_back(spell);
+#ifdef DEBUG_MODE
+                    std::cout << "Done spell at " << &(map->spells) << std::endl;
+#endif
+                }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
@@ -140,8 +159,14 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
 
                 map->move_list(map->players);
+#ifdef DEBUG_MODE
+                std::cout << "Players moved on frame " << frameNumber << std::endl;
+#endif
                 map->check_collisions();
-
+#ifdef DEBUG_MODE
+                std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;                
+                frameNumber++;
+#endif
                 redraw = true;
                 break;
 
@@ -158,7 +183,13 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 if (event.mouse.button == 2) {
                     pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                 }
+                if (event.mouse.button == 1) {
+                    map->spells
+                    pit->set_target(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
+                }
+                // target is the shooting directions of the spell by left click//
                 break;
+
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
@@ -187,6 +218,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
             map->draw_map(camera.get_x(), camera.get_y());
 
             map->draw_list(map->players, camera.get_x(), camera.get_y());
+
+            map->draw_list(map->spells, camera.get_x(), camera.get_y());
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));

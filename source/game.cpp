@@ -11,6 +11,9 @@
 #include "../headers/MapObject.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
+#include "../networking/Interface.hpp"
+#include "../networking/Server.hpp"
+#include "../networking/Client.hpp"
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
@@ -271,6 +274,16 @@ int main(int argc, char **argv)
 
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
+
+    bool isServer = true;
+    Interface interface;
+    if(isServer){
+        interface = new Server(map, 13);
+    } else {
+        interface = new Client(map, "localhost", 13);
+    }
+    
+
 
     al_start_timer(timer);
 

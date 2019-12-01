@@ -1,13 +1,4 @@
 #include "Server.hpp"
-Server Server::Server(Map* map, short port){
-        this->map = map;
-        this->port = port;
-        udpServer = new udp_server(this->io_service, port, this);
-
-    }
-
-
-    #include "Server.hpp"
 
 std::string show_hex(const char* data, size_t size)
 {
@@ -35,14 +26,14 @@ using asio::ip::udp;
 
 
 
-Server::Server(asio::io_service io_service, Map* map, short port)
+Server::Server(asio::io_service &io_service, Map* map, short port)
     : io_service_(io_service),
       socket_(io_service, udp::endpoint(udp::v4(), port))
 {
     memset(data_, 0, max_length);
     socket_.async_receive_from(
         asio::buffer(data_, max_length), sender_endpoint_, 
-        boost::bind(&udp_server::handle_receive_from, this, 
+        boost::bind(&Server::handle_receive_from, this, 
             asio::placeholders::error,
             asio::placeholders::bytes_transferred));
 }
@@ -54,13 +45,12 @@ void Server::handle_receive_from(const asio::error_code& error,
     {
         std::cout<<"recv data(size="<<bytes_recvd<<"):"
             <<show_str(data_, bytes_recvd)<<std::endl;
-        std::string request(data_, bytes_recvd);
+        std::string request = show_str(data_, bytes_recvd);
 
-        boost::shared_ptr<std::string> message(
-        generateResponse(request));
+        boost::shared_ptr<std::string> message(generateResponse(request));
         socket_.async_send_to(
             asio::buffer(*message), sender_endpoint_, 
-            boost::bind(&udp_server::handle_send_to, this,
+            boost::bind(&Server::handle_send_to, this,
             asio::placeholders::error,
             asio::placeholders::bytes_transferred));
 
@@ -69,7 +59,7 @@ void Server::handle_receive_from(const asio::error_code& error,
     {
     socket_.async_receive_from(
         asio::buffer(data_, max_length), sender_endpoint_,
-        boost::bind(&udp_server::handle_receive_from, this,
+        boost::bind(&Server::handle_receive_from, this,
             asio::placeholders::error,
             asio::placeholders::bytes_transferred));
     }
@@ -80,12 +70,12 @@ void Server::handle_send_to( const asio::error_code& /*error*/,
 {
 socket_.async_receive_from(
     asio::buffer(data_, max_length), sender_endpoint_,
-    boost::bind(&udp_server::handle_receive_from, this,
+    boost::bind(&Server::handle_receive_from, this,
     asio::placeholders::error,
     asio::placeholders::bytes_transferred));
     memset(data_, 0, max_length);
 }
 
-std::string Server::generateResponse(std::string message){
-    return "Hi Bob, this is Alice.";
+std::string* Server::generateResponse(std::string message){
+    return new std::string("Hi Bob, this is Alice.");
 }

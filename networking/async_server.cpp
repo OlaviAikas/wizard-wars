@@ -1,6 +1,4 @@
-#include <cstdlib>
-#include <iostream>
-#include "Server.hpp"
+#include "async_server.hpp"
 
 int main()
 {
@@ -9,7 +7,7 @@ int main()
 
     asio::io_service io_service;
 
-    Server s(io_service, (short) 13);
+    Server s(io_service, 0, (short) 13);
 
     io_service.run();
   }

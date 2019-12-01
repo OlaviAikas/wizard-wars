@@ -10,9 +10,9 @@
 
 using asio::ip::udp;
 
-class Server : Interface {
+class Server {
     public:
-    Server(asio::io_service io_service, Map* map, short port);
+    Server(asio::io_service &io_service, Map* map, short port);
     
     // event handlers
 
@@ -35,6 +35,6 @@ class Server : Interface {
     short port;
     Map* map;
 
-    std::string generateResponse(std::string message);
+    std::string* generateResponse(std::string message);
 
 };

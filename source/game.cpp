@@ -52,7 +52,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 start_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 2);
                 end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 0);
-
+                break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;

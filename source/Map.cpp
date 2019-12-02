@@ -1,5 +1,6 @@
 #include "../headers/Map.hpp"
 #include "../headers/Player.hpp"
+#include "../headers/Spells.hpp"
 #include <list>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -18,7 +19,7 @@ void Map::draw_map(int camera_x, int camera_y) {
 
 void Map::check_collisions() {
     for (std::list<Player>::iterator i = players.begin(); i != players.end(); i++) {
-        for (std::list<Player>::iterator j = i++; j != players.end(); j++) {
+        for (std::list<Player>::iterator j = std::next(i,1); j != players.end(); j++) {
             if (*i == *j) {
                 i->on_collision(*j);
                 j->on_collision(*i);
@@ -38,7 +39,7 @@ void Map::check_collisions() {
         }
     }
     for (std::list<Spell>::iterator i = spells.begin(); i != spells.end(); i++) {
-        for (std::list<Spell>::iterator j = i++; j != spells.end(); j++) {
+        for (std::list<Spell>::iterator j = std::next(i,1); j != spells.end(); j++) {
             if (*i == *j) {
                 i->on_collision(*j);
                 j->on_collision(*i);

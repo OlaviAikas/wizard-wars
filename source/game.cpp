@@ -13,6 +13,7 @@
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
 #include "../headers/Spells.hpp"
+#include <cmath>
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
@@ -88,8 +89,11 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(Player(400, 400, 1, sprites));
     map->players.push_back(Player(100, 100, 2, sprites));
+    map->spells.push_back(Spell());
     Camera camera = Camera(0, 0);
+    //define a pointer to the player
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
+
 #ifdef DEBUG_MODE    
     unsigned long frameNumber = 0;
 #endif
@@ -129,7 +133,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
 #ifdef DEBUG_MODE
                     std::cout << "Making spell object" << std::endl;
 #endif
-                    Spell spell = Spell(pit->get_x(), pit->get_y(), 60, 60, true, 0, 0, pit->get_x(), pit->get_y());
+                    Spell spell = Spell(pit->get_x(), pit->get_y(), 60, 60, true, 0, 0);
 #ifdef DEBUG_MODE
                     std::cout << "Spell at address " << &spell << std::endl;
 #endif
@@ -184,10 +188,14 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                 }
                 if (event.mouse.button == 1) {
-                    map->spells
-                    pit->set_target(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
-                }
-                // target is the shooting directions of the spell by left click//
+                    
+                    int dy = event.mouse.y / sy + camera.get_y() - pit->get_y();
+                    int dx = event.mouse.x / sx + camera.get_x() - pit->get_x();
+                    int norm = sqrt(dy*dy + dx*dx);
+                    dy = dy/norm;
+                    dx = dx/norm;
+                    map -> spells.push_back(Rock(......));
+                // defne the direction vector when right-click//
                 break;
 
 
@@ -324,4 +332,9 @@ int main(int argc, char **argv)
     al_destroy_event_queue(queue);
 
     return 0;
+}
+
+// define the vector when right-clicking
+int direction(int click_x, int click_y, int loc_x, int loc_y){
+    return (click_y - loc_y)/(click_x - loc_x);
 }

@@ -99,3 +99,11 @@ std::list<Player>::iterator Map::fetch_pit(short n) {
     }
     return it;
 }
+
+std::list<Player>::iterator Map::fetch_spit(short n) {
+    std::list<Player>::iterator it = this->players.begin();
+    while (it->get_number() != n) {
+        it++;
+    }
+    return it;
+}

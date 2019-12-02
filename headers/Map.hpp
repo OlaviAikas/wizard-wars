@@ -31,7 +31,7 @@ class Map {
         }
 
         std::list<Player>::iterator fetch_pit(short n);
-
+       // still not sure: std::list<Spell>::iterator fetch_spit(short n);
     private:
         ALLEGRO_BITMAP* map;
 };

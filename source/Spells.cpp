@@ -1,6 +1,8 @@
 #include "../headers/Spells.hpp"
+#include <math.h>
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
+
 
 Spell::Spell(int x, int y, int width, int height, bool noclip, int damage, int healing) : MapObject::MapObject(x, y, width, height, noclip) {
     this->damage = damage;
@@ -68,7 +70,7 @@ void Spell::draw(int spell_x, int spell_y) {
     al_draw_circle(spell_x, spell_y, 30, al_map_rgb_f(1, 0, 1), 2);
 }
 
-Projectile::Spell(int start_x, int start_y, int width, int height, bool noclip, int damage, int healing /*  , int number*/) {
+Projectile::Projectile(int start_x, int start_y, int width, int height, bool noclip, int damage, int healing /*  , int number*/) : Spell::Spell( start_x,  start_y,  width,  height, noclip,  damage,  healing /*  ,  number*/) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     // this->number = number;

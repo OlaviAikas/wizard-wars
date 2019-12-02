@@ -26,13 +26,14 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 
 ## Team assignments:
 ### Team 1: Map:
-* Olavi
 * Paul
 * Johannes
 * Ruiyao
+* Damien
 
 ### Team 2: UI/HUD:
 * Chloe
+* Olavi
 
 ### Team 3: Magic:
 * Mihails

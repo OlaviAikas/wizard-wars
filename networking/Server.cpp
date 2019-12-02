@@ -77,5 +77,11 @@ socket_.async_receive_from(
 }
 
 std::string* Server::generateResponse(std::string message){
-    return new std::string("Hi Bob, this is Alice.");
+    if(message.compare("Hi, this is Bob! 1")==0){
+        return new std::string("Hi Bob 1, this is Alice.");
+    } else if(message.compare("Hi, this is Bob! 2")==0) {
+        return new std::string("Hi Bob 2, this is Alice.");
+    } else {
+        return new std::string("Hi Anonymous, this is Alice.");
+    }
 }

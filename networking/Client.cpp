@@ -51,7 +51,7 @@ void Client::do_write(const message& msg){
             asio::placeholders::error,
             asio::placeholders::bytes_transferred));
 
-        std::cout<<"send data(str):"<<show_str(send_msg_queue_.front().data(), send_msg_queue_.front().length())<<std::endl;
+        //std::cout<<"send data(str):"<<show_str(send_msg_queue_.front().data(), send_msg_queue_.front().length())<<std::endl;
     }
 }
 
@@ -94,7 +94,7 @@ void Client::recv_message(){
 void Client::handle_receive_from(const asio::error_code& error, size_t bytes_recvd)
 {
     if(!error){
-        std::cout<<"recv data(str):"<<show_str(data_.data(), bytes_recvd)<<std::endl;
+        //std::cout<<"recv data(str):"<<show_str(data_.data(), bytes_recvd)<<std::endl;
         if(bytes_recvd > message::header_length)
             data_.body_length(bytes_recvd-message::header_length);
         //std::cout<<"message.lenght()="<<data_.length()<<"bytes_recvd="<<bytes_recvd<<std::endl;
@@ -108,4 +108,13 @@ void Client::handle_receive_from(const asio::error_code& error, size_t bytes_rec
 
 void Client::onResponse(std::string message){
     std::cout << "The servers response is: " << message << std::endl;
+}
+
+
+void Client::send_string(const std::string msg_text){
+    message msg;
+    msg.body_length(msg_text.length());
+    memcpy(msg.data(), "", message::header_length);
+    memcpy(msg.body(), msg1.c_str(), msg.body_length());
+    send_message(msg);
 }

@@ -14,7 +14,7 @@
 class message
 {
 public:
-  enum { header_length = 4 };
+  enum { header_length = 0 };
   enum { max_body_length = 1024 };
 
   message()

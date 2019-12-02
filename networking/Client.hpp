@@ -19,6 +19,7 @@ class Client {
     void handle_receive_from(const asio::error_code& error, size_t bytes_recvd);
 
     void send_message(const message& msg);
+    void send_string(const std::string msg);
     void onResponse(std::string message);
 
     protected:

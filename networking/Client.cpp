@@ -24,10 +24,8 @@ std::string show_str(const char* data, size_t size)
 }
 
 
-Client::Client (asio::io_service io_service, const std::string& host, const std::string& port) 
+Client::Client(asio::io_service& io_service, const std::string& host,  const std::string& port) 
 :io_service_(io_service), socket_(io_service, udp::endpoint (udp::v4(), 0)) { 
-    this->host = host;
-    this->port = port;
     udp::resolver resolver(io_service_); 
     udp::resolver::query query(udp::v4(), host, port); 
     udp::resolver::iterator itr = resolver.resolve(query);
@@ -35,11 +33,11 @@ Client::Client (asio::io_service io_service, const std::string& host, const std:
     sender_endpoint_ = *itr; 
 }
 
-Client::~udp_client(){ 
+Client::~Client(){ 
     socket_.close();
 }
 void Client::send_message(const message& msg){
-    io_service_.post(boost::bind(&udp_client::do_write, this, msg));
+    io_service_.post(boost::bind(&Client::do_write, this, msg));
 }
 
 void Client::do_write(const message& msg){
@@ -49,7 +47,7 @@ void Client::do_write(const message& msg){
         socket_.async_send_to(
             asio::buffer(send_msg_queue_.front().data(), send_msg_queue_.front().length()),
             sender_endpoint_,
-            boost::bind(&udp_client::handle_send_to, this, 
+            boost::bind(&Client::handle_send_to, this, 
             asio::placeholders::error,
             asio::placeholders::bytes_transferred));
 
@@ -73,7 +71,7 @@ void Client::handle_send_to(const asio::error_code& error, size_t s/*bytes_sent*
             socket_.async_send_to(
                 asio::buffer(send_msg_queue_.front().data(), send_msg_queue_.front().length()),
                 sender_endpoint_,
-                boost::bind(&udp_client::handle_send_to, this, 
+                boost::bind(&Client::handle_send_to, this, 
                 asio::placeholders::error,
                 asio::placeholders::bytes_transferred));
         }
@@ -88,7 +86,7 @@ void Client::handle_send_to(const asio::error_code& error, size_t s/*bytes_sent*
 void Client::recv_message(){
     socket_.async_receive_from(
         asio::buffer(data_.data(), data_.max_length()), sender_endpoint_,
-        boost::bind(&udp_client::handle_receive_from, this,
+        boost::bind(&Client::handle_receive_from, this,
         asio::placeholders::error,
         asio::placeholders::bytes_transferred));
 }
@@ -109,5 +107,5 @@ void Client::handle_receive_from(const asio::error_code& error, size_t bytes_rec
 }
 
 void Client::onResponse(std::string message){
-    std::cout << "The servers response is: " message << std::endl;
+    std::cout << "The servers response is: " << message << std::endl;
 }

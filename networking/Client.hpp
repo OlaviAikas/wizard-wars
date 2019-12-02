@@ -8,10 +8,10 @@
 #include "message.hpp"
 using asio::ip::udp;
 
-class Client : Interface {
+class Client {
     public:
-    Client(asio::io_service io_service, Map* map, std::string& host, short port);
-    ~udp_client();
+    Client(asio::io_service& io_service, const std::string& host, const std::string& port);
+    ~Client();
     
     void do_write(const message& msg);
     void handle_send_to(const asio::error_code& error, size_t s/*bytes_sent*/);
@@ -29,7 +29,5 @@ class Client : Interface {
     udp::socket socket_; 
     udp::endpoint sender_endpoint_;
     std::deque<message> send_msg_queue_;
-    short port;
-    std::string& host host;
 
 };

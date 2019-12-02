@@ -41,9 +41,11 @@ void Client::send_message(const message& msg){
 }
 
 void Client::do_write(const message& msg){
+    
     send_msg_queue_.push_back(msg);
 
     if (!send_msg_queue_.empty()){
+        
         socket_.async_send_to(
             asio::buffer(send_msg_queue_.front().data(), send_msg_queue_.front().length()),
             sender_endpoint_,
@@ -63,6 +65,7 @@ void Client::handle_send_to(const asio::error_code& error, size_t s/*bytes_sent*
     if (!error){
         // send success, remove from the queue
         send_msg_queue_.pop_front(); 
+        std::cout << "do write" << std::endl;
 
         // recv response after send a message
         recv_message();
@@ -115,6 +118,6 @@ void Client::send_string(const std::string msg_text){
     message msg;
     msg.body_length(msg_text.length());
     memcpy(msg.data(), "", message::header_length);
-    memcpy(msg.body(), msg1.c_str(), msg.body_length());
+    memcpy(msg.body(), msg_text.c_str(), msg.body_length());
     send_message(msg);
 }

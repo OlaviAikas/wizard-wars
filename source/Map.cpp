@@ -60,3 +60,22 @@ std::list<Player>::iterator Map::fetch_pit(short n) {
     }
     return it;
 }
+
+std::string Map::encode_player(){
+    std::string to_transmit="";
+    for (std::list<Player>::iterator i = players.begin(); i != players.end(); i++){
+        std::stringstream ss;
+        ss << i->get_number();
+        std::string number = ss.str();
+        ss << i->get_x();
+        std::string x = ss.str();
+        ss << i->get_y();
+        std::string y = ss.str();
+        ss << i->get_destx();
+        std::string destx = ss.str();
+        ss << i->get_desty();
+        std::string desty = ss.str();
+        to_transmit="0"+number+x+y+destx+desty;
+    }
+    return to_transmit;
+}

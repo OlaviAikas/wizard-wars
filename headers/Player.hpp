@@ -19,6 +19,10 @@ class Player : public MapObject {
 
         void draw(int camera_x, int camera_y);
 
+        int get_destx();
+
+        int get_desty();
+
     private:
         short number;
         int speed = 15;

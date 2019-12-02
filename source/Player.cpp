@@ -24,6 +24,14 @@ bool Player::get_team() {
     return this->team;
 }
 
+int Player::get_destx(){
+    return this->dest_x;
+}
+
+int Player::get_desty(){
+    return this->dest_y;
+}
+
 void Player::on_collision(MapObject other) {
     if (not other.get_noclip()) {
         dest_x=lastgoodposx;

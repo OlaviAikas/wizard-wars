@@ -1,8 +1,10 @@
 #pragma once
 #include <allegro5/allegro.h>
 #include <list>
+#include <string>
 #include "Player.hpp"
 #include "MapObject.hpp"
+#include <sstream>
 
 class Map {
     public:
@@ -30,6 +32,8 @@ class Map {
         }
 
         std::list<Player>::iterator fetch_pit(short n);
+
+        std::string encode_player();
 
     private:
         ALLEGRO_BITMAP* map;

@@ -11,25 +11,27 @@
 #include "../headers/MapObject.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
+#include "../headers/Controlpoint.hpp"
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
 
 void must_init(bool, const char);
-void start(short &);
+void change_state(short &, short new_state);
 void main_menu_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
-                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
 void game_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
 
 void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to before the loop:
-    void (*startptr)(short &);
-    startptr = start;
-    Button<short &>* start_game = new Button<short &>(840, 500, 240, 60, al_map_rgb(0, 255, 0), startptr);
+    void (*changeptr)(short &, short new_state);
+    changeptr = change_state;
+    Button<short &, short>* start_game = new Button<short &, short>(840, 500, 240, 60, al_map_rgb(0, 255, 0), changeptr);
+    Button<short &, short>* end_game = new Button<short &, short>(840, 600, 240, 60, al_map_rgb(0, 255, 0), changeptr);
 
     while(state == 1) {
     al_wait_for_event(queue, &event);
@@ -40,13 +42,19 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
                     state = 0;
                 }
                 if (key[ALLEGRO_KEY_ENTER]) {
-                    start_game->call_callback(state);
+                    start_game->call_callback(state, 2);
                 }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
                 redraw = true;
                 break;
+
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                start_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 2);
+                end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 0);
+
+
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
                 break;
@@ -63,6 +71,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
             start_game->draw();
+            end_game->draw();
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -86,6 +95,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(Player(400, 400, 1, sprites));
     map->players.push_back(Player(100, 100, 2, sprites));
+    map->statics.push_back(Controlpoint(800, 800, 1, 50, true));
     Camera camera = Camera(0, 0);
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
     bool mouse_west = false;
@@ -208,8 +218,8 @@ void must_init(bool test, const char *description)
     exit(1);
 }
 
-void start(short &state) {
-    state = 2;
+void change_state(short &state, short new_state) {
+    state = new_state;
 }
 
 int main(int argc, char **argv)
@@ -277,7 +287,7 @@ int main(int argc, char **argv)
     while (game_state != 0) {
         if (game_state == 1) {
             main_menu_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
-                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH);
+                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
         if (game_state == 2) {
             game_loop(game_state, redraw, queue, event, timer, key, buffer, disp,

@@ -4,24 +4,14 @@
 #include <iostream>
 
 
-Spell::Spell(int x, int y, int width, int height, bool noclip, int damage, int healing) : MapObject::MapObject(x, y, width, height, noclip) {
-    this->damage = damage;
-    this->healing = healing;
+Spell::Spell(int x, int y, int dir_x, int dir_y) : MapObject::MapObject(x, y, width, height, noclip) {
 }
 
-int Spell::get_damage() {
-    return damage;
-}
+void Spell::set_target(int start_x, int start_y, int dir_x, int dir_y) {
+    this->target_x = dir_x;
+    this->target_y = dir_y;
+};
 
-int Spell::get_healing() {
-    return healing;
-}
-
-void Spell::on_collision(MapObject &other) {
-    // TODO
-    // if (this->noclip || other.get_noclip()) {return;}
-    std::cout << "colliding Spell at " << this << " with MapObject at " << &other << std::endl;
-}
 
 // void Arrow::draw(int mouse_x, int mouse_y) {
 // //     float x1 = i->getX() + (i->getWidth() / 2);
@@ -66,61 +56,6 @@ void Spell::on_collision(MapObject &other) {
     
 //  }
 
-void Spell::draw(int spell_x, int spell_y) {
-    al_draw_circle(spell_x, spell_y, 30, al_map_rgb_f(1, 0, 1), 2);
-}
-
-Projectile::Projectile(int start_x, int start_y, int width, int height, bool noclip, int damage, int healing /*  , int number*/) : Spell::Spell( start_x,  start_y,  width,  height, noclip,  damage,  healing /*  ,  number*/) {
-    this->dest_x = start_x;
-    this->dest_y = start_y;
-    // this->number = number;
-}
-
-// short Projectile::get_number() {
-//     return this->number;
-// }
-
-void Projectile::on_collision(MapObject other) {
-    if (not other.get_noclip()) {
-        dest_x = x;
-        dest_y = y;
-    }
-}
-
-void Projectile::move() {
-    if (abs(x - target_x) >= speed && abs(y - target_y) >= speed) {
-        int dx = target_x - x;
-        int dy = target_y - y;
-        int n2 = round(sqrt(dx*dx + dy*dy));
-        old_x = x;
-        old_y = y;
-        x = round(x + dx * speed / n2);
-        y = round(y + dy * speed / n2);
-    } else if (abs(x - target_x) >= speed) {
-        int dx = target_x - x;
-        int dy = target_y - y;
-        int n2 = round(sqrt(dx*dx + dy*dy));
-        old_x = x;
-        old_y = y;
-        x = round(x + dx * speed / n2);
-        y = round(y + dy * speed / n2);
-    } else if(abs(y - target_y) >= speed) {
-        int dx = target_x - x;
-        int dy = target_y - y;
-        int n2 = round(sqrt(dx*dx + dy*dy));
-        old_x = x;
-        old_y = y;
-        x = round(x + dx * speed / n2);
-        y = round(y + dy * speed / n2);
-    } else if (x != target_x && y != target_y) {
-        old_x = x;
-        old_y = y;
-        x = target_x;
-        y = target_y;
-    }
-};
-
-void Projectile::set_target(int target_x, int target_y) {
-    this->target_x = target_x;
-    this->target_y = target_y;
-};
+//void Spell::draw(int spell_x, int spell_y) {
+//    al_draw_circle(spell_x, spell_y, 30, al_map_rgb_f(1, 0, 1), 2);
+//}

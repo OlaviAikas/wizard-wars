@@ -13,6 +13,8 @@
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
 #include "../headers/Spells.hpp"
+#include "../headers/Projectile.hpp"
+#include "../headers/Rock.hpp"
 #include <cmath>
 
 #define KEY_SEEN     1
@@ -86,10 +88,10 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     //Load what you need to load
     short client_number = 1;
     ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
+    ALLEGRO_BITMAP* sprite = al_load_bitmap("resources/Projectile.bmp");
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(Player(400, 400, 1, sprites));
     map->players.push_back(Player(100, 100, 2, sprites));
-    map->spells.push_back(Spell());
     Camera camera = Camera(0, 0);
     //define a pointer to the player
     std::list<Player>::iterator pit = map->fetch_pit(client_number);
@@ -130,17 +132,14 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
                 
                 if (key[ALLEGRO_KEY_U]) {
-#ifdef DEBUG_MODE
-                    std::cout << "Making spell object" << std::endl;
-#endif
-                    Spell spell = Spell(pit->get_x(), pit->get_y(), 60, 60, true, 0, 0);
-#ifdef DEBUG_MODE
-                    std::cout << "Spell at address " << &spell << std::endl;
-#endif
-                    map->spells.push_back(spell);
-#ifdef DEBUG_MODE
-                    std::cout << "Done spell at " << &(map->spells) << std::endl;
-#endif
+
+//#ifdef DEBUG_MODE
+       //             std::cout << "Spell at address " << &spell << std::endl;
+//#endif
+//                   map->spells.push_back(spell);
+//#ifdef DEBUG_MODE
+ //                   std::cout << "Done spell at " << &(map->spells) << std::endl;
+//#endif
                 }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
@@ -188,16 +187,15 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                 }
                 if (event.mouse.button == 1) {
-                    
                     int dy = event.mouse.y / sy + camera.get_y() - pit->get_y();
                     int dx = event.mouse.x / sx + camera.get_x() - pit->get_x();
                     int norm = sqrt(dy*dy + dx*dx);
                     dy = dy/norm;
                     dx = dx/norm;
-                    map -> spells.push_back(Rock(......));
+                    map -> spells.push_back(Rock(pit->get_x(),pit->get_y(),dx,dy,false,20,10,sprite));
                 // defne the direction vector when right-click//
                 break;
-
+                }
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
@@ -241,8 +239,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     delete map;
 }
 
-void must_init(bool test, const char *description)
-{
+void must_init(bool test, const char *description) {
     if(test) return;
 
     printf("couldn't initialize %s\n", description);

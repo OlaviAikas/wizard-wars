@@ -1,17 +1,19 @@
-#pragma once
 #include "../headers/Rock.hpp"
 
-Rock::Rock(int start_x, int start_y, int dir_x, int dir_y, bool noclip, int speed, int damage, ALLEGRO_BITMAP* sprite) : Projectile::Projectile(start_x, start_y, dir_x, dir_y, noclip, speed) {
-    this->dest_x = start_x;
-    this->dest_y = start_y;
+Rock::Rock(int start_x, int start_y, int dir_x, int dir_y) 
+            : Projectile::Projectile(start_x, start_y, dir_x, dir_y, false, 20) {
+    this->x = start_x;
+    this->y = start_y;
+    damage = 10;
+    sprite = al_load_bitmap("resources/Projectile.bmp");
 }
 
 int Rock::get_damage() {
     return damage;
 }
 
-void Rock::on_collision(MapObject other) {
-    if (not other.get_noclip()) {
-        dest_x = x;
-        dest_y = y;
-    }
+void Rock::draw(int camera_x, int camera_y) {
+    al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
+}
+
+void Rock::on_collision(MapObject other) { }

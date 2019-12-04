@@ -6,7 +6,7 @@ class MapObject {
         MapObject(int x, int y, int width, int height, bool noclip);
         MapObject(int x, int y, int width, int height, bool noclip, ALLEGRO_BITMAP* sprite);
         virtual void draw(int camera_x, int camera_y);
-        void move();
+        virtual void move();
         virtual void on_collision(MapObject &other);
 
         int get_x() const;

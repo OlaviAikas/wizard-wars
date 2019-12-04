@@ -88,7 +88,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     //Load what you need to load
     short client_number = 1;
     ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
-    ALLEGRO_BITMAP* sprite = al_load_bitmap("resources/Projectile.bmp");
+    ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(Player(400, 400, 1, sprites));
     map->players.push_back(Player(100, 100, 2, sprites));
@@ -192,7 +192,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     int norm = sqrt(dy*dy + dx*dx);
                     dy = dy/norm;
                     dx = dx/norm;
-                    map -> spells.push_back(Rock(pit->get_x(),pit->get_y(),dx,dy,false,20,10,sprite));
+                    map -> spells.push_back(Rock(pit->get_x(),pit->get_y(),dx,dy));
                 // defne the direction vector when right-click//
                 break;
                 }

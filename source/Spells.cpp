@@ -4,13 +4,10 @@
 #include <iostream>
 
 
-Spell::Spell(int x, int y, int dir_x, int dir_y) : MapObject::MapObject(x, y, width, height, noclip) {
+Spell::Spell(int x, int y, int dir_x, int dir_y, bool noclip) : MapObject::MapObject(x, y, width, height, noclip) {
+    this->dir_x = dir_x;
+    this->dir_y = dir_y;
 }
-
-void Spell::set_target(int start_x, int start_y, int dir_x, int dir_y) {
-    this->target_x = dir_x;
-    this->target_y = dir_y;
-};
 
 
 // void Arrow::draw(int mouse_x, int mouse_y) {

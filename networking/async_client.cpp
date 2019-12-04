@@ -2,13 +2,18 @@
 
 int main (int argc, char* argv []) { 
 
-    asio::io_service is; 
+    boost::asio::io_service is; 
 
     Client c1(is, "localhost", "13");
-
-    c1.send_string("Hi, this is Bob! 1");
-    //c1.send_string("Hi, this is Bob! 2");
-    is.run();
+    
+    for(int i=0;i<100;i++){
+        std::string* msg = new std::string("Hi, this is Bob! ");
+        *msg += std::to_string(i);
+        c1.send_string(msg);
+    }
+    
+    c1.run();
+    //sis.run();
 
     return 0; 
 }

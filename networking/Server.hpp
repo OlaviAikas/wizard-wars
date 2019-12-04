@@ -4,29 +4,27 @@
 #include <cstdlib>
 #include <iostream>
 #include <boost/bind.hpp>
-#include "asio.hpp"
+#include <boost/asio.hpp>
 #include "../headers/Map.hpp"
-
-
-using asio::ip::udp;
-
+#include <boost/thread.hpp>
+#include <boost/array.hpp>
+using boost::asio::ip::udp;
 class Server {
     public:
-    Server(asio::io_service &io_service, Map* map, short port);
-    
+    Server(boost::asio::io_service &io_service, Map* map, short port);
+    ~Server();
     // event handlers
 
-    void handle_receive_from(const asio::error_code& error,
-        size_t bytes_recvd);
-
-    void handle_send_to( const asio::error_code& /*error*/,
-        size_t s/*bytes_sent*/);
+    void start_listening();
+    void listen();
+    void run();
+    void terminate();
 
     protected:
     
     private:
     
-    asio::io_service& io_service_;
+    boost::asio::io_service& io_service_;
     udp::socket socket_;
     udp::endpoint sender_endpoint_;
     enum { max_length = 1024 };
@@ -35,6 +33,8 @@ class Server {
     short port;
     Map* map;
 
-    std::string* generateResponse(std::string message);
+    boost::thread* listen_thread;
+
+    std::string generateResponse(std::string message);
 
 };

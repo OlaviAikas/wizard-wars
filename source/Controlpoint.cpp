@@ -5,34 +5,33 @@
 #include <cstdlib>
 #include <list>
 
-Controlpoint::Controlpoint(int x, int y, int number, int range) : MapObject(x, y, 128, 128, false) {
-    this->x = x;
-    this->y = y;
+Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner) : MapObject(x, y, side, side, true) {
     this->number = number;
-    this->range = range;
+    this->owner = owner;
 }
 
 short Controlpoint::get_number() {
     return this->number;
 }
 
+bool Controlpoint::get_owner() {
+    return this->owner;
+}
+
 void Controlpoint::set_owner(short newowner) {
     this->owner = newowner;
 }
 
-bool Controlpoint::in_capture_range(MapObject other){
-    if (sqrt((x-other.get_x())^2+(y-other.get_y())^2)<=range){
-        return true;
+void Controlpoint::on_collision(Player other){
+    if (other.get_team()!=owner){
+        timegot+=1;
+        if (timegot>=timetoget){
+            set_owner(other.get_team());
+        }
     }
     else{
-        return false;
-    }
-}
-
-void Controlpoint::capture(Map map){
-    for (std::list<Player>::iterator i = map.players.begin(); i != map.players.end(); i++){
-        if (in_capture_range(*i)){
-            /* To complete, do it by making run one per second checking if there is any other player entering until end of timer, then change owner */
+        if (timegot>0){
+            timegot-=1;
         }
     }
 }

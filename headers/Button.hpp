@@ -1,6 +1,7 @@
 #pragma once
 #include <allegro5/allegro5.h>
 #include <functional>
+#include <iostream>
 
 template <typename ...Args> class Button {
     public:
@@ -11,6 +12,16 @@ template <typename ...Args> class Button {
             this->span_y = y + span_y;
             this->callback = callback;
             this->color = color;
+        }
+
+        void mouse_input(int mouse_x, int mouse_y, short &state, short new_state) {
+            std::cout << mouse_x << std::endl;
+            std::cout<<mouse_y << std::endl ;
+            if (mouse_x > x && mouse_x < x + span_x){
+                if (mouse_y > y && mouse_y < y + span_y){
+                    call_callback(state, new_state);
+                }
+            }
         }
 
         void draw() {

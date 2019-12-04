@@ -13,7 +13,9 @@ all : source/game.cpp source/Map.cpp source/Camera.cpp source/Player.cpp source/
 	mv Rock.o objects/
 	g++ -c source/Projectile.cpp
 	mv Projectile.o objects/
-	g++ -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o objects/Spells.o objects/Rock.o objects/Projectile.o `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
+	g++ -c source/Controlpoint.cpp
+	mv Controlpoint.o objects/
+	g++ -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o objects/Spells.o objects/Rock.o objects/Projectile.o objects/Controlpoint.o `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
 
 symbols : source/game.cpp source/Map.cpp source/Camera.cpp source/Player.cpp source/MapObject.cpp source/Spells.cpp
 	g++ -g -c source/Map.cpp `pkg-config allegro-5 allegro_main-5 allegro_image-5 --libs --cflags`

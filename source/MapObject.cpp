@@ -1,4 +1,4 @@
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #include "../headers/MapObject.hpp"
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
@@ -27,7 +27,7 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip, ALLEGRO_B
     }
 }
 
-void MapObject::move() { };
+void MapObject::move() { std::cout << "momove" << std::endl; };
 
 int MapObject::get_x() const {
     return x;

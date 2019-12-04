@@ -10,7 +10,7 @@ class Rock: public Projectile {
 
         void on_collision(MapObject other);
 
-        void draw(int camera_x, int camera_y);
+        virtual void draw(int camera_x, int camera_y);
 
     private:
     ALLEGRO_BITMAP* sprite;

@@ -1,4 +1,4 @@
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -99,12 +99,12 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
     ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
     Map* map = new Map("resources/map.bmp");
-    map->players.push_back(Player(400, 400, 1, sprites));
-    map->players.push_back(Player(100, 100, 2, sprites));
-    map->statics.push_back(Controlpoint(800, 800, 1, 50, true));
+    map->players.push_back(new Player(400, 400, 1, sprites));
+    map->players.push_back(new Player(100, 100, 2, sprites));
+    map->statics.push_back(new Controlpoint(800, 800, 1, 50, true));
     Camera camera = Camera(0, 0);
     //define a pointer to the player
-    std::list<Player>::iterator pit = map->fetch_pit(client_number);
+    std::list<Player*>::iterator pit = map->fetch_pit(client_number);
 
 #ifdef DEBUG_MODE    
     unsigned long frameNumber = 0;
@@ -172,6 +172,10 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
 
                 map->move_list(map->players);
+                map->move_list(map->spells);
+                for (std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++) {
+                    std::cout << "x right after: " << (*i)->get_x();
+                }
 #ifdef DEBUG_MODE
                 std::cout << "Players moved on frame " << frameNumber << std::endl;
 #endif
@@ -194,15 +198,15 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
-                    pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
+                    (*pit)->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                 }
                 if (event.mouse.button == 1) {
-                    int dy = event.mouse.y / sy + camera.get_y() - pit->get_y();
-                    int dx = event.mouse.x / sx + camera.get_x() - pit->get_x();
-                    int norm = sqrt(dy*dy + dx*dx);
+                    double dy = (event.mouse.y / sy + camera.get_y()) - ((*pit)->get_y() + (*pit)->get_height()/2);
+                    double dx = (event.mouse.x / sx + camera.get_x()) - ((*pit)->get_x() + (*pit)->get_width()/2);
+                    double norm = sqrt(dy*dy + dx*dx);
                     dy = dy/norm;
                     dx = dx/norm;
-                    map -> spells.push_back(Rock(pit->get_x() + pit->get_width()/2 + 2*dx*pit->get_width(),pit->get_y() + pit->get_height()/2 + 2*dy*pit->get_height(),dx,dy));
+                    map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
                 // defne the direction vector when right-click//
                 break;
                 }

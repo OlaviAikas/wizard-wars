@@ -4,13 +4,13 @@
 #include <iostream>
 
 
-Spell::Spell(int x, int y, int dir_x, int dir_y, bool noclip) : MapObject::MapObject(x, y, width, height, noclip) {
+Spell::Spell(int x, int y, int dir_x, int dir_y, int width, int height, bool noclip) : MapObject::MapObject(x, y, width, height, noclip) {
     this->dir_x = dir_x;
     this->dir_y = dir_y;
 }
 
-void Spell::draw(int camera_x, int camera_y) { };
-void Spell::move() { };
+void Spell::draw(int camera_x, int camera_y) { std::cout << "hellods" << std::endl; };
+void Spell::move() { std::cout << "helloms" << std::endl; };
 
 
 // void Arrow::draw(int mouse_x, int mouse_y) {

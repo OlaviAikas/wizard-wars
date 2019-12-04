@@ -1,4 +1,4 @@
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #include "../headers/Player.hpp"
 #include "../headers/MapObject.hpp"
 #include <cmath>

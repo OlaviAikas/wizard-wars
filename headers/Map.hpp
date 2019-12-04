@@ -14,23 +14,23 @@ class Map {
 
         void check_collisions();
 
-        std::list<Player> players;
-        std::list<Spell> spells;
-        std::list<MapObject> statics;
+        std::list<Player*> players;
+        std::list<Spell*> spells;
+        std::list<MapObject*> statics;
 
         template <typename T> void draw_list(std::list<T> &list, int camera_x, int camera_y) {
             for (typename std::list<T>::iterator i = list.begin(); i != list.end(); i++) {
-                i->draw(camera_x, camera_y);
+                (*i)->draw(camera_x, camera_y);
             }
         }
 
         template <typename T> void move_list(std::list<T> &list) {
             for (typename std::list<T>::iterator i = list.begin(); i != list.end(); i++) {
-                i->move();
+                (*i)->move();
             }
         }
 
-        std::list<Player>::iterator fetch_pit(short n);
+        std::list<Player*>::iterator fetch_pit(short n);
        // still not sure: std::list<Spell>::iterator fetch_spit(short n);
     private:
         ALLEGRO_BITMAP* map;

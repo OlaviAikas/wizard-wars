@@ -1,10 +1,9 @@
-#define DEBUG_MODE
 #include "../headers/Map.hpp"
 #include "../headers/Player.hpp"
+#include "../headers/Spells.hpp"
 #include <list>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
-#include <iostream>
 
 Map::Map(const char* name) {
     this->map = al_load_bitmap(name);
@@ -12,6 +11,15 @@ Map::Map(const char* name) {
 
 Map::~Map() {
     al_destroy_bitmap(map);
+    for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
+        delete *i;
+    }
+    for (std::list<Spell*>::iterator i = spells.begin(); i != spells.end(); i++) {
+        delete *i;
+    }
+    for (std::list<MapObject*>::iterator i = statics.begin(); i != statics.end(); i++) {
+        delete *i;
+    }
 }
 
 void Map::draw_map(int camera_x, int camera_y) {
@@ -19,91 +27,46 @@ void Map::draw_map(int camera_x, int camera_y) {
 }
 
 void Map::check_collisions() {
-#ifdef DEBUG_MODE
-    std::cout << "check_collisions called" << std::endl;
-#endif
-    for (std::list<Player>::iterator i = players.begin(); i != players.end(); i++) {
-#ifdef DEBUG_MODE
-        std::cout << "for00 ";
-        std::cout << &(*i) << std::endl;
-#endif
-        for (std::list<Player>::iterator j = i++; j != players.end(); j++) {
-#ifdef DEBUG_MODE
-            std::cout << "for01 ";
-            std::cout << &(*j) << std::endl;
-#endif
-            if (*i == *j) {
-#ifdef DEBUG_MODE
-                std::cout << "for02 ";
-                std::cout << &(*i) << "==" << &(*j) << std::endl;
-#endif
-                i->on_collision(*j);
-                j->on_collision(*i);
+    for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
+        for (std::list<Player*>::iterator j = std::next(i,1); j != players.end(); j++) {
+            if (**i == **j) {
+                (*i)->on_collision(**j);
+                (*j)->on_collision(**i);
             }
         }
-        for (std::list<Spell>::iterator j = spells.begin(); j != spells.end(); j++) {
-#ifdef DEBUG_MODE
-            std::cout << "for03 ";
-            std::cout << &(*j) << std::endl;
-#endif
-            if (*i == *j) {
-#ifdef DEBUG_MODE
-                std::cout << "for04 ";
-                std::cout << &(*i) << "==" << &(*j) << std::endl;
-#endif
-                i->on_collision(*j);
-#ifdef DEBUG_MODE
-                std::cout << "for05 ";
-                std::cout << &(*i) << ".on_collision>" << &(*j) << std::endl;
-#endif
-                j->on_collision(*i);
-#ifdef DEBUG_MODE
-                std::cout << "for06 ";
-                std::cout << &(*j) << ".on_collision>" << &(*i) << std::endl;
-#endif
+        for (std::list<Spell*>::iterator j = spells.begin(); j != spells.end(); j++) {
+            if (**i == **j) {
+                (*i)->on_collision(**j);
+                (*j)->on_collision(**i);
             }
         }
-        for (std::list<MapObject>::iterator j = statics.begin(); j != statics.end(); j++) {
-#ifdef DEBUG_MODE
-            std::cout << "for05";
-#endif
+        for (std::list<MapObject*>::iterator j = statics.begin(); j != statics.end(); j++) {
             if (*i == *j) {
-#ifdef DEBUG_MODE
-                std::cout << "for06";
-#endif
-                i->on_collision(*j);
-                j->on_collision(*i);
+                (*i)->on_collision(**j);
+                (*j)->on_collision(**i);
             }
         }
     }
-    for (std::list<Spell>::iterator i = spells.begin(); i != spells.end(); i++) {
-        for (std::list<Spell>::iterator j = i++; j != spells.end(); j++) {
+    for (std::list<Spell*>::iterator i = spells.begin(); i != spells.end(); i++) {
+        for (std::list<Spell*>::iterator j = std::next(i,1); j != spells.end(); j++) {
             if (*i == *j) {
-                i->on_collision(*j);
-                j->on_collision(*i);
+                (*i)->on_collision(**j);
+                (*j)->on_collision(**i);
             }
         }
-        for (std::list<MapObject>::iterator j = statics.begin(); j != statics.end(); j++) {
+        for (std::list<MapObject*>::iterator j = statics.begin(); j != statics.end(); j++) {
             if (*i == *j) {
-                i->on_collision(*j);
-                j->on_collision(*i);
+                (*i)->on_collision(**j);
+                (*j)->on_collision(**i);
             }
         }
     }
 }
 
-std::list<Player>::iterator Map::fetch_pit(short n) {
-    std::list<Player>::iterator it = this->players.begin();
-    while (it->get_number() != n) {
+std::list<Player*>::iterator Map::fetch_pit(short n) {
+    std::list<Player*>::iterator it = this->players.begin();
+    while ((*it)->get_number() != n) {
         it++;
     }
     return it;
 }
-
-//std::list<Player>::iterator Map::fetch_pit(short n) {
- //   std::list<Player>::iterator it = this->players.begin();
- //   while (it->get_number() != n) {
-  //      it++;
-  //  }
-  //  return it;
-//}

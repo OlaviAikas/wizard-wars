@@ -192,7 +192,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     int norm = sqrt(dy*dy + dx*dx);
                     dy = dy/norm;
                     dx = dx/norm;
-                    map -> spells.push_back(Rock(pit->get_x(),pit->get_y(),dx,dy));
+                    map -> spells.push_back(Rock(pit->get_x() + pit->get_width()/2 + 2*dx*pit->get_width(),pit->get_y() + pit->get_height()/2 + 2*dy*pit->get_height(),dx,dy));
                 // defne the direction vector when right-click//
                 break;
                 }

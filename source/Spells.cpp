@@ -9,6 +9,9 @@ Spell::Spell(int x, int y, int dir_x, int dir_y, bool noclip) : MapObject::MapOb
     this->dir_y = dir_y;
 }
 
+void Spell::draw(int camera_x, int camera_y) { };
+void Spell::move() { };
+
 
 // void Arrow::draw(int mouse_x, int mouse_y) {
 // //     float x1 = i->getX() + (i->getWidth() / 2);

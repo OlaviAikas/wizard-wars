@@ -18,3 +18,5 @@ void Projectile::move() {
     x = x + dir_x*speed;
     y = y + dir_y*speed;
 };
+
+void Projectile::draw(int camera_x, int camera_y) { };

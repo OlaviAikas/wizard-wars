@@ -27,6 +27,8 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip, ALLEGRO_B
     }
 }
 
+void MapObject::move() { };
+
 int MapObject::get_x() const {
     return x;
 }

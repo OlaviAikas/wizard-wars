@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-Projectile::Projectile(int start_x, int start_y, int dir_x, int dir_y, int width, int height, bool noclip, int speed)
+Projectile::Projectile(int start_x, int start_y, float dir_x, float dir_y, int width, int height, bool noclip, int speed)
         : Spell( start_x,  start_y,  dir_x,  dir_y, width, height, noclip) {
     this->speed = speed;
     // this->number = number;
@@ -16,8 +16,11 @@ Projectile::Projectile(int start_x, int start_y, int dir_x, int dir_y, int width
 
 
 void Projectile::move() {
-    x = x + dir_x*speed;
-    y = y + dir_y*speed;
+    std::cout << "bx in move: " << x << std::endl;
+    std::cout << "speed in move: " << speed << std::endl;
+    std::cout << "dirx in move: " << dir_x << std::endl;
+    x = round(x + dir_x*speed);
+    y = round(y + dir_y*speed);
     std::cout << "x in move: " << x << std::endl;
 }
 

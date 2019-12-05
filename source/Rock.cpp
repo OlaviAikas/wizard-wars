@@ -1,7 +1,7 @@
 #include "../headers/Rock.hpp"
 #include <iostream>
 
-Rock::Rock(int start_x, int start_y, int dir_x, int dir_y) 
+Rock::Rock(int start_x, int start_y, float dir_x, float dir_y) 
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 12, 12, false, 20) {
     std::cout << "Rock cons." << dir_x << std::endl;
     this->x = start_x;

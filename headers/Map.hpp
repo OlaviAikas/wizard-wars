@@ -27,6 +27,11 @@ class Map {
         template <typename T> void move_list(std::list<T> &list) {
             for (typename std::list<T>::iterator i = list.begin(); i != list.end(); i++) {
                 (*i)->move();
+                if ((*i)->get_x() > 3840 || (*i)->get_x() < 0 || (*i)->get_y() > 2160 || (*i)->get_y() < 0) {
+                    delete *i;
+                    i = list.erase(i);
+                    i--;
+                } 
             }
         }
 

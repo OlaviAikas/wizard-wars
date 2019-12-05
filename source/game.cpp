@@ -15,6 +15,7 @@
 #include "../headers/Spells.hpp"
 #include "../headers/Projectile.hpp"
 #include "../headers/Rock.hpp"
+#include "../headers/Ice.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 
@@ -98,6 +99,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     short client_number = 1;
     ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
     ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
+    ALLEGRO_BITMAP* ice_sprite = al_load_bitmap("resources/Projectile.bmp");
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(new Player(400, 400, 1, sprites));
     map->players.push_back(new Player(100, 100, 2, sprites));
@@ -197,13 +199,17 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     if (elementlist.size() == 2) {
                         if (std::count(elementlist.begin(),elementlist.end(),6)==2) {
                             map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
-                        } else {
+                        }
+                        if (std::count(elementlist.begin(),elementlist.end(),5)==2) {
+                            map -> spells.push_back(new Ice((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                        }
+                         else {
                             std::cout << "No spells associated to this combo of two buttons" << std::endl;
                         }
                     } else {
                         std::cout << "Less than two buttons were chosen" << std::endl;
                     }
-                // defne the direction vector when right-click//
+                // define the direction vector when right-click//
                 break;
                 }
 

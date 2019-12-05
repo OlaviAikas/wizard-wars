@@ -4,7 +4,6 @@
 class MapObject {
     public:
         MapObject(int x, int y, int width, int height, bool noclip);
-        MapObject(int x, int y, int width, int height, bool noclip, ALLEGRO_BITMAP* sprite);
         virtual void draw(int camera_x, int camera_y);
         virtual void move();
         virtual void on_collision(MapObject &other);
@@ -24,7 +23,4 @@ class MapObject {
         int y;
         int width;
         int height;
-
-        ALLEGRO_BITMAP* sprite;
-        bool has_sprite;
 };

@@ -14,7 +14,5 @@ class Rock: public Projectile {
 
     private:
     ALLEGRO_BITMAP* sprite;
-    int x;
-    int y;
     int damage;
 };

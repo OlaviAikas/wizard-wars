@@ -173,9 +173,6 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
 
                 map->move_list(map->players);
                 map->move_list(map->spells);
-                for (std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++) {
-                    std::cout << "x right after: " << (*i)->get_x() << std::endl;
-                }
 #ifdef DEBUG_MODE
                 std::cout << "Players moved on frame " << frameNumber << std::endl;
 #endif

@@ -100,8 +100,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(new Player(400, 400, 1, sprites));
-    map->players.push_back(new Player(100, 100, 2, sprites));
-    map->statics.push_back(new Controlpoint(800, 800, 1, 50, true));
+    map->players.push_back(new Player(900, 900, 2, sprites));
+    map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     Camera camera = Camera(0, 0);
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);

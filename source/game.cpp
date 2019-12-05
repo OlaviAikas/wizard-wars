@@ -142,30 +142,6 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 if (key[ALLEGRO_KEY_S]) {
                     camera.move_y(20);
                 }
-                
-                if (key[ALLEGRO_KEY_U]) {
-                    elementlist.push_front(1);
-                }
-
-                if (key[ALLEGRO_KEY_I]) {
-                    elementlist.push_front(2);
-                }
-
-                if (key[ALLEGRO_KEY_O]) {
-                    elementlist.push_front(3);
-                }
-
-                if (key[ALLEGRO_KEY_J]) {
-                    elementlist.push_front(4);
-                }
-
-                if (key[ALLEGRO_KEY_K]) {
-                    elementlist.push_front(5);
-                }
-
-                if (key[ALLEGRO_KEY_L]) {
-                    elementlist.push_front(6);
-                }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
@@ -218,14 +194,43 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     double norm = sqrt(dy*dy + dx*dx);
                     dy = dy/norm;
                     dx = dx/norm;
-                    if (elementlist.size() == 2 && std::count(elementlist.begin(),elementlist.end(),6)==2) {
-                    map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                    if (elementlist.size() == 2) {
+                        if (std::count(elementlist.begin(),elementlist.end(),6)==2) {
+                            map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                        } else {
+                            std::cout << "No spells associated to this combo of two buttons" << std::endl;
+                        }
+                    } else {
+                        std::cout << "Less than two buttons were chosen" << std::endl;
                     }
                 // defne the direction vector when right-click//
                 break;
                 }
 
             case ALLEGRO_EVENT_KEY_DOWN:
+                if (event.keyboard.keycode == ALLEGRO_KEY_U) {
+                    elementlist.push_back(1);
+                }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_I) {
+                    elementlist.push_back(2);
+                }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_O) {
+                    elementlist.push_back(3);
+                }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_J) {
+                    elementlist.push_back(4);
+                }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_K) {
+                    elementlist.push_back(5);
+                }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_L) {
+                    elementlist.push_back(6);
+                }
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
                 break;
             case ALLEGRO_EVENT_KEY_UP:

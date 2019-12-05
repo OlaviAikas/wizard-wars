@@ -65,17 +65,17 @@ std::string Map::encode_player(){
     std::string to_transmit="";
     for (std::list<Player>::iterator i = players.begin(); i != players.end(); i++){
         std::stringstream ss;
-        ss << i->get_number();
+        ss << i->get_number(); //Write the number
         std::string number = ss.str();
-        ss << i->get_x();
+        ss << i->get_x(); //Write the x
         std::string x = ss.str();
-        ss << i->get_y();
+        ss << i->get_y(); //Write the y
         std::string y = ss.str();
-        ss << i->get_destx();
+        ss << i->get_destx(); //Write the destx
         std::string destx = ss.str();
-        ss << i->get_desty();
+        ss << i->get_desty(); //Write the desty
         std::string desty = ss.str();
-        to_transmit="0"+number+x+y+destx+desty;
+        to_transmit="0"+number+"."+x+"."+y+"."+destx+"."+desty+":";
     }
     return to_transmit;
 }

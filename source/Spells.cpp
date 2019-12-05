@@ -4,11 +4,15 @@
 #include <iostream>
 
 
-Spell::Spell(int x, int y, int width, int height, bool noclip, int damage, int healing) : MapObject::MapObject(x, y, width, height, noclip) {
-    this->damage = damage;
-    this->healing = healing;
+Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool noclip) : MapObject::MapObject(x, y, width, height, noclip) {
+    this->dir_x = dir_x;
+    this->dir_y = dir_y;
 }
 
+void Spell::draw(int camera_x, int camera_y) { std::cout << "hellods" << std::endl; };
+void Spell::move() { std::cout << "helloms" << std::endl; };
+
+/*
 int Spell::get_damage() {
     return damage;
 }
@@ -70,7 +74,7 @@ void Spell::draw(int camera_x, int camera_y) {
     al_draw_circle(x - camera_x, y - camera_y, 30, al_map_rgb_f(1, 0, 1), 2);
 }
 
-Projectile::Projectile(int start_x, int start_y, int width, int height, bool noclip, int damage, int healing /*  , int number*/) : Spell::Spell( start_x,  start_y,  width,  height, noclip,  damage,  healing /*  ,  number*/) {
+Projectile::Projectile(int start_x, int start_y, int width, int height, bool noclip, int damage, int healing) : Spell::Spell( start_x,  start_y,  width,  height, noclip,  damage,  healing) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     // this->number = number;
@@ -124,3 +128,4 @@ void Projectile::set_target(int target_x, int target_y) {
     this->target_x = target_x;
     this->target_y = target_y;
 };
+*/

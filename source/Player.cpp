@@ -1,4 +1,4 @@
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #include "../headers/Player.hpp"
 #include "../headers/MapObject.hpp"
 #include <cmath>
@@ -86,5 +86,5 @@ void Player::set_dest(int dest_x, int dest_y) {
 }
 
 void Player::draw(int camera_x, int camera_y) {
-  al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
+    al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
 }

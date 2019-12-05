@@ -1,4 +1,4 @@
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -13,26 +13,30 @@
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
 #include "../headers/Spells.hpp"
+#include "../headers/Projectile.hpp"
+#include "../headers/Rock.hpp"
 #include <cmath>
+#include "../headers/Controlpoint.hpp"
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
 
 void must_init(bool, const char);
-void start(short &);
+void change_state(short &, short new_state);
 void main_menu_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
-                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
 void game_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
 
 void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to before the loop:
-    void (*startptr)(short &);
-    startptr = start;
-    Button<short &>* start_game = new Button<short &>(840, 500, 240, 60, al_map_rgb(0, 255, 0), startptr);
+    void (*changeptr)(short &, short new_state);
+    changeptr = change_state;
+    Button<short &, short>* start_game = new Button<short &, short>(840, 500, 240, 60, al_map_rgb(0, 255, 0), changeptr);
+    Button<short &, short>* end_game = new Button<short &, short>(840, 600, 240, 60, al_map_rgb(0, 255, 0), changeptr);
 
     while(state == 1) {
     al_wait_for_event(queue, &event);
@@ -43,13 +47,19 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
                     state = 0;
                 }
                 if (key[ALLEGRO_KEY_ENTER]) {
-                    start_game->call_callback(state);
+                    start_game->call_callback(state, 2);
                 }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
                 redraw = true;
                 break;
+
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                start_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 2);
+                end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 0);
+                break;
+
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
                 break;
@@ -66,6 +76,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
             start_game->draw();
+            end_game->draw();
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -86,13 +97,14 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     //Load what you need to load
     short client_number = 1;
     ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
+    ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
     Map* map = new Map("resources/map.bmp");
-    map->players.push_back(Player(400, 400, 1, sprites));
-    map->players.push_back(Player(100, 100, 2, sprites));
-    map->spells.push_back(Spell());
+    map->players.push_back(new Player(400, 400, 1, sprites));
+    map->players.push_back(new Player(100, 100, 2, sprites));
+    map->statics.push_back(new Controlpoint(800, 800, 1, 50, true));
     Camera camera = Camera(0, 0);
     //define a pointer to the player
-    std::list<Player>::iterator pit = map->fetch_pit(client_number);
+    std::list<Player*>::iterator pit = map->fetch_pit(client_number);
 
 #ifdef DEBUG_MODE    
     unsigned long frameNumber = 0;
@@ -130,17 +142,14 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
                 
                 if (key[ALLEGRO_KEY_U]) {
-#ifdef DEBUG_MODE
-                    std::cout << "Making spell object" << std::endl;
-#endif
-                    Spell spell = Spell(pit->get_x(), pit->get_y(), 60, 60, true, 0, 0);
-#ifdef DEBUG_MODE
-                    std::cout << "Spell at address " << &spell << std::endl;
-#endif
-                    map->spells.push_back(spell);
-#ifdef DEBUG_MODE
-                    std::cout << "Done spell at " << &(map->spells) << std::endl;
-#endif
+
+//#ifdef DEBUG_MODE
+       //             std::cout << "Spell at address " << &spell << std::endl;
+//#endif
+//                   map->spells.push_back(spell);
+//#ifdef DEBUG_MODE
+ //                   std::cout << "Done spell at " << &(map->spells) << std::endl;
+//#endif
                 }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
@@ -163,6 +172,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
 
                 map->move_list(map->players);
+                map->move_list(map->spells);
 #ifdef DEBUG_MODE
                 std::cout << "Players moved on frame " << frameNumber << std::endl;
 #endif
@@ -185,19 +195,18 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
-                    pit->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
+                    (*pit)->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                 }
                 if (event.mouse.button == 1) {
-                    
-                    int dy = event.mouse.y / sy + camera.get_y() - pit->get_y();
-                    int dx = event.mouse.x / sx + camera.get_x() - pit->get_x();
-                    int norm = sqrt(dy*dy + dx*dx);
+                    double dy = (event.mouse.y / sy + camera.get_y()) - ((*pit)->get_y() + (*pit)->get_height()/2);
+                    double dx = (event.mouse.x / sx + camera.get_x()) - ((*pit)->get_x() + (*pit)->get_width()/2);
+                    double norm = sqrt(dy*dy + dx*dx);
                     dy = dy/norm;
                     dx = dx/norm;
-                    map -> spells.push_back(Rock(......));
+                    map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
                 // defne the direction vector when right-click//
                 break;
-
+                }
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
@@ -241,16 +250,15 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     delete map;
 }
 
-void must_init(bool test, const char *description)
-{
+void must_init(bool test, const char *description) {
     if(test) return;
 
     printf("couldn't initialize %s\n", description);
     exit(1);
 }
 
-void start(short &state) {
-    state = 2;
+void change_state(short &state, short new_state) {
+    state = new_state;
 }
 
 int main(int argc, char **argv)
@@ -271,7 +279,7 @@ int main(int argc, char **argv)
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-    ALLEGRO_DISPLAY* disp = al_create_display(1280, 720); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(1920, 1080); //Change this resolution to change window size
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 
@@ -318,7 +326,7 @@ int main(int argc, char **argv)
     while (game_state != 0) {
         if (game_state == 1) {
             main_menu_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
-                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH);
+                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
         if (game_state == 2) {
             game_loop(game_state, redraw, queue, event, timer, key, buffer, disp,

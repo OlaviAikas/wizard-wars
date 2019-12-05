@@ -3,7 +3,11 @@
 
 class Spell : public MapObject {
     public:
-        Spell(int start_x, int start_y, int dir_x, int dir_y);
+        Spell(int start_x, int start_y, float dir_x, float dir_y, int width, int height, bool noclip);
         virtual void draw(int camera_x, int camera_y);
-        void set_target(int start_x, int start_y, int dir_x, int dir_y);
+        virtual void move();
+
+    protected:
+    float dir_x;
+    float dir_y;
 };

@@ -1,4 +1,4 @@
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #include "../headers/MapObject.hpp"
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
@@ -10,22 +10,9 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->width = width;
     this->height = height;
     this->noclip = noclip;
-    this->has_sprite = false;
 }
 
-MapObject::MapObject(int x, int y, int width, int height, bool noclip, ALLEGRO_BITMAP* sprite) {
-    this->x = x;
-    this->y = y;
-    this->width = width;
-    this->height = height;
-    this->noclip = noclip;
-    if(sprite) {
-        this->sprite = sprite;
-        this->has_sprite = true;
-    } else {
-        this->has_sprite = false;
-    }
-}
+void MapObject::move() { std::cout << "momove" << std::endl; };
 
 int MapObject::get_x() const {
     return x;

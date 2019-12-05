@@ -14,8 +14,21 @@ short Controlpoint::get_number() {
     return this->number;
 }
 
-bool Controlpoint::get_owner() {
-    return this->owner;
+int Controlpoint::get_owner() {
+    if (this->owner==true){
+        return 0;
+    }
+    else{
+        return 1;
+    }
+}
+
+int Controlpoint::get_timegot(){
+    return this->timegot;
+}
+
+int Controlpoint::get_timetoget(){
+    return this->timetoget;
 }
 
 void Controlpoint::set_owner(short newowner) {

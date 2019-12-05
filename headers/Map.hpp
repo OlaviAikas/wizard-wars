@@ -3,6 +3,7 @@
 #include <list>
 #include <string>
 #include "Player.hpp"
+#include "Controlpoint.hpp"
 #include "MapObject.hpp"
 #include <sstream>
 
@@ -34,6 +35,8 @@ class Map {
         std::list<Player>::iterator fetch_pit(short n);
 
         std::string encode_player();
+
+        std::string encode_controlpoint();
 
     private:
         ALLEGRO_BITMAP* map;

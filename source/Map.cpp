@@ -78,4 +78,21 @@ std::string Map::encode_player(){
         to_transmit="0"+number+"."+x+"."+y+"."+destx+"."+desty+":";
     }
     return to_transmit;
+
+    std::string Map::encode_controlpoint(){
+    std::string to_transmit="";
+    Controlpoint::Controlpoint i;
+    std::stringstream ss;
+    ss << i->get_number();        
+    std::string number = ss.str();
+    ss << i->get_owner();
+    std::string owner = ss.str();
+    ss << i->get_timegot();
+    std::string timegot = ss.str();
+    ss << i->get_timetoget();
+    std::string timetoget = ss.str();      
+    to_transmit="1"+owner+"."+timegot+"."+timetoget+"."+number+":";
+    }
+    return to_transmit;
+}
 }

@@ -15,6 +15,10 @@ class Controlpoint : public MapObject {
 
         void on_collision(Player other);
 
+        int get_timegot();
+
+        int get_timetoget();
+
     private:
         bool owner;
         int timegot=0;

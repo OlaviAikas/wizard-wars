@@ -34,3 +34,9 @@
 # Linux and Mac executables
 main
 game
+
+# Visual Studio Code
+.vscode
+
+# Mac .DS_Store
+.DS_Store 

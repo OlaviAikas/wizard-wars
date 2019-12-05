@@ -1,27 +1,26 @@
 #pragma once
+#include <allegro5/allegro5.h>
 
 class MapObject {
     public:
         MapObject(int x, int y, int width, int height, bool noclip);
         virtual void draw(int camera_x, int camera_y);
-        void move();
+        virtual void move();
+        virtual void on_collision(MapObject &other);
 
-        void on_collision(MapObject other);
-
-        int get_x();
-        int get_y();
-        int get_width();
-        int get_height();
-        bool get_noclip();
-
-        bool operator==(MapObject other);
+        int get_x() const;
+        int get_y() const;
+        int get_width() const;
+        int get_height() const;
+        bool get_noclip() const;
+        
+        bool operator==(const MapObject &other) const;
 
     protected:
         bool noclip;
-
+        
         int x;
         int y;
         int width;
         int height;
-
 };

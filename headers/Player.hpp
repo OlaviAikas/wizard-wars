@@ -9,11 +9,13 @@ class Player : public MapObject {
 
         void move();
 
-        void on_collision(MapObject other);
+        void on_collision(MapObject &other);
 
         void set_dest(int dest_x, int dest_y);
 
         short get_number();
+        
+        int get_hit_points();
 
         bool get_team();
 
@@ -26,6 +28,7 @@ class Player : public MapObject {
         int old_y;
         int dest_x;
         int dest_y;
+        int hit_points;
         int lastgoodposx;
         int lastgoodposy;
         bool team;

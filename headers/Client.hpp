@@ -15,7 +15,7 @@
 
 using boost::asio::ip::udp;
 
-class Client : Interface {
+class Client : public Interface {
     public:
     Client(boost::asio::io_service& io_service, const std::string& host, const std::string& port);
     ~Client();

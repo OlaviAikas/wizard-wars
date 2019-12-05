@@ -4,9 +4,11 @@
 #include <list>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include "../headers/Interface.hpp"
 
-Map::Map(const char* name) {
+Map::Map(const char* name, Interface *interface) {
     this->map = al_load_bitmap(name);
+    this->interface = interface;
 }
 
 Map::~Map() {

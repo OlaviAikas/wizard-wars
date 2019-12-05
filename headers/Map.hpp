@@ -4,10 +4,11 @@
 #include "Player.hpp"
 #include "MapObject.hpp"
 #include "Spells.hpp"
+#include "Interface.hpp"
 
 class Map {
     public:
-        Map(const char* name);
+        Map(const char* name, Interface *interface);
         ~Map();
 
         void draw_map(int camera_x, int camera_y);
@@ -39,4 +40,5 @@ class Map {
        // still not sure: std::list<Spell>::iterator fetch_spit(short n);
     private:
         ALLEGRO_BITMAP* map;
+        Interface* interface;
 };

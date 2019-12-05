@@ -1,15 +1,14 @@
 #pragma once
 #include "Interface.hpp"
-#include "udp_server.cpp"
 #include <cstdlib>
 #include <iostream>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
-#include "../headers/Map.hpp"
+#include "Map.hpp"
 #include <boost/thread.hpp>
 #include <boost/array.hpp>
 using boost::asio::ip::udp;
-class Server : Interface{
+class Server : public Interface{
     public:
     Server(boost::asio::io_service &io_service, short port);
     ~Server();

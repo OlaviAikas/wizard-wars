@@ -19,6 +19,11 @@
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 
+#include "../headers/Server.hpp"
+#include "../headers/Client.hpp"
+#include "../headers/Interface.hpp"
+
+
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
@@ -29,7 +34,7 @@ void main_menu_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, AL
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
 void game_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
-                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface);
 
 void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
@@ -95,12 +100,12 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
 void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface &interface) {
     //Load what you need to load
     short client_number = 1;
     ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
     ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
-    Map* map = new Map("resources/map.bmp");
+    Map* map = new Map("resources/map.bmp", &interface);
     map->players.push_back(new Player(400, 400, 1, sprites));
     map->players.push_back(new Player(100, 100, 2, sprites));
     map->statics.push_back(new Controlpoint(800, 800, 1, 50, true));
@@ -323,12 +328,14 @@ int main(int argc, char **argv)
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
 
+
     bool isServer = true;
+    boost::asio::io_service io_service;
     Interface interface;
     if(isServer){
-        interface = new Server(map, 13);
+        interface = Server(io_service, 13);
     } else {
-        interface = new Client(map, "localhost", 13);
+        interface = Client(io_service, "localhost", "13");
     }
     
 
@@ -342,7 +349,8 @@ int main(int argc, char **argv)
         }
         if (game_state == 2) {
             game_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
-                    screenWidth, screenHeight, windowWidth, windowHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+                    screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
+                     scaleY, scaleW, scaleH, sx, sy, interface);
         }
 
     }

@@ -73,25 +73,26 @@ int main(int argc, char **argv)
     short client_number = 1;
     Map* map = new Map("resources/map.bmp");
 
-    map->players.push_back(Player(400, 400, 1, redsprite)); // add resource
-    map->players.push_back(Player(100, 100, 2, bluesprite));// we can add any number of players that we want --> need to automatize
+    map->players.push_back(Player(400, 400, 1, redsprite, 0)); // Here the bool at the end is only 0 for the controlled player
+    map->players.push_back(Player(100, 100, 2, bluesprite, 1));// we can add any number of players that we want --> need to automatize
 
-		redsprite = al_load_bitmap("resources/Sprite-0002.bmp");
-		bluesprite = al_load_bitmap("resources/Sprite-0002.bmp");// Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 12 damaged ?/ 13-??: death animation
+	redsprite = al_load_bitmap("resources/Sprite-0002.bmp");
+	bluesprite = al_load_bitmap("resources/Sprite-0002.bmp");// Animation indexes of the list: 0-3: Idle / 4-7: walking right animation / 8-11: walking left animation / 12: cast frame / 13 damaged ?/ 14-??: death animation
 
-		/* ALLEGRO_BITMAP*[12] redsprites; // team red animations   This is for animations, try later
-		ALLEGRO_BITMAP*[12] bluesprites; // team blue animations
-		std::string redpath = "resources/redSprite-";
-		std::string blupath = "resources/bluSprite-";
-		for (size_t i = 0; i < 13; i++) {
-			std::string path = redpath + std:to_string(i)+".bmp";
-			redsprites[i] = al_load_bitmap(path);
-		}
-		for (size_t i = 0; i < 13; i++) {
-			std::string path = blupath + std:to_string(i)+".bmp";
-			blusprites[i] = al_load_bitmap(path);
-		}
-		*/
+	/* ALLEGRO_BITMAP*[12] redsprites; // team red animations   This is for animations, try later
+	ALLEGRO_BITMAP*[12] bluesprites; // team blue animations
+	std::string redpath = "resources/redSprite-";
+	std::string blupath = "resources/bluSprite-";
+
+	for (size_t i = 0; i < 13; i++) {
+		std::string path = redpath + std:to_string(i)+".bmp";
+		redsprites[i] = al_load_bitmap(path);
+	}
+	for (size_t i = 0; i < 13; i++) {
+		std::string path = blupath + std:to_string(i)+".bmp";
+		blusprites[i] = al_load_bitmap(path);
+	}
+	*/
 
 
     Camera camera = Camera(0, 0);
@@ -112,10 +113,6 @@ int main(int argc, char **argv)
         switch(event.type)
         {
             case ALLEGRO_EVENT_TIMER:
-
-								for (std::list<Player>::iterator i = map->players.begin(); i != map->players.end(), i++){
-									map->players.count = map->players.count + 1;
-								} //to fix if needed
 
                 if(key[ALLEGRO_KEY_ESCAPE])
                     done = true;

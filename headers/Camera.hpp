@@ -13,4 +13,6 @@ class Camera {
     private:
         int x;
         int y;
+        char maxx;
+        char maxy;
 };

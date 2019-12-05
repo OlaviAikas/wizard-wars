@@ -52,6 +52,8 @@ void Player::onhit(){
 
 void Player::draw(int camera_x, int camera_y) {
 
+	this->count = this->count + 1 // The draw function is called at every frame, we keep track of frames
+
 	//Code to take care of walking animation
 	if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving
 		if (this->count % 60 < 20) {
@@ -64,7 +66,7 @@ void Player::draw(int camera_x, int camera_y) {
 			al_draw_bitmap(sprites*[2], x - camera_x, y - camera_y);
 		}
 	}
-		if (dest_x > x) {//walking right animation
+	if (dest_x > x) {//walking right animation
 			if (this->count % 80 < 20) {
 				al_draw_bitmap(sprites*[3], x - camera_x, y - camera_y);
 			}
@@ -78,7 +80,7 @@ void Player::draw(int camera_x, int camera_y) {
 				al_draw_bitmap(sprites*[6], x - camera_x, y - camera_y);
 			}
 		}
-		if (dest_x < x) {//walking left animation
+	if (dest_x < x) {//walking left animation
 			if (this->count % 80 < 20) {
 				al_draw_bitmap(sprites*[7], x - camera_x, y - camera_y);
 			}
@@ -94,11 +96,14 @@ void Player::draw(int camera_x, int camera_y) {
 		}
 
 		/*if (this->healthshow == 1) {
-			if (this->damaged == 1){ //Health bar
-				al_draw_filled_rectangle(x-22 - camera_x, y+50 - camera_y,x+22 - camera_x,y+38,RGB(255,0,0) - camera_y);
-				al_draw_filled_rectangle(x-22 - camera_x, y+50 - camera_y,x - camera_x + (44*health)/100,y+38,RGB(0,255,0) - camera_y);
-				al_draw_bitmap(sprites*[12], x - camera_x, y - camera_y);
-
+			if(healthshow == 1){
+				if (this->damaged == 1){ //Health bar only shows when you are being damaged
+					al_draw_filled_rectangle(x-22 - camera_x, y+50 - camera_y,x+22 - camera_x,y+38,RGB(255,0,0) - camera_y);
+					al_draw_filled_rectangle(x-22 - camera_x, y+50 - camera_y,x - camera_x + (44*health)//100,y+38,RGB(0,255,0) - camera_y);
+					al_draw_bitmap(sprites*[12], x - camera_x, y - camera_y);
+					if (this-> count > 15){
+						this->damaged == 0;
+					}
 			}
 		}
 		*/

@@ -26,7 +26,7 @@ class Player : public MapObject {
         int dy;
         int dest_x;
         int dest_y;
-				ALLEGRO_BITMAP* sprites; // only 2 frames to the animation for now
+				ALLEGRO_BITMAP* sprites;
 				char health;
 				bool healthshow;
 				bool damaged;

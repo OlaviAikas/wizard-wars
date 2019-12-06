@@ -98,8 +98,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     //Load what you need to load
     short client_number = 1;
     ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
-    ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
-    ALLEGRO_BITMAP* ice_sprite = al_load_bitmap("resources/Projectile.bmp");
+    ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/rockProjectiles.bmp");
+    ALLEGRO_BITMAP* ice_sprite = al_load_bitmap("resources/iceProjectiles.bmp");
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(new Player(400, 400, 1, sprites));
     map->players.push_back(new Player(100, 100, 2, sprites));

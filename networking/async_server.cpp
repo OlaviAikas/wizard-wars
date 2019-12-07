@@ -7,7 +7,7 @@ int main()
 
     boost::asio::io_service io_service;
 
-    Server s(io_service, 0, (short) 13);
+    Server s(io_service, (short) 13);
     s.run();
     io_service.run();
   }

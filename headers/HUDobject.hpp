@@ -2,7 +2,7 @@
 
 class HUDobject {
     public:
-        HUDobject(int win_x, int win_y);
+        HUDobject(int x, int y, int sx, int sy, int border);
 
         virtual void draw();
 
@@ -11,4 +11,5 @@ class HUDobject {
         int y;
         int sx;
         int sy;
+        int border;
 };

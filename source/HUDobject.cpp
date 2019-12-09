@@ -2,11 +2,12 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 
-HUDobject::HUDobject(int win_x, int win_y) {
-    this->sx = win_x * 0.2;
-    this->sy = (sx * 9) / 16;
-    this->x = win_x * 0.025;
-    this->y = win_y - sy - x;
+HUDobject::HUDobject(int x, int y, int sx, int sy, int border) {
+    this->sx = sx;
+    this->sy = sy;
+    this->x = x;
+    this->y = y;
+    this->border = border;
 }
 
 void HUDobject::draw() {

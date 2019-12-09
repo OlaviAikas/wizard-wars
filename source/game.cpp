@@ -239,7 +239,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
 
             map->draw_list(map->players, camera.get_x(), camera.get_y());
 
-            minimap->draw();
+            minimap->draw(map->players);
             map->draw_list(map->spells, camera.get_x(), camera.get_y());
 
             al_set_target_backbuffer(disp);

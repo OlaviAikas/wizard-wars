@@ -96,12 +96,36 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to load
     short client_number = 1;
-    ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
+    ALLEGRO_BITMAP* sprites[3];
+
+    sprites[0] = al_load_bitmap("resources/Test1.bmp");  //Loading character sprites
+    sprites[1] = al_load_bitmap("resources/Test2.bmp");  //Loading character sprites
+    sprites[2] = al_load_bitmap("resources/Test3.bmp");  //Loading character sprites
+
     ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(new Player(400, 400, 1, sprites));
     map->players.push_back(new Player(900, 900, 2, sprites));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
+
+	;// Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
+
+	/* ALLEGRO_BITMAP*[12] redsprites; // team red animations   This is for animations, try later
+	ALLEGRO_BITMAP*[12] bluesprites; // team blue animations
+	std::string redpath = "resources/redSprite-";
+	std::string blupath = "resources/bluSprite-";
+
+	for (size_t i = 0; i < 13; i++) {
+		std::string path = redpath + std:to_string(i)+".bmp";
+		redsprites[i] = al_load_bitmap(path);
+	}
+	for (size_t i = 0; i < 13; i++) {
+		std::string path = blupath + std:to_string(i)+".bmp";
+		blusprites[i] = al_load_bitmap(path);
+	}
+	*/
+
+
     Camera camera = Camera(0, 0);
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);

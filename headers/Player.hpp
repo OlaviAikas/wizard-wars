@@ -5,7 +5,7 @@
 
 class Player : public MapObject {
     public:
-        Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite);
+        Player(int start_x, int start_y, int number, ALLEGRO_BITMAP*sprites[3]);
 
         void move();
 
@@ -21,9 +21,11 @@ class Player : public MapObject {
 
         void draw(int camera_x, int camera_y);
 
+        void onhit();
+
     private:
         short number;
-        int speed = 15;
+        int speed;
         int old_x;
         int old_y;
         int dest_x;
@@ -32,5 +34,9 @@ class Player : public MapObject {
         int lastgoodposx;
         int lastgoodposy;
         bool team;
-        ALLEGRO_BITMAP* sprite;
+        ALLEGRO_BITMAP*sprites[3];
+        char count;
+        char health;
+        bool healthshow;
+        bool damaged;
 };

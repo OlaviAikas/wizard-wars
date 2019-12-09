@@ -1,10 +1,10 @@
-#include "../headers/FirePellat.hpp"
+#include "../headers/FirePellet.hpp"
 #include <iostream>
 
-FireP:: FireP(int start_x, int start_y, float dir_x, float dir_y) 
+FireP::FireP(int start_x, int start_y, float dir_x, float dir_y) 
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 20, 20, false, 20) {
     damage = 20;
-    sprite = al_load_bitmap("==.bmp");
+    sprite = al_load_bitmap("resources/iceProjectiles.bmp");
 }
 
 int FireP::get_damage() {

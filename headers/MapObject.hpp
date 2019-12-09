@@ -12,8 +12,7 @@ class MapObject {
         int get_y() const;
         int get_width() const;
         int get_height() const;
-        bool get_noclip() const;
-        
+        bool get_noclip() const;        
         bool operator==(const MapObject &other) const;
 
     protected:

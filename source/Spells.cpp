@@ -129,3 +129,5 @@ void Projectile::set_target(int target_x, int target_y) {
     this->target_y = target_y;
 };
 */
+
+//collision : map_object

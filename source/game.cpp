@@ -17,6 +17,7 @@
 #include "../headers/Rock.hpp"
 #include "../headers/Ice.hpp"
 #include "../headers/HealP.hpp"
+#include "../headers/FirePellet.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 
@@ -206,6 +207,9 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                         }
                         if (std::count(elementlist.begin(),elementlist.end(),5)==1 && std::count(elementlist.begin(),elementlist.end(),1)==1) {
                             map -> spells.push_back(new HealP((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                        }
+                        if (std::count(elementlist.begin(),elementlist.end(),6)==1 && std::count(elementlist.begin(),elementlist.end(),3)==1) {
+                            map -> spells.push_back(new FireP((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
                         }
                          else {
                             std::cout << "No spells associated to this combo of two buttons" << std::endl;

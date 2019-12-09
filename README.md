@@ -21,7 +21,7 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 - Yasamin Jalalian, yasamin.jln
 - Ruiyao Jiang, Xtraordinaire9911
 - Chloe Semaan, chloe-semaan
-- Joci Chen, -- insert git name here --
+- Joci Chen, jocichen
 
 
 ## Team assignments:

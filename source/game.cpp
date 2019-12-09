@@ -15,6 +15,8 @@
 #include "../headers/Spells.hpp"
 #include "../headers/Projectile.hpp"
 #include "../headers/Rock.hpp"
+#include "../headers/Ice.hpp"
+#include "../headers/HealP.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 
@@ -97,7 +99,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     //Load what you need to load
     short client_number = 1;
     ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
-    ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
+    ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/rockProjectiles.bmp");
+    ALLEGRO_BITMAP* ice_sprite = al_load_bitmap("resources/iceProjectiles.bmp");
     Map* map = new Map("resources/map.bmp");
     map->players.push_back(new Player(400, 400, 1, sprites));
     map->players.push_back(new Player(100, 100, 2, sprites));
@@ -105,6 +108,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     Camera camera = Camera(0, 0);
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
+    std::list<int> elementlist;
+
 
 #ifdef DEBUG_MODE    
     unsigned long frameNumber = 0;
@@ -139,17 +144,6 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
 
                 if (key[ALLEGRO_KEY_S]) {
                     camera.move_y(20);
-                }
-                
-                if (key[ALLEGRO_KEY_U]) {
-
-//#ifdef DEBUG_MODE
-       //             std::cout << "Spell at address " << &spell << std::endl;
-//#endif
-//                   map->spells.push_back(spell);
-//#ifdef DEBUG_MODE
- //                   std::cout << "Done spell at " << &(map->spells) << std::endl;
-//#endif
                 }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
@@ -203,12 +197,50 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     double norm = sqrt(dy*dy + dx*dx);
                     dy = dy/norm;
                     dx = dx/norm;
-                    map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
-                // defne the direction vector when right-click//
+                    if (elementlist.size() == 2) {
+                        if (std::count(elementlist.begin(),elementlist.end(),6)==2) {
+                            map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                        }
+                        if (std::count(elementlist.begin(),elementlist.end(),5)==2) {
+                            map -> spells.push_back(new Ice((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                        }
+                        if (std::count(elementlist.begin(),elementlist.end(),5)==1 && std::count(elementlist.begin(),elementlist.end(),1)==1) {
+                            map -> spells.push_back(new HealP((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                        }
+                         else {
+                            std::cout << "No spells associated to this combo of two buttons" << std::endl;
+                        }
+                    } else {
+                        std::cout << "Less than two buttons were chosen" << std::endl;
+                    }
+                // define the direction vector when right-click//
                 break;
                 }
 
             case ALLEGRO_EVENT_KEY_DOWN:
+                if (event.keyboard.keycode == ALLEGRO_KEY_U) {
+                    elementlist.push_back(1);
+                }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_I) {
+                    elementlist.push_back(2);
+                }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_O) {
+                    elementlist.push_back(3);
+                }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_J) {
+                    elementlist.push_back(4);
+                }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_K) {
+                    elementlist.push_back(5);
+                }
+
+                if (event.keyboard.keycode == ALLEGRO_KEY_L) {
+                    elementlist.push_back(6);
+                }
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
                 break;
             case ALLEGRO_EVENT_KEY_UP:
@@ -244,6 +276,9 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
             al_flip_display();
 
             redraw = false;
+        }
+        if(elementlist.size() > 2) {
+            elementlist.pop_front();
         }
     }
     //delete what you loaded

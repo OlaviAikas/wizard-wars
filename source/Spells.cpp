@@ -84,7 +84,7 @@ Projectile::Projectile(int start_x, int start_y, int width, int height, bool noc
 //     return this->number;
 // }
 
-void Projectile::on_collision(MapObject other) {
+void Projectile::on_collision(MapObject &other) {
     if (not other.get_noclip()) {
         dest_x = x;
         dest_y = y;

@@ -46,6 +46,12 @@ void Map::check_collisions() {
                 (*j)->on_collision(**i);
             }
         }
+        for (std::list<Controlpoint*>::iterator j = cp.begin(); j != cp.end(); j++) {
+            if (**i == **j) {
+                (*i)->on_collision(**j);
+                (*j)->on_collision(**i);
+            }
+        }
     }
     for (std::list<Spell*>::iterator i = spells.begin(); i != spells.end(); i++) {
         for (std::list<Spell*>::iterator j = std::next(i,1); j != spells.end(); j++) {

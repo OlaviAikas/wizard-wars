@@ -15,10 +15,10 @@ class MapObject {
         bool get_noclip() const;
         
         bool operator==(const MapObject &other) const;
+        bool operator<=(const MapObject &other) const;
 
     protected:
         bool noclip;
-        
         int x;
         int y;
         int width;

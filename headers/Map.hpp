@@ -4,6 +4,7 @@
 #include "Player.hpp"
 #include "MapObject.hpp"
 #include "Spells.hpp"
+#include "Controlpoint.hpp"
 
 class Map {
     public:
@@ -17,6 +18,7 @@ class Map {
         std::list<Player*> players;
         std::list<Spell*> spells;
         std::list<MapObject*> statics;
+        std::list<Controlpoint*> cp;
 
         template <typename T> void draw_list(std::list<T> &list, int camera_x, int camera_y) {
             for (typename std::list<T>::iterator i = list.begin(); i != list.end(); i++) {

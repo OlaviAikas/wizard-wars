@@ -37,10 +37,18 @@ bool MapObject::get_noclip() const {
 
 void MapObject::on_collision(MapObject &other) {
     // To retrieve from balavoine branch
+    std::cout << "(!) WARN: generic on_collision called for MapObject at " << this << std::endl;
 }
 
 
 bool MapObject::operator==(const MapObject &other) const {
+#ifdef DEBUG_MODE
+    std::cout << "Equality operator at " << this << " vs " << &other << std::endl;
+#endif
+    return ((*this <= other) | (other <= *this));
+}
+
+bool MapObject::operator<=(const MapObject &other) const {
 #ifdef DEBUG_MODE
     std::cout << "Equality operator at " << this << " vs " << &other << std::endl;
 #endif
@@ -67,6 +75,5 @@ bool MapObject::operator==(const MapObject &other) const {
     return false;
 }
 
-void MapObject::draw(int camera_x, int camera_y) {
-    al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
-}
+
+void MapObject::draw(int camera_x, int camera_y) {}

@@ -12,6 +12,10 @@ Minimap::Minimap(const char* name, int win_x, int win_y)
     this->map = al_load_bitmap(name);
 }
 
+Minimap::~Minimap() {
+    al_destroy_bitmap(map);
+}
+
 void Minimap::draw(std::list<Player*> players) {
     al_draw_scaled_bitmap(map, 0, 0, al_get_bitmap_width(map), al_get_bitmap_height(map),
     x, y, sx, sy, 0);

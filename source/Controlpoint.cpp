@@ -8,6 +8,7 @@
 Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner) : MapObject(x, y, side, side, true) {
     this->number = number;
     this->owner = owner;
+    this->havechanged = false;
 }
 
 short Controlpoint::get_number() {
@@ -20,6 +21,7 @@ bool Controlpoint::get_owner() {
 
 void Controlpoint::set_owner(short newowner) {
     this->owner = newowner;
+    this->havechanged = true;
 }
 
 void Controlpoint::on_collision(Player other){
@@ -34,4 +36,5 @@ void Controlpoint::on_collision(Player other){
             timegot-=1;
         }
     }
+    this->havechanged = true;
 }

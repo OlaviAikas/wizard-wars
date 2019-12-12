@@ -10,4 +10,6 @@ class Spell : public MapObject {
     protected:
     float dir_x;
     float dir_y;
+    bool havechanged;
+
 };

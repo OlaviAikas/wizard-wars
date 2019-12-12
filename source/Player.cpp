@@ -17,6 +17,7 @@ Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite) : M
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
     this->sprite = sprite;
+    this->havechanged = false;
     this->team = number % 2;
 }
 
@@ -43,6 +44,7 @@ void Player::move() {
 #ifdef DEBUG_MODE
     std::cout << "Moving Player at " << this << std::endl;
 #endif
+    havechanged = true;
     lastgoodposx=x;
     lastgoodposy=y;
     if (abs(x - dest_x) >= speed && abs(y - dest_y) >= speed) {
@@ -84,7 +86,8 @@ void Player::move() {
 void Player::set_dest(int dest_x, int dest_y) {
     this->dest_x = dest_x;
     this->dest_y = dest_y;
-}
+    this->havechanged = true;
+    }
 
 void Player::draw(int camera_x, int camera_y) {
     al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);

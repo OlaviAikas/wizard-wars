@@ -72,3 +72,21 @@ std::list<Player*>::iterator Map::fetch_pit(short n) {
     }
     return it;
 }
+
+void decode_players(std::string mes_get){
+    std::vector<std::string> mes;
+    boost::split(mes, mes_get, boost::is_any_of("."));
+
+}
+
+void decode_controlpoint(std::string mes_get){
+    std::vector<std::string> mes;
+    boost::split(mes, mes_get, boost::is_any_of("."));
+
+}
+
+void decode_controlpoint(std::string mes_get){
+    std::vector<std::string> mes;
+    boost::split(mes, mes_get, boost::is_any_of("."));
+
+}

@@ -20,4 +20,5 @@ class Controlpoint : public MapObject {
         int timegot=0;
         int timetoget=450;
         int number;
+        bool havechanged;
 };

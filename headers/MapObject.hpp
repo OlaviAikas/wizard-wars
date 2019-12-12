@@ -18,7 +18,7 @@ class MapObject {
 
     protected:
         bool noclip;
-        
+        bool havechanged;
         int x;
         int y;
         int width;

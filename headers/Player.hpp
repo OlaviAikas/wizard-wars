@@ -31,6 +31,7 @@ class Player : public MapObject {
         int hit_points;
         int lastgoodposx;
         int lastgoodposy;
+        bool havechanged;
         bool team;
         ALLEGRO_BITMAP* sprite;
 };

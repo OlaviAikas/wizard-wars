@@ -10,9 +10,10 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->width = width;
     this->height = height;
     this->noclip = noclip;
+    this->havechanged = false;
 }
 
-void MapObject::move() { std::cout << "momove" << std::endl; };
+void MapObject::move() { std::cout << "momove" << std::endl; havechanged=true;};
 
 int MapObject::get_x() const {
     return x;

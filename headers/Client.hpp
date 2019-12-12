@@ -11,13 +11,14 @@
 #include <boost/atomic.hpp>
 #include <boost/fiber/condition_variable.hpp>
 #include <boost/fiber/mutex.hpp>
+#include "Gamestatus.hpp"
 
 using boost::asio::ip::udp;
 
 class Client : public Interface {
     public:
     Client(boost::asio::io_service& io_service, const std::string& host,
-     const std::string& port);
+     const std::string& port, Gamestatus *gs);
     ~Client();
     
     // methods controling the listening
@@ -44,6 +45,8 @@ class Client : public Interface {
     protected:
     
     private:
+    Gamestatus *game_status;
+
     boost::asio::io_service& io_service_; 
     udp::socket socket_; 
     udp::endpoint sender_endpoint_;

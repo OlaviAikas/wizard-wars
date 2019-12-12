@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <allegro5/allegro.h>
 #include <list>
 #include "Player.hpp"

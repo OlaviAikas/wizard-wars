@@ -2,12 +2,12 @@
 using boost::asio::ip::udp;
 
 Client::Client(boost::asio::io_service& io_service, const std::string& host,
-  const std::string& port) 
+  const std::string& port, Gamestatus * gs) 
 :io_service_(io_service), socket_(io_service, udp::endpoint (udp::v4(), 0)) { 
     udp::resolver resolver(io_service_); 
     udp::resolver::query query(udp::v4(), host, port); 
     udp::resolver::iterator itr = resolver.resolve(query);
-
+    game_status = gs;
     sender_endpoint_ = *itr;
     start_listening(); 
     start_senders();

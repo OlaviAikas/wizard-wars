@@ -7,10 +7,11 @@
 #include "Map.hpp"
 #include <boost/thread.hpp>
 #include <boost/array.hpp>
+#include "Gamestatus.hpp"
 using boost::asio::ip::udp;
 class Server : public Interface{
     public:
-    Server(boost::asio::io_service &io_service, short port);
+    Server(boost::asio::io_service &io_service, short port, Gamestatus *gs);
     ~Server();
     // event handlers
 
@@ -32,6 +33,8 @@ class Server : public Interface{
     udp::endpoint sender_endpoint_;
     enum { max_length = 1024 };
     char data_[max_length];
+
+    Gamestatus *game_status;
 
     short port;
 

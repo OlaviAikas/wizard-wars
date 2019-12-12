@@ -3,11 +3,12 @@
 
 
 using boost::asio::ip::udp;
-Server::Server(boost::asio::io_service &io_service, short port)
+Server::Server(boost::asio::io_service &io_service, short port, Gamestatus *gs)
     : io_service_(io_service),
       socket_(io_service, udp::endpoint(udp::v4(), port))
 {
     start_listening();
+    game_status = gs;
 }
 Server::~Server(){
     terminate();

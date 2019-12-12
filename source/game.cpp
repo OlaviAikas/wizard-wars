@@ -37,8 +37,8 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     //Load what you need to before the loop:
     void (*changeptr)(short &, short new_state);
     changeptr = change_state;
-    Button<short &, short>* start_game = new Button<short &, short>(840, 500, 240, 60, al_map_rgb(0, 255, 0), changeptr);
-    Button<short &, short>* end_game = new Button<short &, short>(840, 600, 240, 60, al_map_rgb(0, 255, 0), changeptr);
+    Button<short &, short>* start_game = new Button<short &, short>(840, 500, 260, 60, al_map_rgb(0, 255, 0), changeptr);
+    Button<short &, short>* end_game = new Button<short &, short>(840, 600, 260, 60, al_map_rgb(0, 255, 0), changeptr);
 
     while(state == 1) {
     al_wait_for_event(queue, &event);

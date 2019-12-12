@@ -14,7 +14,7 @@ OBJS := $(patsubst source/%.cpp,objects/%.o,$(SRCS))
 
 # Compiler and flags
 CXX := g++
-PKGCONFIG := `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
+PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread -lpthread -lboost_fiber `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
 
 # -include $(DEP)   # include all dep files in the makefile
 # # rule to generate a dep file by using the C preprocessor

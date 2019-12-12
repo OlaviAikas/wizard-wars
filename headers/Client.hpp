@@ -7,7 +7,6 @@
 #include <queue>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
-#include "message.hpp"
 #include <boost/array.hpp>
 #include <boost/atomic.hpp>
 #include <boost/fiber/condition_variable.hpp>
@@ -18,7 +17,7 @@ using boost::asio::ip::udp;
 class Client : public Interface {
     public:
     Client(boost::asio::io_service& io_service, const std::string& host,
-     const std::string& port, int* game_state);
+     const std::string& port);
     ~Client();
     
     // methods controling the listening

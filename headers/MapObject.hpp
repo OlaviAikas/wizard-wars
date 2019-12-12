@@ -7,6 +7,7 @@ class MapObject {
         virtual void draw(int camera_x, int camera_y);
         virtual void move();
         virtual void on_collision(MapObject &other);
+        virtual void hit(const int amount);
 
         int get_x() const;
         int get_y() const;

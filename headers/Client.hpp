@@ -17,7 +17,8 @@ using boost::asio::ip::udp;
 
 class Client : public Interface {
     public:
-    Client(boost::asio::io_service& io_service, const std::string& host, const std::string& port);
+    Client(boost::asio::io_service& io_service, const std::string& host,
+     const std::string& port, int* game_state);
     ~Client();
     
     // methods controling the listening

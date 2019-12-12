@@ -333,9 +333,9 @@ int main(int argc, char **argv)
     boost::asio::io_service io_service;
     Interface interface;
     if(isServer){
-        interface = Server(io_service, 13);
+        interface = Server(io_service, 13, &game_state);
     } else {
-        interface = Client(io_service, "localhost", "13");
+        interface = Client(io_service, "localhost", "13", &game_state);
     }
     
 

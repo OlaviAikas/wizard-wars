@@ -10,7 +10,7 @@
 using boost::asio::ip::udp;
 class Server : public Interface{
     public:
-    Server(boost::asio::io_service &io_service, short port);
+    Server(boost::asio::io_service &io_service, short port, int *game_state);
     ~Server();
     // event handlers
 

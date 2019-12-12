@@ -37,6 +37,7 @@ bool MapObject::get_noclip() const {
 
 void MapObject::on_collision(MapObject &other) {
     // To retrieve from balavoine branch
+    std::cout << "(!) WARN: generic on_collision called for MapObject at " << this << std::endl;
 }
 
 

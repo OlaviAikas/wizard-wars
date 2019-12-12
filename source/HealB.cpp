@@ -17,4 +17,4 @@ void HealB::draw(int camera_x, int camera_y) {
     
 }
 
-void HealB::on_collision(MapObject other) { }
+void HealB::on_collision(MapObject &other) { }

@@ -16,4 +16,4 @@ void FireP::draw(int camera_x, int camera_y) {
     al_draw_rotated_bitmap(this->sprite,0,0, x - camera_x, y - camera_y, at,0);
 }
 
-void FireP::on_collision(MapObject other) { }
+void FireP::on_collision(MapObject &other) { }

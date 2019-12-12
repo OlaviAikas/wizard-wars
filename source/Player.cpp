@@ -36,6 +36,22 @@ bool Player::get_team() {
     return this->team;
 }
 
+void Player::hit(int amount) {
+    if (amount >= hit_points) {
+        hit_points = 0;
+        std::cout << "The player at " << this << " is really dead" << std::endl;
+    } else {
+        hit_points -= amount;
+        std::cout << "New HP " << hit_points << std::endl;
+    }
+}
+
+void Player::die() {
+    // potentially only if server
+    // teleport_to(spawn_point)
+    // set_health_to(BASE_HEALTH)
+}
+
 void Player::on_collision(MapObject &other) {
     if (not other.get_noclip()) {
         dest_x=lastgoodposx;

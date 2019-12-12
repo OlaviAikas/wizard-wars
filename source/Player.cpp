@@ -17,6 +17,7 @@ Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite) : M
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
     this->sprite = sprite;
+    this->team = number % 2;
 }
 
 int Player::get_hit_points() {

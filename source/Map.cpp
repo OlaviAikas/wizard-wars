@@ -43,7 +43,7 @@ void Map::check_collisions() {
             }
         }
         for (std::list<MapObject*>::iterator j = statics.begin(); j != statics.end(); j++) {
-            if (*i == *j) {
+            if (**i == **j) {
                 (*i)->on_collision(**j);
                 (*j)->on_collision(**i);
             }

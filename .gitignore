@@ -36,7 +36,7 @@ main
 game
 
 # Visual Studio Code
-.vscode
+# .vscode -> see https://github.com/OlaviAikas/wizard-wars/wiki/Compiling-with-VS-Code
 
 # Mac .DS_Store
 .DS_Store 

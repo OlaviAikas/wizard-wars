@@ -178,6 +178,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;                
                 frameNumber++;
 #endif
+                map->garbage_collect();
                 redraw = true;
                 break;
 

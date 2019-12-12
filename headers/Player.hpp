@@ -16,6 +16,8 @@ class Player : public MapObject {
         short get_number();
         
         int get_hit_points();
+        void hit(const int amount); // Reduce hp by amount without overflow
+        void die(); // Will probably respawn the player, awatining decisions
 
         bool get_team();
 

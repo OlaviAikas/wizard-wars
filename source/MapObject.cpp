@@ -39,6 +39,11 @@ bool MapObject::get_noclip() const {
     return noclip;
 }
 
+void MapObject::hit(const int amount) {
+#ifdef DEBUG_MODE
+    std::cout << "    INFO: generic hit called, the MapObject at " << this << " shouldn't be a Player." << std::endl;
+#endif
+}
 
 void MapObject::on_collision(MapObject &other) {
     // To retrieve from balavoine branch
@@ -48,7 +53,7 @@ void MapObject::on_collision(MapObject &other) {
 
 bool MapObject::operator==(const MapObject &other) const {
 #ifdef DEBUG_MODE
-    std::cout << "Equality operator at " << this << " vs " << &other << std::endl;
+    std::cout << "    INFO: Called equality operator at " << this << " vs " << &other << std::endl;
 #endif
     return ((*this <= other) | (other <= *this));
 }

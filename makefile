@@ -23,7 +23,7 @@ PKGCONFIG := `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5
 # 	$(CXX) $(CFLAGS) $< -MM -MT $(@:.d=.o) >$@
 
 # Rules
-ALL: game
+all: game
 
 debug: CFLAGS := -g
 debug: clean game

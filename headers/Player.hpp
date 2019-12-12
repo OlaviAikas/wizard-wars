@@ -5,7 +5,7 @@
 
 class Player : public MapObject {
     public:
-        Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite, bool havechanged);
+        Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite);
 
         void move();
 
@@ -31,6 +31,7 @@ class Player : public MapObject {
         int hit_points;
         int lastgoodposx;
         int lastgoodposy;
+        bool havechanged;
         bool team;
         ALLEGRO_BITMAP* sprite;
 };

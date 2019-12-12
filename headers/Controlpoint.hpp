@@ -5,7 +5,7 @@
 
 class Controlpoint : public MapObject {
     public:
-        Controlpoint(int x, int y, int number, int side, bool owner, bool havechanged);
+        Controlpoint(int x, int y, int number, int side, bool owner);
 
         void set_owner(short newowner);
 
@@ -20,4 +20,5 @@ class Controlpoint : public MapObject {
         int timegot=0;
         int timetoget=450;
         int number;
+        bool havechanged;
 };

@@ -5,9 +5,10 @@
 #include <cstdlib>
 #include <list>
 
-Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner, bool havechanged) : MapObject(x, y, side, side, true) {
+Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner) : MapObject(x, y, side, side, true) {
     this->number = number;
     this->owner = owner;
+    this->havechanged = false;
 }
 
 short Controlpoint::get_number() {

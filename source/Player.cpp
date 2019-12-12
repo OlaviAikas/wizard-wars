@@ -9,7 +9,7 @@
 #define BASE_HEALTH 20
 #include <allegro5/allegro.h>
 
-Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite,bool havechanged) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->number = number;
@@ -17,7 +17,7 @@ Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite,bool
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
     this->sprite = sprite;
-    this->havechanged = havechanged;
+    this->havechanged = false;
     this->team = number % 2;
 }
 
@@ -43,8 +43,8 @@ void Player::on_collision(MapObject &other) {
 void Player::move() {
 #ifdef DEBUG_MODE
     std::cout << "Moving Player at " << this << std::endl;
-    this->havechanged = true;
 #endif
+    havechanged = true;
     lastgoodposx=x;
     lastgoodposy=y;
     if (abs(x - dest_x) >= speed && abs(y - dest_y) >= speed) {
@@ -79,7 +79,6 @@ void Player::move() {
     } else {
 #ifdef DEBUG_MODE
         std::cout << "Player at " << this << " did not move on this frame" << std::endl;
-        this->havechanged = false;
 #endif
     }
 }

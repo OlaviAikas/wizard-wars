@@ -5,13 +5,13 @@
 
 template <typename ...Args> class Button {
     public:
-        Button(int loc_x, int loc_y, int span_x, int span_y, ALLEGRO_COLOR color, void (*callback)(Args... args)) {
+        Button(int loc_x, int loc_y, const char* name, void (*callback)(Args... args)) {
             this->x = loc_x;
             this->y = loc_y;
-            this->span_x = span_x;
-            this->span_y = span_y;
             this->callback = callback;
-            this->color = color;
+            this->image = al_load_bitmap(name);
+            this->span_x = al_get_bitmap_width(image);
+            this->span_y = al_get_bitmap_height(image);
         }
 
         void mouse_input(int mouse_x, int mouse_y, short &state, short new_state) {
@@ -23,7 +23,7 @@ template <typename ...Args> class Button {
         }
 
         void draw() {
-            al_draw_filled_rectangle(x, y, x + span_x, y + span_y, color);
+            al_draw_bitmap(image, x, y, 0);
         }
         void on_click();
 
@@ -37,5 +37,5 @@ template <typename ...Args> class Button {
         int span_x;
         int span_y;
         void (*callback)(Args... args);
-        ALLEGRO_COLOR color;
+        ALLEGRO_BITMAP* image;
 };

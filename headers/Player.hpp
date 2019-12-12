@@ -5,7 +5,8 @@
 
 class Player : public MapObject {
     public:
-        Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite);
+        Player(int start_x, int start_y, int number, const char* sprite_name);
+        ~Player();
 
         void move();
 

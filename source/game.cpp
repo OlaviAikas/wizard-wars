@@ -37,8 +37,8 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     //Load what you need to before the loop:
     void (*changeptr)(short &, short new_state);
     changeptr = change_state;
-    Button<short &, short>* start_game = new Button<short &, short>(840, 500, 260, 60, al_map_rgb(0, 255, 0), changeptr);
-    Button<short &, short>* end_game = new Button<short &, short>(840, 600, 260, 60, al_map_rgb(0, 255, 0), changeptr);
+    Button<short &, short>* start_game = new Button<short &, short>(840, 500, "resources/start_game.bmp", changeptr);
+    Button<short &, short>* end_game = new Button<short &, short>(840, 600, "resources/quit.bmp", changeptr);
 
     while(state == 1) {
     al_wait_for_event(queue, &event);
@@ -90,6 +90,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     }
     //delete what you loaded
     delete start_game;
+    delete end_game;
 }
 
 void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
@@ -98,11 +99,10 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to load
     short client_number = 1;
-    ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
-    ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
     Map* map = new Map("resources/map.bmp");
-    map->players.push_back(new Player(400, 400, 1, sprites));
-    map->players.push_back(new Player(900, 900, 2, sprites));
+    Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
+    map->players.push_back(new Player(400, 400, 1, "resources/Sprite-0002.bmp"));
+    map->players.push_back(new Player(900, 900, 2, "resources/Sprite-0002.bmp"));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     map->statics.push_back(new Controlpoint(800, 800, 1, 50, true));
     Camera camera = Camera(0, 0);
@@ -116,7 +116,6 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     bool mouse_east = false;
     bool mouse_north = false;
     bool mouse_south = false;
-    Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     
     while (state == 2) {
         al_wait_for_event(queue, &event);
@@ -226,9 +225,6 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
 	        default:
 		        break;
         }
-
-        if(state == 0)
-            break;
 
         if(redraw && al_is_event_queue_empty(queue))
         {
@@ -341,6 +337,7 @@ int main(int argc, char **argv)
 
     }
 
+    al_destroy_bitmap(buffer);
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);

@@ -63,6 +63,12 @@ void Map::check_collisions() {
     }
 }
 
+void Map::garbage_collect() {
+    garbage_collect_list(players);
+    garbage_collect_list(spells);
+    garbage_collect_list(statics);
+}
+
 std::list<Player*>::iterator Map::fetch_pit(short n) {
     std::list<Player*>::iterator it = this->players.begin();
     while ((*it)->get_number() != n) {

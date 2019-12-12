@@ -18,6 +18,7 @@ Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite,bool
     this->lastgoodposy=start_y;
     this->sprite = sprite;
     this->havechanged = havechanged;
+    this->team = number % 2;
 }
 
 int Player::get_hit_points() {

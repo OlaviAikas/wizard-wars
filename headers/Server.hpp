@@ -34,7 +34,6 @@ class Server : public Interface{
     char data_[max_length];
 
     short port;
-    Map* map;
 
     boost::thread* listen_thread;
 

@@ -12,7 +12,8 @@
 #include "../headers/MapObject.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
-
+#include "../headers/HUDobject.hpp"
+#include "../headers/Minimap.hpp"
 #include "../headers/Spells.hpp"
 #include "../headers/Projectile.hpp"
 #include "../headers/Rock.hpp"
@@ -107,7 +108,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
     Map* map = new Map("resources/map.bmp", &interface);
     map->players.push_back(new Player(400, 400, 1, sprites));
-    map->players.push_back(new Player(100, 100, 2, sprites));
+    map->players.push_back(new Player(900, 900, 2, sprites));
+    map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     map->statics.push_back(new Controlpoint(800, 800, 1, 50, true));
     Camera camera = Camera(0, 0);
     //define a pointer to the player
@@ -120,6 +122,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     bool mouse_east = false;
     bool mouse_north = false;
     bool mouse_south = false;
+    Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     
     while (state == 2) {
         al_wait_for_event(queue, &event);
@@ -243,6 +246,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
 
             map->draw_list(map->players, camera.get_x(), camera.get_y());
 
+            minimap->draw(map->players);
             map->draw_list(map->spells, camera.get_x(), camera.get_y());
 
             al_set_target_backbuffer(disp);
@@ -255,6 +259,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     }
     //delete what you loaded
     delete map;
+    delete minimap;
 }
 
 void must_init(bool test, const char *description) {

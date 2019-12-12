@@ -13,7 +13,7 @@ class MapObject {
         int get_width() const;
         int get_height() const;
         bool get_noclip() const;
-        
+        bool get_garbage_collect() const;        
         bool operator==(const MapObject &other) const;
         bool operator<=(const MapObject &other) const;
 
@@ -23,4 +23,5 @@ class MapObject {
         int y;
         int width;
         int height;
+        bool garbage_collect;
 };

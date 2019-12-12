@@ -5,7 +5,7 @@ vpath %.o objects
 
 # Lists of files to compile
 SRCS := $(wildcard source/*.cpp)
-NAMES := $(SRCS:source/='')
+# NAMES := $(SRCS:source/='')
 HEADERS := $(wildcard headers/*.hpp)
 OBJS := $(patsubst source/%.cpp,objects/%.o,$(SRCS))
 

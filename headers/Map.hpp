@@ -6,6 +6,7 @@
 #include "Spells.hpp"
 #include "Interface.hpp"
 
+
 class Map {
     public:
         Map(const char* name, Interface *interface);
@@ -14,6 +15,10 @@ class Map {
         void draw_map(int camera_x, int camera_y);
 
         void check_collisions();
+
+        std::string encode_players();
+        std::string encode_controlpoint();
+        std::string encode_spells();
 
         std::list<Player*> players;
         std::list<Spell*> spells;

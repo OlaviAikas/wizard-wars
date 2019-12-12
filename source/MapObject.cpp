@@ -4,15 +4,16 @@
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
 
-MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
+MapObject::MapObject(int x, int y, int width, int height, bool noclip, bool havechanged) {
     this->x = x;
     this->y = y;
     this->width = width;
     this->height = height;
     this->noclip = noclip;
+    this->havechanged = havechanged;
 }
 
-void MapObject::move() { std::cout << "momove" << std::endl; };
+void MapObject::move() { std::cout << "momove" << std::endl; havechanged=true;};
 
 int MapObject::get_x() const {
     return x;

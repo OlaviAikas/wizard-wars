@@ -9,7 +9,7 @@
 #define BASE_HEALTH 20
 #include <allegro5/allegro.h>
 
-Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite,bool havechanged) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->number = number;
@@ -17,6 +17,7 @@ Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite) : M
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
     this->sprite = sprite;
+    this->havechanged = havechanged;
 }
 
 int Player::get_hit_points() {
@@ -41,6 +42,7 @@ void Player::on_collision(MapObject &other) {
 void Player::move() {
 #ifdef DEBUG_MODE
     std::cout << "Moving Player at " << this << std::endl;
+    this->havechanged = true;
 #endif
     lastgoodposx=x;
     lastgoodposy=y;
@@ -76,6 +78,7 @@ void Player::move() {
     } else {
 #ifdef DEBUG_MODE
         std::cout << "Player at " << this << " did not move on this frame" << std::endl;
+        this->havechanged = false;
 #endif
     }
 }
@@ -83,7 +86,8 @@ void Player::move() {
 void Player::set_dest(int dest_x, int dest_y) {
     this->dest_x = dest_x;
     this->dest_y = dest_y;
-}
+    this->havechanged = true;
+    }
 
 void Player::draw(int camera_x, int camera_y) {
     al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);

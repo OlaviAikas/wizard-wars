@@ -17,13 +17,13 @@ int Camera::get_y() {
 }
 
 void Camera::move_x(int d) {
-    if(x + d < this->maxx + 3840 or x + d < -this->maxx){
+    if(x + d < this->maxx + 3840 || x + d < -this->maxx){
         x = x + d;
     }
 }
 
 void Camera::move_y(int d) {
-    if(y + d < this->maxy + 2160 or y + d < - this->maxy){
+    if(y + d < this->maxy + 2160 || y + d < - this->maxy){
         y = y + d;
     }
 }

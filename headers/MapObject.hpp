@@ -16,10 +16,10 @@ class MapObject {
         bool get_noclip() const;
         bool get_garbage_collect() const;        
         bool operator==(const MapObject &other) const;
+        bool operator<=(const MapObject &other) const;
 
     protected:
         bool noclip;
-        
         int x;
         int y;
         int width;

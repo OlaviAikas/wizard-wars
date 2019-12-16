@@ -11,7 +11,7 @@ class HealB: public Beam {
 
         int get_damage();
 
-        void on_collision(MapObject other);
+        virtual void on_collision(MapObject &other);
 
         virtual void draw(int camera_x, int camera_y);
 

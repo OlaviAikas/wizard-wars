@@ -15,4 +15,4 @@ void HealZ::draw(int camera_x, int camera_y) {
    al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
 }
 
-void HealZ::on_collision(MapObject other) { }
+void HealZ::on_collision(MapObject &other) { }

@@ -9,13 +9,15 @@ class Player : public MapObject {
 
         void move();
 
-        void on_collision(MapObject &other);
+        virtual void on_collision(MapObject &other);
 
         void set_dest(int dest_x, int dest_y);
 
         short get_number();
         
         int get_hit_points();
+        void hit(const int amount); // Reduce hp by amount without overflow
+        void die(); // Will probably respawn the player, awatining decisions
 
         bool get_team();
 

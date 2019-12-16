@@ -22,4 +22,6 @@ void HealB::draw(int camera_x, int camera_y) {
     al_draw_line(x - camera_x, y - camera_y, vertex_x, vertex_y, al_map_rgb_f(0, 1, 1), 10);
 }
 
-void HealB::on_collision(MapObject other) { }
+void HealB::on_collision(MapObject &other) {
+    
+}

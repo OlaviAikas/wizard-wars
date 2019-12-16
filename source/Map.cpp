@@ -89,7 +89,7 @@ std::string Map::encode_players(){
         std::string destx = ss.str();
         ss << i->get_desty(); //Write the desty
         std::string desty = ss.str();
-        to_transmit="0"+number+"."+x+"."+y+"."+destx+"."+desty+":";
+        to_transmit="0."+number+"."+x+"."+y+"."+destx+"."+desty+".:";
     }
     return to_transmit;
 }
@@ -105,11 +105,9 @@ std::string Map::encode_controlpoint(){
     std::string timegot = ss.str();
     ss << i->get_timetoget();
     std::string timetoget = ss.str();      
-    to_transmit="1"+owner+"."+timegot+"."+timetoget+"."+number+":";
+    to_transmit="1."+owner+"."+timegot+"."+timetoget+"."+number+".:";
     }
     return to_transmit; 
-
-
 
 }
 
@@ -128,9 +126,10 @@ std::string Map::encode_spells(){
         std::string dir_x = ss.str();
         ss << i->get_desty(); 
         std::string desty = ss.str();
-        to_transmit="0"+"."+x+"."+y+"."+dir_x+"."+dir_y+":";
+        to_transmit="2."+x+"."+y+"."+dir_x+"."+dir_y+".:";
 
     }
     return to_transmit;
 }
+//std:: string Map::transmit_changes(en)
         

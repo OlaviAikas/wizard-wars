@@ -10,6 +10,7 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->width = width;
     this->height = height;
     this->noclip = noclip;
+    this->garbage_collect = false;
 }
 
 void MapObject::move() { std::cout << "momove" << std::endl; };
@@ -30,19 +31,29 @@ int MapObject::get_height() const {
     return height;
 }
 
+bool MapObject::get_garbage_collect() const {
+    return garbage_collect;
+}
+ 
 bool MapObject::get_noclip() const {
     return noclip;
 }
 
+void MapObject::hit(const int amount) {
+#ifdef DEBUG_MODE
+    std::cout << "    INFO: generic hit called, the MapObject at " << this << " shouldn't be a Player." << std::endl;
+#endif
+}
 
 void MapObject::on_collision(MapObject &other) {
     // To retrieve from balavoine branch
+    std::cout << "(!) WARN: generic on_collision called for MapObject at " << this << std::endl;
 }
 
 
 bool MapObject::operator==(const MapObject &other) const {
 #ifdef DEBUG_MODE
-    std::cout << "Equality operator at " << this << " vs " << &other << std::endl;
+    std::cout << "    INFO: Called equality operator at " << this << " vs " << &other << std::endl;
 #endif
     if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {

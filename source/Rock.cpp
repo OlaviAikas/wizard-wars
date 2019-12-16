@@ -12,9 +12,19 @@ int Rock::get_damage() {
 }
 
 void Rock::draw(int camera_x, int camera_y) {
-    al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
+    if (!hit_animation) {
+        al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
+    } else {
+        // code for hit animation
+        // please set this->garbage_collect to true when you're done
+    }
 }
  
 
-void Rock::on_collision(MapObject other) { 
+void Rock::on_collision(MapObject &other) {
+    if (!this->get_garbage_collect() && !this->hit_animation) {
+        other.hit(this->get_damage());
+        // Set garbage_collect to true iif other is not a Player?
+        this->hit_animation = true;
+    }
 }

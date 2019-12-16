@@ -1,4 +1,3 @@
-
 #Where to look for specific extensions (might not actually be required)
 vpath %.h headers
 vpath %.cpp source

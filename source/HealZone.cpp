@@ -14,3 +14,5 @@ int HealZ::get_damage() {
 void HealZ::draw(int camera_x, int camera_y) {
    al_draw_scaled_bitmap(this->sprite, 0,0,64,64,x - camera_x, y - camera_y,width,height, 0);
 }
+
+void HealZ::on_collision(MapObject &other) { }

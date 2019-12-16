@@ -23,6 +23,8 @@ void Rock::draw(int camera_x, int camera_y) {
     } else {
         // code for hit animation
         // please set this->garbage_collect to true when you're done
+        al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
+        this->garbage_collect = true;
     }
 }
 

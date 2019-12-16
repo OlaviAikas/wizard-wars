@@ -112,6 +112,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
     std::list<int> elementlist;
+    int e1 = 0;
+    int e2 = 0;
 
 
 #ifdef DEBUG_MODE    
@@ -201,52 +203,77 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     double norm = sqrt(dy*dy + dx*dx);
                     dy = dy/norm;
                     dx = dx/norm;
-                    if (elementlist.size() == 2) {
-                        if (std::count(elementlist.begin(),elementlist.end(),6)==2) {
+                    // std::cout << e1*e2;
+                    switch(e1*e2) {
+                        case 121: // 11*11 L+L
                             map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
-                        } else if (std::count(elementlist.begin(),elementlist.end(),5)==2) {
+                            break;
+                        case 49: // 7*7 K+K
                             map -> spells.push_back(new Ice((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
-                        } else if (std::count(elementlist.begin(),elementlist.end(),5)==1 && std::count(elementlist.begin(),elementlist.end(),1)==1) {
+                            break;
+                        case 7: // 7*1 K+U
                             map -> spells.push_back(new HealP((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
-                        } else if (std::count(elementlist.begin(),elementlist.end(),6)==1 && std::count(elementlist.begin(),elementlist.end(),3)==1) {
+                            break;
+                        case 33: // 11*3 L+O
                             map -> spells.push_back(new FireP((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
-                        } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {
-                            map -> spells.push_back(new HealZ(event.mouse.x - (*pit)->get_width()/2+2*dx*(*pit)->get_width(),event.mouse.y - (*pit)->get_height()/2+2*dy*(*pit)->get_height()));
-                        }
-                         else {
-
+                            break;
+                        case 2: // 2*1 I+U
+                            map -> spells.push_back(new HealZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            break;
+                        default:
                             std::cout << "No spells associated to this combo of two buttons" << std::endl;
-                        }
-                    } else {
-                        std::cout << "Less than two buttons were chosen" << std::endl;
+                            break;
                     }
+                    // if (elementlist.size() == 2) {
+                    //     if (std::count(elementlist.begin(),elementlist.end(),6)==2) { 
+                    //     } else if (std::count(elementlist.begin(),elementlist.end(),5)==2) {
+                    //     } else if (std::count(elementlist.begin(),elementlist.end(),5)==1 && std::count(elementlist.begin(),elementlist.end(),1)==1) {
+                    //     } else if (std::count(elementlist.begin(),elementlist.end(),6)==1 && std::count(elementlist.begin(),elementlist.end(),3)==1) {
+                    //     } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {
+                    //     } else {           
+                    //     }
+                    // } else {
+                    // }
                 // define the direction vector when right-click//
                 break;
                 }
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 if (event.keyboard.keycode == ALLEGRO_KEY_U) {
-                    elementlist.push_back(1);
+                    e2=e1;
+                    e1=1;
+                    
+                    //elementlist.push_back(1);
                 }
 
                 if (event.keyboard.keycode == ALLEGRO_KEY_I) {
-                    elementlist.push_back(2);
+                    e2=e1;
+                    e1=2;
+                    //elementlist.push_back(2);
                 }
 
                 if (event.keyboard.keycode == ALLEGRO_KEY_O) {
-                    elementlist.push_back(3);
+                    e2=e1;
+                    e1=3;
+                    //elementlist.push_back(3);
                 }
 
                 if (event.keyboard.keycode == ALLEGRO_KEY_J) {
-                    elementlist.push_back(4);
+                    e2=e1;
+                    e1=5;
+                    //elementlist.push_back(4);
                 }
 
                 if (event.keyboard.keycode == ALLEGRO_KEY_K) {
-                    elementlist.push_back(5);
+                    e2=e1;
+                    e1=7;
+                    //elementlist.push_back(5);
                 }
 
                 if (event.keyboard.keycode == ALLEGRO_KEY_L) {
-                    elementlist.push_back(6);
+                    e2=e1;
+                    e1=11;
+                    //elementlist.push_back(6);
                 }
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
                 break;

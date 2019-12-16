@@ -2,7 +2,7 @@
 #include <iostream>
 #include <math.h>
 HealZ::HealZ(int start_x, int start_y) 
-            : Zone::Zone(start_x, start_y, 200, 200, false) {
+            : Zone::Zone(start_x, start_y, 200, 200, true) {
     damage = -10;
     sprite = al_load_bitmap("resources/zone.bmp");
 }

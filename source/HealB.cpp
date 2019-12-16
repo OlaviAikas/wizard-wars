@@ -12,9 +12,14 @@ int HealB::get_damage() {
 }
 
 void HealB::draw(int camera_x, int camera_y) {
-    //al_draw_line(float x1, float y1, float x2, float y2,
-   //ALLEGRO_COLOR color, float thickness)
-    
+    int maxdraw = 1000;
+    float vertex_x = x + dir_x * maxdraw - camera_x;
+    float vertex_y = y + dir_y * maxdraw - camera_y;
+    //if(HealB::get_noclip() == true){
+        //vertex_x = player.get_x();
+        //vertex_y = player.get_y();//deal with play thing 
+    //};
+    al_draw_line(x - camera_x, y - camera_y, vertex_x, vertex_y, al_map_rgb_f(0, 1, 1), 10);
 }
 
 void HealB::on_collision(MapObject other) { }

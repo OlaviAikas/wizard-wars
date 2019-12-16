@@ -2,6 +2,9 @@
 #include "MapObject.hpp"
 #include "Spells.hpp"
 #include "Beam.hpp"
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+
 class HealB: public Beam {
     public:
         HealB(int start_x, int start_y, float dir_x, float dir_y);
@@ -15,4 +18,5 @@ class HealB: public Beam {
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
+    
 };

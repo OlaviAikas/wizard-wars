@@ -107,10 +107,12 @@ std::string Map::encode_controlpoint(){
     std::string timetoget = ss.str();      
     to_transmit="1"+owner+"."+timegot+"."+timetoget+"."+number+":";
     }
-    return to_transmit;git 
+    return to_transmit; 
+
 
 
 }
+
 
 std::string Map::encode_spells(){
     std::string to_transmit="";
@@ -128,6 +130,7 @@ std::string Map::encode_spells(){
         std::string desty = ss.str();
         to_transmit="0"+"."+x+"."+y+"."+dir_x+"."+dir_y+":";
 
-}
+    }
+    return to_transmit;
 }
         

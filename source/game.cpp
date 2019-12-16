@@ -12,6 +12,8 @@
 #include "../headers/MapObject.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Button.hpp"
+#include "../headers/HUDobject.hpp"
+#include "../headers/Minimap.hpp"
 #include "../headers/Spells.hpp"
 #include "../headers/Projectile.hpp"
 #include "../headers/Rock.hpp"
@@ -20,6 +22,9 @@
 #include "../headers/FirePellet.hpp"
 #include "../headers/Zone.hpp"
 #include "../headers/HealZone.hpp"
+#include "../headers/HealB.hpp"
+#include "../headers/Beam.hpp"
+
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 
@@ -40,8 +45,8 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     //Load what you need to before the loop:
     void (*changeptr)(short &, short new_state);
     changeptr = change_state;
-    Button<short &, short>* start_game = new Button<short &, short>(840, 500, 240, 60, al_map_rgb(0, 255, 0), changeptr);
-    Button<short &, short>* end_game = new Button<short &, short>(840, 600, 240, 60, al_map_rgb(0, 255, 0), changeptr);
+    Button<short &, short>* start_game = new Button<short &, short>(840, 500, "resources/start_game.bmp", changeptr);
+    Button<short &, short>* end_game = new Button<short &, short>(840, 600, "resources/quit.bmp", changeptr);
 
     while(state == 1) {
     al_wait_for_event(queue, &event);
@@ -93,6 +98,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     }
     //delete what you loaded
     delete start_game;
+    delete end_game;
 }
 
 void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
@@ -105,9 +111,11 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/rockProjectiles.bmp");
     ALLEGRO_BITMAP* ice_sprite = al_load_bitmap("resources/iceProjectiles.bmp");
     Map* map = new Map("resources/map.bmp");
-    map->players.push_back(new Player(400, 400, 1, sprites));
-    map->players.push_back(new Player(100, 100, 2, sprites));
-    map->statics.push_back(new Controlpoint(800, 800, 1, 50, true));
+    Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
+    map->players.push_back(new Player(400, 400, 1, true, "resources/Sprite-0002.bmp"));
+    map->players.push_back(new Player(900, 900, 2, false, "resources/Sprite-0002.bmp"));
+    map->statics.push_back(new MapObject(0, 0, 450, 200, false));
+    map->cp.push_back(new Controlpoint(800, 800, 1, 50, false));
     Camera camera = Camera(0, 0);
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
@@ -221,6 +229,11 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                             map -> spells.push_back(new HealZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
                             break;
                         default:
+
+                       // } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {
+                       //     map -> spells.push_back(new HealZ(event.mouse.x - (*pit)->get_width()/2,event.mouse.y - (*pit)->get_height()/2));
+                     //   } else if (std::count(elementlist.begin(),elementlist.end(),1)==2) {
+                   //         map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
                             std::cout << "No spells associated to this combo of two buttons" << std::endl;
                             break;
                     }
@@ -289,9 +302,6 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
 		        break;
         }
 
-        if(state == 0)
-            break;
-
         if(redraw && al_is_event_queue_empty(queue))
         {
             al_set_target_bitmap(buffer);
@@ -302,7 +312,12 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
 
             map->draw_list(map->players, camera.get_x(), camera.get_y());
 
+            minimap->draw(map->players);
             map->draw_list(map->spells, camera.get_x(), camera.get_y());
+
+            map->draw_list(map->statics, camera.get_x(), camera.get_y());
+
+            map->draw_list(map->cp, camera.get_x(), camera.get_y());
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -317,6 +332,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     }
     //delete what you loaded
     delete map;
+    delete minimap;
 }
 
 void must_init(bool test, const char *description) {
@@ -404,6 +420,7 @@ int main(int argc, char **argv)
 
     }
 
+    al_destroy_bitmap(buffer);
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);

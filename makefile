@@ -5,7 +5,7 @@ vpath %.o objects
 
 # Lists of files to compile
 SRCS := $(wildcard source/*.cpp)
-NAMES := $(SRCS:source/='')
+# NAMES := $(SRCS:source/='')
 HEADERS := $(wildcard headers/*.hpp)
 OBJS := $(patsubst source/%.cpp,objects/%.o,$(SRCS))
 
@@ -23,7 +23,7 @@ PKGCONFIG := `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5
 # 	$(CXX) $(CFLAGS) $< -MM -MT $(@:.d=.o) >$@
 
 # Rules
-ALL: game
+all: game
 
 debug: CFLAGS := -g
 debug: clean game
@@ -56,32 +56,26 @@ clean:
 # 	mv Player.o objects/
 # 	g++ -c source/MapObject.cpp
 # 	mv MapObject.o objects/
+# 	g++ -c source/HUDobject.cpp
+# 	mv HUDobject.o objects/
+# 	g++ -c source/Minimap.cpp
+# 	mv Minimap.o objects/
 # 	g++ -c source/Spells.cpp
 # 	mv Spells.o objects/
 # 	g++ -c source/Rock.cpp
 # 	mv Rock.o objects/
-# 	g++ -c source/Ice.cpp
-# 	mv Ice.o objects/
-# 	g++ -c source/HealP.cpp
-# 	mv HealP.o objects/
 # 	g++ -c source/Projectile.cpp
 # 	mv Projectile.o objects/
-# 	g++ -c source/FirePellet.cpp
-# 	mv FirePellet.o objects/
-# 	g++ -c source/Zone.cpp
-# 	mv Zone.o objects/
-# 	g++ -c source/HealZone.cpp
-# 	mv HealZone.o objects/
 # 	g++ -c source/Controlpoint.cpp
 # 	mv Controlpoint.o objects/
-# 	g++ -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o objects/Spells.o objects/Rock.o objects/Zone.o objects/HealZone.o objects/FirePellet.o objects/Projectile.o objects/Ice.o objects/HealP.o objects/Controlpoint.o `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
-# 
+# 	g++ -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o objects/Spells.o objects/Rock.o objects/Projectile.o objects/Controlpoint.o objects/HUDobject.o objects/Minimap.o `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
+
 # symbols : source/game.cpp source/Map.cpp source/Camera.cpp source/Player.cpp source/MapObject.cpp source/Spells.cpp
 # 	g++ -g -c source/Map.cpp `pkg-config allegro-5 allegro_main-5 allegro_image-5 --libs --cflags`
 # 	g++ -c source/Controlpoint.cpp
 # 	mv Controlpoint.o objects/
 # 	g++ -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o objects/Controlpoint.o `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
-# 
+
 # debug : source/game.cpp source/Map.cpp source/Camera.cpp source/Player.cpp source/MapObject.cpp source/Controlpoint.cpp
 # 	g++ -c -g source/Map.cpp `pkg-config allegro-5 allegro_main-5 allegro_image-5 --libs --cflags`
 # 	mv Map.o objects/
@@ -95,16 +89,12 @@ clean:
 # 	mv Spells.o objects/
 # 	g++ -c -g source/Rock.cpp
 # 	mv Rock.o objects/
-# 	g++ -c -g source/Ice.cpp
-# 	mv Ice.o objects/
-# 	g++ -c -g source/HealP.cpp
-# 	mv HealP.o objects/
 # 	g++ -c -g source/Projectile.cpp
 # 	mv Projectile.o objects/
 # 	g++ -c -g source/Controlpoint.cpp
 # 	mv Controlpoint.o objects/
-# 	g++ -g -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o objects/Spells.o objects/Rock.o objects/Projectile.o objects/Ice.o objects/HealP.o objects/Controlpoint.o `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
-# 
+# 	g++ -g -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o objects/Spells.o objects/Rock.o objects/Projectile.o objects/Controlpoint.o `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
+
 # game : source/game.cpp source/Map.cpp source/Camera.cpp source/Player.cpp source/MapObject.cpp source/Controlpoint.cpp
 # 	g++ -c source/Map.cpp `pkg-config allegro-5 allegro_main-5 allegro_image-5 --libs --cflags`
 # 	mv Map.o objects/
@@ -120,7 +110,7 @@ clean:
 # 	g++ -c source/Controlpoint.cpp
 # 	mv Controlpoint.o objects/
 # 	g++ -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o objects/Controlpoint.o `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
-# 
+
 # verbose : source/game.cpp source/Map.cpp source/Camera.cpp source/Player.cpp source/MapObject.cpp source/Controlpoint.cpp
 # 	g++ -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Werror -Wno-unused -c source/Map.cpp `pkg-config allegro-5 allegro_main-5 allegro_image-5 --libs --cflags`
 # 	mv Map.o objects/
@@ -133,7 +123,6 @@ clean:
 # 	g++ -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Werror -Wno-unused -c source/Controlpoint.cpp
 # 	mv Controlpoint.o objects/
 # 	g++ -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Werror -Wno-unused -o game source/game.cpp objects/Map.o objects/Camera.o objects/MapObject.o objects/Player.o objects/Controlpoint.o `pkg-config allegro-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
-# 
+
 # clean :
 # 	rm -f game objects/*.o
-

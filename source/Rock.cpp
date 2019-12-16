@@ -1,10 +1,16 @@
 #include "../headers/Rock.hpp"
 #include <iostream>
+#include <allegro5/allegro.h>
+
 
 Rock::Rock(int start_x, int start_y, float dir_x, float dir_y) 
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 12, 12, false, 20) {
     damage = 10;
     sprite = al_load_bitmap("resources/rock_projectile.bmp");
+}
+
+Rock::~Rock() {
+    al_destroy_bitmap(sprite);
 }
 
 int Rock::get_damage() {
@@ -17,6 +23,8 @@ void Rock::draw(int camera_x, int camera_y) {
     } else {
         // code for hit animation
         // please set this->garbage_collect to true when you're done
+        al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
+        this->garbage_collect = true;
     }
 }
  

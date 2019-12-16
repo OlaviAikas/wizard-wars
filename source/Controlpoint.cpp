@@ -4,6 +4,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <list>
+#include <allegro5/allegro5.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
 
 Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner) : MapObject(x, y, side, side, true) {
     this->number = number;
@@ -22,16 +25,35 @@ void Controlpoint::set_owner(short newowner) {
     this->owner = newowner;
 }
 
-void Controlpoint::on_collision(Player other){
+void Controlpoint::on_collision(Player &other){
     if (other.get_team()!=owner){
+        is_someone=true;
         timegot+=1;
         if (timegot>=timetoget){
             set_owner(other.get_team());
+            timegot=0;
         }
     }
     else{
         if (timegot>0){
             timegot-=1;
+        }
+    }
+}
+
+void Controlpoint::draw(int camera_x, int camera_y){
+    if (not is_someone && timegot>0){
+        timegot-=1;
+    }
+    is_someone=false;
+    if (timegot!=0){
+        if (owner){
+            al_draw_filled_rectangle(x-50-camera_x, y-5-camera_y,x+50-camera_x,y+5-camera_y, al_map_rgb(255,0,0));
+		    al_draw_filled_rectangle(x-50-camera_x, y-5-camera_y,x-50-camera_x+100*(timegot)/timetoget,y+5-camera_y, al_map_rgb(0,0,255));
+        }
+        else{
+            al_draw_filled_rectangle(x-50-camera_x, y-5-camera_y,x+50-camera_x,y+5-camera_y, al_map_rgb(0,0,255));
+		    al_draw_filled_rectangle(x-50-camera_x, y-5-camera_y,x-50+100*(timegot)/timetoget - camera_x,y+5-camera_y, al_map_rgb(255,0,0));
         }
     }
 }

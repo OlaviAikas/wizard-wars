@@ -1,6 +1,7 @@
 #pragma once
 #include <allegro5/allegro5.h>
 
+
 class MapObject {
     public:
         MapObject(int x, int y, int width, int height, bool noclip);
@@ -16,10 +17,10 @@ class MapObject {
         bool get_noclip() const;
         bool get_garbage_collect() const;        
         bool operator==(const MapObject &other) const;
+        bool operator<=(const MapObject &other) const;
 
     protected:
         bool noclip;
-        
         int x;
         int y;
         int width;

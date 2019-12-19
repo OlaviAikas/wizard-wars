@@ -133,14 +133,14 @@ std::string Map::encode_spells(){
 }
 void Map::transmit_changes(){
     for (std::list<Spells>::iterator i = spells.begin(); i != spells.end(); i++)
-            std::stringstream ss;
+            std::boolstream ss;
             ss << i->get_havechanged(); 
             std::bool spells = ss.bool();
             
     for (std::list<Players>::iterator i = players.begin(); i != players.end(); i++){
-            std::stringstream ss;
+            std::boolstream ss;
             ss << i->get_havechanged(); 
-            std::string players = ss.bool();
+            std::bool players = ss.bool();
 
             } 
 

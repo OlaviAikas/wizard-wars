@@ -12,6 +12,9 @@ Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool
 
 void Spell::draw(int camera_x, int camera_y) { std::cout << "hellods" << std::endl; };
 void Spell::move() { std::cout << "helloms" << std::endl; havechanged = true;};
+bool Spell::get_havechanged(){
+    this->havechanged 
+}
 
 /*
 int Spell::get_damage() {

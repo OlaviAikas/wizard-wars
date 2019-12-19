@@ -93,7 +93,8 @@ void Player::draw(int camera_x, int camera_y) {
     al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
 }
 
+
+
 bool Player::get_havechanged(){
     this->havechanged 
 }
-

@@ -103,5 +103,5 @@ void Player::draw(int camera_x, int camera_y) {
 
 
 bool Player::get_havechanged(){
-    this->havechanged 
+    this->havechanged ;
 }

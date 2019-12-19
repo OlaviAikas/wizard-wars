@@ -34,5 +34,6 @@ void Rock::on_collision(MapObject &other) {
         other.hit(this->get_damage());
         // Set garbage_collect to true iif other is not a Player?
         this->hit_animation = true;
+        this->noclip = true;
     }
 }

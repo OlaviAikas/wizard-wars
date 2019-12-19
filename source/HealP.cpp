@@ -17,7 +17,7 @@ void HealP::draw(int camera_x, int camera_y) {
 }
 
 void HealP::on_collision(MapObject &other) {
-    if (!this->get_garbage_collect() && !this->hit_animation) {
+    if (!this->get_garbage_collect() && !this->hit_animation && !other.get_noclip()) {
         other.hit(this->get_damage());
         // Set garbage_collect to true iif other is not a Player?
         this->hit_animation = true;

@@ -21,6 +21,7 @@ class Player : public MapObject {
 
         int get_dest_x();
         int get_dest_y();
+        bool get_havechanged();
 
         void draw(int camera_x, int camera_y);
 

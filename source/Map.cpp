@@ -133,13 +133,13 @@ std::string Map::encode_spells(){
 }
 void Map::transmit_changes(){
     for (std::list<Spells>::iterator i = spells.begin(); i != spells.end(); i++)
-        if i->git_havechange() is true{
+        if i->git_havechanged()== true{
                 send_message();
             }
             
     for (std::list<Players>::iterator i = players.begin(); i != players.end(); i++){
             std::boolstream ss;
-            if i->git_havechange() is true{
+            if i->git_havechanged()== true{
                 send_message();
                 } 
 

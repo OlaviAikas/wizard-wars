@@ -131,5 +131,19 @@ std::string Map::encode_spells(){
     }
     return to_transmit;
 }
-//std:: string Map::transmit_changes(en)
+void Map::transmit_changes(){
+    for (std::list<Spells>::iterator i = spells.begin(); i != spells.end(); i++)
+            std::stringstream ss;
+            ss << i->get_havechanged(); 
+            std::bool spells = ss.bool();
+            
+    for (std::list<Players>::iterator i = players.begin(); i != players.end(); i++){
+            std::stringstream ss;
+            ss << i->get_havechanged(); 
+            std::string players = ss.bool();
+
+            } 
+
+        }
+}
         

@@ -6,7 +6,7 @@ class Spell : public MapObject {
         Spell(int start_x, int start_y, float dir_x, float dir_y, int width, int height, bool noclip);
         virtual void draw(int camera_x, int camera_y);
         virtual void move();
-
+        bool get_havechange();
     protected:
     float dir_x;
     float dir_y;

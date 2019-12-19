@@ -19,6 +19,8 @@ class Player : public MapObject {
 
         bool get_team();
 
+        bool get_havechanged();
+
         void draw(int camera_x, int camera_y);
 
     private:

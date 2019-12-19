@@ -76,10 +76,27 @@ void Client::listen(){
 
 void Client::onResponse(std::string message){
     std::cout << "The servers response is: " << message << std::endl;
+
+    // modify the game depending on message
+    char identifier = message.front();
+    switch (identifier)
+    {
+    case '0': // Player
+        /* code */
+        break;
+    case '1': // Controlpoint
+        /* code */
+        break;
+    case '2': // Spell
+        /* code */
+        break;
+    case '3': // Gameinfo
+        /* code */
+        break;
+    default:
+        break;
+    }
 }
 
 
-void Client::on_game_start(){
-    
-}
 

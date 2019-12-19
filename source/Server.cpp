@@ -46,16 +46,40 @@ void Server::listen(){
 }
 
 std::string Server::generateResponse(std::string message){
-    if(message.find("Hi, this is Bob") != -1){
-        std::string answer = "Hi Bob ";
-        answer += message.substr(message.length()-2,2);
-        answer += std::string(", this is Aliece");
-        return answer;
-    } else {
-        return std::string("Hi Anonymous, this is Alice.");
+    // if(message.find("Hi, this is Bob") != -1){
+    //     std::string answer = "Hi Bob ";
+    //     answer += message.substr(message.length()-2,2);
+    //     answer += std::string(", this is Aliece");
+    //     return answer;
+    // } else {
+    //     return std::string("Hi Anonymous, this is Alice.");
+    // }
+    std::stringstream ss;
+    ss << "Hi! I am a server's response";
+    int player_number = message.front() - '0';
+    std::vector<std::string> message_blocks;
+    char identifier = message.front();
+    switch (identifier)
+    {
+    case '0': // Player
+        /* code */
+        break;
+    case '1': // Controlpoint
+        /* code */
+        break;
+    case '2': // Spell
+        /* code */
+        break;
+    case '3': // Gameinfo
+        /* code */
+        
+        break;
+    default:
+        break;
     }
+    return ss.str();
 }
 
-void Server::on_game_start(){
-    
+void Server::send_message(std::string s){
+    std::cout << "Server cannot send messages" << std::endl;
 }

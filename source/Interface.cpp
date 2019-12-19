@@ -3,3 +3,7 @@
 Interface::Interface(){
 
 }
+
+void Interface::send_message(std::string s){
+    
+}

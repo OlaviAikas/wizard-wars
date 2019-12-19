@@ -4,7 +4,7 @@
 #include "Projectile.hpp"
 class Rock: public Projectile {
     public:
-        Rock(int start_x, int start_y, float dir_x, float dir_y);
+        Rock(int id, int start_x, int start_y, float dir_x, float dir_y);
 
         int get_damage();
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "MapObject.hpp"
-#include "Map.hpp"
+#include "Player.hpp"
 #include <list>
 
 class Controlpoint : public MapObject {
@@ -14,6 +14,9 @@ class Controlpoint : public MapObject {
         short get_number();
 
         void on_collision(Player other);
+
+        int get_timegot();
+        int get_timetoget();
 
     private:
         bool owner;

@@ -8,6 +8,7 @@
 #include <boost/thread.hpp>
 #include <boost/array.hpp>
 #include "Gamestatus.hpp"
+#include <map>
 using boost::asio::ip::udp;
 class Server : public Interface{
     public:
@@ -22,7 +23,7 @@ class Server : public Interface{
 
 
     // virtual functions of Interface that are overwritten
-    void on_game_start();
+    void send_message(std::string);
 
     protected:
     
@@ -41,5 +42,8 @@ class Server : public Interface{
     boost::thread* listen_thread;
 
     std::string generateResponse(std::string message);
+
+
+    std::map<int,int> connected_players;
 
 };

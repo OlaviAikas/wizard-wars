@@ -4,8 +4,8 @@
 #include <iostream>
 
 
-Projectile::Projectile(int start_x, int start_y, float dir_x, float dir_y, int width, int height, bool noclip, int speed)
-        : Spell( start_x,  start_y,  dir_x,  dir_y, width, height, noclip) {
+Projectile::Projectile(int id, int start_x, int start_y, float dir_x, float dir_y, int width, int height, bool noclip, int speed)
+        : Spell( id ,start_x,  start_y,  dir_x,  dir_y, width, height, noclip) {
     this->speed = speed;
     // this->number = number;
 }

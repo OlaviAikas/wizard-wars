@@ -19,6 +19,7 @@ Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite) : M
     this->sprite = sprite;
     this->havechanged = false;
     this->team = number % 2;
+    this->game_state = 1;
 }
 
 int Player::get_hit_points() {
@@ -40,6 +41,12 @@ void Player::on_collision(MapObject &other) {
     }
 }
 
+int Player::get_dest_x(){
+    return dest_x;
+};
+int Player::get_dest_y(){
+    return dest_y;
+};
 void Player::move() {
 #ifdef DEBUG_MODE
     std::cout << "Moving Player at " << this << std::endl;

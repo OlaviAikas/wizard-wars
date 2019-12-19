@@ -33,14 +33,14 @@ class Client : public Interface {
     void terminate();
     void run();
 
-    // send a string to the server asynchonously -> onResponse gets called on answer
-    void send_string(std::string *msg);
+    
 
     // event handler for arriving messages
     void onResponse(std::string message);
 
     // virtual functions of Interface that are overwritten
-    void on_game_start();
+    // send a string to the server asynchonously -> onResponse gets called on answer
+    void send_string(std::string *msg);
 
     protected:
     

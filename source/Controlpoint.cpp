@@ -1,9 +1,5 @@
 #include "../headers/Controlpoint.hpp"
-#include "../headers/MapObject.hpp"
-#include <cmath>
-#include <iostream>
-#include <cstdlib>
-#include <list>
+
 
 Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner) : MapObject(x, y, side, side, true) {
     this->number = number;
@@ -37,4 +33,10 @@ void Controlpoint::on_collision(Player other){
         }
     }
     this->havechanged = true;
+}
+int Controlpoint::get_timegot(){
+    return timegot;
+}
+int Controlpoint::get_timetoget(){
+    return timetoget;
 }

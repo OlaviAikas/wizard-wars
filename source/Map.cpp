@@ -75,59 +75,56 @@ std::list<Player*>::iterator Map::fetch_pit(short n) {
 }
 
 
-std::string Map::encode_players(){
+std::string Map::encode_player(Player &i){
     std::string to_transmit="";
-    for (std::list<Player>::iterator i = players.begin(); i != players.end(); i++){
-        std::stringstream ss;
-        ss << i->get_number(); //Write the number
-        std::string number = ss.str();
-        ss << i->get_x(); //Write the x
-        std::string x = ss.str();
-        ss << i->get_y(); //Write the y
-        std::string y = ss.str();
-        ss << i->get_destx(); //Write the destx
-        std::string destx = ss.str();
-        ss << i->get_desty(); //Write the desty
-        std::string desty = ss.str();
-        to_transmit="0"+number+"."+x+"."+y+"."+destx+"."+desty+":";
-    }
+    
+    std::stringstream ss;
+    ss << i.get_number(); //Write the number
+    std::string number = ss.str();
+    ss << i.get_x(); //Write the x
+    std::string x = ss.str();
+    ss << i.get_y(); //Write the y
+    std::string y = ss.str();
+    ss << i.get_dest_x(); //Write the destx
+    std::string destx = ss.str();
+    ss << i.get_dest_y(); //Write the desty
+    std::string desty = ss.str();
+    to_transmit="0"+number+"."+x+"."+y+"."+destx+"."+desty+":";
+    
     return to_transmit;
 }
-std::string Map::encode_controlpoint(){
+std::string Map::encode_controlpoint(Controlpoint &i){
     std::string to_transmit="";
-    Controlpoint::Controlpoint i;
     std::stringstream ss;
-    ss << i->get_number();        
+    ss << i.get_number();        
     std::string number = ss.str();
-    ss << i->get_owner();
+    ss << i.get_owner();
     std::string owner = ss.str();
-    ss << i->get_timegot();
+    ss << i.get_timegot();
     std::string timegot = ss.str();
-    ss << i->get_timetoget();
+    ss << i.get_timetoget();
     std::string timetoget = ss.str();      
     to_transmit="1"+owner+"."+timegot+"."+timetoget+"."+number+":";
-    }
-    return to_transmit;git 
+    return to_transmit;
 
 
 }
 
-std::string Map::encode_spells(){
+std::string Map::encode_spell(Spell &i){
     std::string to_transmit="";
-    for (std::list<Spells>::iterator i = spells.begin(); i != spells.end(); i++){
-        std::stringstream ss;
-        //ss << i->get_number(); 
-        //std::string number = ss.str();
-        ss << i->get_x(); 
-        std::string x = ss.str();
-        ss << i->get_y(); 
-        std::string y = ss.str();
-        ss << i->get_dir_x(); 
-        std::string dir_x = ss.str();
-        ss << i->get_desty(); 
-        std::string desty = ss.str();
-        to_transmit="0"+"."+x+"."+y+"."+dir_x+"."+dir_y+":";
-
-}
+    
+    std::stringstream ss;
+    //ss << i->get_number(); 
+    //std::string number = ss.str();
+    ss << i.get_x(); 
+    std::string x = ss.str();
+    ss << i.get_y(); 
+    std::string y = ss.str();
+    ss << i.get_dir_x(); 
+    std::string dir_x = ss.str();
+    ss << i.get_dir_y(); 
+    std::string dir_y = ss.str();
+    to_transmit="2."+x+"."+y+"."+dir_x+"."+dir_y+":";
+    return to_transmit;
 }
         

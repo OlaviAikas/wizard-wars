@@ -6,8 +6,10 @@
 #include "MapObject.hpp"
 #include "Spells.hpp"
 #include "Interface.hpp"
+#include "Controlpoint.hpp"
 #include <boost/algorithm/string.hpp>
 
+#include <sstream>
 
 
 class Map {
@@ -19,9 +21,9 @@ class Map {
 
         void check_collisions();
 
-        std::string encode_players();
-        std::string encode_controlpoint();
-        std::string encode_spells();
+        std::string encode_player(Player &i);
+        std::string encode_controlpoint(Controlpoint &i);
+        std::string encode_spell(Spell &s);
         void decode_players(std::string mes_get);
         void decode_controlpoint(std::string mes_get);
         void decode_spells(std::string mes_get);

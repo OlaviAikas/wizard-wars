@@ -19,6 +19,9 @@ class Player : public MapObject {
 
         bool get_team();
 
+        int get_dest_x();
+        int get_dest_y();
+
         void draw(int camera_x, int camera_y);
 
     private:
@@ -33,5 +36,6 @@ class Player : public MapObject {
         int lastgoodposy;
         bool havechanged;
         bool team;
+        int game_state;
         ALLEGRO_BITMAP* sprite;
 };

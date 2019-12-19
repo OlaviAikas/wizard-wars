@@ -101,10 +101,12 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     short client_number = 1;
     Map* map = new Map("resources/map.bmp");
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
+    map->set_spawnpoints(800, 800, 1000, 1000);
     map->players.push_back(new Player(400, 400, 1, true, "resources/Sprite-0002.bmp"));
     map->players.push_back(new Player(900, 900, 2, false, "resources/Sprite-0002.bmp"));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     map->cp.push_back(new Controlpoint(800, 800, 1, 50, false));
+    map->modif_lives(50, 50);
     Camera camera = Camera(0, 0);
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
@@ -118,6 +120,9 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     bool mouse_south = false;
     
     while (state == 2) {
+        if (map->get_lives()[0]==0 || map->get_lives()[1]==0){
+            state=0;
+        }
         al_wait_for_event(queue, &event);
 
         switch(event.type)
@@ -184,6 +189,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;                
                 frameNumber++;
 #endif
+                map->check_dead();
                 map->garbage_collect();
                 redraw = true;
                 break;

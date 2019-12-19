@@ -4,6 +4,7 @@
 #include <list>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include <iostream>
 
 Map::Map(const char* name) {
     this->map = al_load_bitmap(name);
@@ -24,6 +25,39 @@ Map::~Map() {
 
 void Map::draw_map(int camera_x, int camera_y) {
     al_draw_bitmap_region(map, camera_x, camera_y, 1920, 1080, 0, 0, 0);
+}
+
+int* Map::get_lives(){
+    return this->lives;
+}
+
+void Map::set_spawnpoints(int x1, int y1, int x2, int y2){
+    spawnpoint1[0] = x1;
+    spawnpoint1[1] = y1;
+    spawnpoint2[0] = x2;
+    spawnpoint2[1] = y2;
+}
+
+void Map::modif_lives(int lives1, int lives2){
+    lives[0]=lives1;
+    lives[1]=lives2;
+}
+
+void Map::check_dead(){
+    for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
+        if (((*i)->get_hit_points()<=0)&&((*i)->get_noclip()==false)){
+            int* spawn;
+            if ((*i)->get_team()){
+                this->lives[0]-=1;
+                spawn = this->spawnpoint1;
+            }
+            else{
+                this->lives[1]-=1;
+                spawn = this->spawnpoint2;
+            }
+            (*i)->die(spawn);
+        }
+    }
 }
 
 void Map::check_collisions() {

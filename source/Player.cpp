@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <list>
-#define BASE_HEALTH 20
+#define BASE_HEALTH 50
 #include <allegro5/allegro.h>
 
 Player::Player(int start_x, int start_y, int number, bool team, const char* sprite_name) : MapObject(start_x, start_y, 64, 64, false) {
@@ -37,19 +37,23 @@ bool Player::get_team() {
 }
 
 void Player::hit(int amount) {
-    if (amount >= hit_points) {
-        hit_points = 0;
-        std::cout << "The player at " << this << " is really dead" << std::endl;
-    } else {
-        hit_points -= amount;
-        std::cout << "New HP " << hit_points << std::endl;
+    hit_points -= amount;
+    std::cout << "New HP " << hit_points << std::endl;
+    if (hit_points<0){
+        hit_points=0;
     }
 }
 
-void Player::die() {
+void Player::die(int* spawn) {
     // potentially only if server
-    // teleport_to(spawn_point)
-    // set_health_to(BASE_HEALTH)
+    set_x(*spawn);
+    set_y(*(spawn++));
+    this->dest_x=this->x;
+    this->dest_y=this->y;
+    this->old_x=this->x;
+    this->old_y=this->y;
+    this->time=0;
+    this->noclip=true;
 }
 
 void Player::on_collision(MapObject &other) {
@@ -107,5 +111,14 @@ void Player::set_dest(int dest_x, int dest_y) {
 }
 
 void Player::draw(int camera_x, int camera_y) {
-    al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
+    if (this->hit_points>0){
+        al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
+    }
+    else{ //Do the counter for respawn and respawn when time
+        time+=1;
+        if (time>=120){
+            this->noclip=false;
+            this->hit_points=BASE_HEALTH;
+        }
+    }
 }

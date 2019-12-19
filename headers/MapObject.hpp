@@ -11,6 +11,8 @@ class MapObject {
 
         int get_x() const;
         int get_y() const;
+        void set_x(int x);
+        void set_y(int y);
         int get_width() const;
         int get_height() const;
         bool get_noclip() const;

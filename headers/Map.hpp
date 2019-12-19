@@ -15,6 +15,10 @@ class Map {
 
         void check_collisions();
         void garbage_collect();
+        int* get_lives();
+        void modif_lives(int lives1, int lives2);
+        void check_dead();
+        void set_spawnpoints(int x1, int y1, int x2, int y2);
 
         std::list<Player*> players;
         std::list<Spell*> spells;
@@ -52,4 +56,7 @@ class Map {
        // still not sure: std::list<Spell>::iterator fetch_spit(short n);
     private:
         ALLEGRO_BITMAP* map;
+        int lives[2];
+        int spawnpoint1[2];
+        int spawnpoint2[2];
 };

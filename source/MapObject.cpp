@@ -15,6 +15,14 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
 
 void MapObject::move() { std::cout << "momove" << std::endl; };
 
+void MapObject::set_x(int x) {
+    this->x=x;
+}
+
+void MapObject::set_y(int y) {
+    this->y=y;
+}
+
 int MapObject::get_x() const {
     return x;
 }

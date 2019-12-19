@@ -18,7 +18,7 @@ class Player : public MapObject {
         
         int get_hit_points();
         void hit(const int amount); // Reduce hp by amount without overflow
-        void die(); // Will probably respawn the player, awatining decisions
+        void die(int* spawn); // Will probably respawn the player, awatining decisions
 
         bool get_team();
 
@@ -31,9 +31,10 @@ class Player : public MapObject {
         int old_y;
         int dest_x;
         int dest_y;
-        int hit_points;
+        int hit_points=50;
         int lastgoodposx;
         int lastgoodposy;
         bool team;
+        int time;
         ALLEGRO_BITMAP* sprite;
 };

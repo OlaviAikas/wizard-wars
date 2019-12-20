@@ -17,6 +17,7 @@ class Controlpoint : public MapObject {
 
         int get_timegot();
         int get_timetoget();
+        bool get_havechanged();
 
     private:
         bool owner;

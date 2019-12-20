@@ -7,6 +7,10 @@ Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner) : Map
     this->havechanged = false;
 }
 
+bool Controlpoint::get_havechanged(){
+    this->havechanged;
+}
+
 short Controlpoint::get_number() {
     return this->number;
 }

@@ -11,7 +11,7 @@ class Spell : public MapObject {
     float get_dir_y();
     int get_id();
 
-        bool get_havechanged();
+    bool get_havechanged();
     protected:
     int id;
     float dir_x;

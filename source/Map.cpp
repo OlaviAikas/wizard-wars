@@ -90,7 +90,7 @@ std::string Map::encode_player(Player &i){
     ss << i.get_dest_y(); //Write the desty
     std::string desty = ss.str();
     to_transmit="0."+number+"."+x+"."+y+"."+destx+"."+desty+".:";
-    
+    i.reset_havechanged();
     return to_transmit;
 }
 std::string Map::encode_controlpoint(Controlpoint &i){
@@ -104,7 +104,8 @@ std::string Map::encode_controlpoint(Controlpoint &i){
     std::string timegot = ss.str();
     ss << i.get_timetoget();
     std::string timetoget = ss.str();      
-    to_transmit="1."+owner+"."+timegot+"."+timetoget+"."+number+".:";
+    to_transmit="1."+number+'.'+owner+"."+timegot+"."+timetoget+".:";
+    i.reset_havechanged();
     return to_transmit;
 }
 
@@ -123,6 +124,54 @@ std::string Map::encode_spell(Spell &i){
     ss << i.get_dir_y(); 
     std::string dir_y = ss.str();
     to_transmit="2."+x+"."+y+"."+dir_x+"."+dir_y+".:";
+    i.reset_havechanged();
     return to_transmit;
 }
-        
+
+void Map::decode_message(std::string mes_get){
+    std::vector<std::string> mes;
+    boost::split(mes, mes_get, boost::is_any_of("."));
+    if(std::stoi(mes[0])==0){
+        Map::decode_players(mes_get);
+    }
+    if(std::stoi(mes[0])==1){
+        Map::decode_controlpoints(mes_get);
+    }
+    if(std::stoi(mes[0])==2){
+        Map::decode_spells(mes_get);
+    }
+}
+
+void Map::decode_players(std::string mes_get){
+    std::vector<std::string> mes;
+    boost::split(mes, mes_get, boost::is_any_of("."));
+    for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
+        if ((*i)->get_number()==std::stoi(mes[1])){
+
+            (*i)->change_x(std::stoi(mes[2]));
+            (*i)->change_y(std::stoi(mes[3]));
+            (*i)->change_destx(std::stoi(mes[4]));
+            (*i)->change_desty(std::stoi(mes[5]));
+            (*i)->reset_havechanged();
+        }
+    }
+}
+
+void Map::decode_controlpoints(std::string mes_get){
+    std::vector<std::string> mes;
+    boost::split(mes, mes_get, boost::is_any_of("."));
+    for (std::list<Controlpoint*>::iterator i = controlpoints.begin(); i != controlpoints.end(); i++) {
+        if ((*i)->get_number()==std::stoi(mes[1])){
+            (*i)->change_owner(std::stoi(mes[2]));
+            (*i)->change_tgot(std::stoi(mes[3]));
+            (*i)->change_ttoget(std::stoi(mes[4]));
+            (*i)->reset_havechanged();
+        }
+    }
+}
+
+void Map::decode_spells(std::string mes_get){
+    std::vector<std::string> mes;
+    boost::split(mes, mes_get, boost::is_any_of("."));
+//not sure what changes in spell class mean; spells don't have number to identify and iterate
+} 

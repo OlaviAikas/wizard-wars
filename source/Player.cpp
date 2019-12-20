@@ -40,13 +40,31 @@ void Player::on_collision(MapObject &other) {
         dest_y=lastgoodposy;
     }
 }
-
+int Player::get_x(){
+    return lastgoodposx;
+}
+int Player::get_y(){
+    return lastgoodposy;
+}
 int Player::get_dest_x(){
     return dest_x;
 };
 int Player::get_dest_y(){
     return dest_y;
 };
+void Player::change_x(int x){
+    this->lastgoodposx=x;
+}
+void Player::change_y(int y){
+    this->lastgoodposy=y;
+}
+void Player::change_destx(int destx){
+    this->dest_x=destx;
+}
+void Player::change_desty(int desty){
+    this->dest_y=desty;
+}
+
 void Player::move() {
 #ifdef DEBUG_MODE
     std::cout << "Moving Player at " << this << std::endl;
@@ -100,8 +118,10 @@ void Player::draw(int camera_x, int camera_y) {
     al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
 }
 
-
-
 bool Player::get_havechanged(){
     this->havechanged ;
+}
+
+void Player::reset_havechanged(){
+    this->havechanged=false;
 }

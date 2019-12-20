@@ -12,6 +12,7 @@ class Spell : public MapObject {
     int get_id();
 
     bool get_havechanged();
+    void reset_havechanged();
     protected:
     int id;
     float dir_x;

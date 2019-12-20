@@ -10,6 +10,9 @@ Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner) : Map
 bool Controlpoint::get_havechanged(){
     this->havechanged;
 }
+void Controlpoint::reset_havechanged(){
+    this->havechanged=false;
+}
 
 short Controlpoint::get_number() {
     return this->number;
@@ -17,6 +20,10 @@ short Controlpoint::get_number() {
 
 bool Controlpoint::get_owner() {
     return this->owner;
+}
+
+void Controlpoint::change_owner(bool updated){
+    this->owner=updated;
 }
 
 void Controlpoint::set_owner(short newowner) {
@@ -43,4 +50,10 @@ int Controlpoint::get_timegot(){
 }
 int Controlpoint::get_timetoget(){
     return timetoget;
+}
+void Controlpoint::change_tgot(int tgot){
+    this->timegot=tgot;
+}
+void Controlpoint::change_ttoget(int ttoget){
+    this->timetoget=ttoget;
 }

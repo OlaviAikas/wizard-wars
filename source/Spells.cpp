@@ -18,6 +18,10 @@ bool Spell::get_havechanged(){
     this->havechanged ;
 }
 
+void Spell::reset_havechanged(){
+    this->havechanged=false;
+}
+
 float Spell::get_dir_x(){
     return dir_x;
 }

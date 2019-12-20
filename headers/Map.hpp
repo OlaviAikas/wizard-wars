@@ -8,7 +8,7 @@
 #include "Interface.hpp"
 #include "Controlpoint.hpp"
 #include <boost/algorithm/string.hpp>
-
+#include <vector>
 #include <sstream>
 
 
@@ -24,12 +24,15 @@ class Map {
         std::string encode_player(Player &i);
         std::string encode_controlpoint(Controlpoint &i);
         std::string encode_spell(Spell &s);
+    
         void decode_players(std::string mes_get);
-        void decode_controlpoint(std::string mes_get);
+        void decode_controlpoints(std::string mes_get);
         void decode_spells(std::string mes_get);
+        void decode_message(std::string mes_get);
 
         std::list<Player*> players;
         std::list<Spell*> spells;
+        std::list<Controlpoint*> controlpoints;
         std::list<MapObject*> statics;
 
         template <typename T> void draw_list(std::list<T> &list, int camera_x, int camera_y) {

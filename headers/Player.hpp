@@ -19,9 +19,17 @@ class Player : public MapObject {
 
         bool get_team();
 
+        int get_x();
+        int get_y();    
         int get_dest_x();
         int get_dest_y();
+        void change_x(int x);
+        void change_y(int y);
+        void change_destx(int destx);
+        void change_desty(int desty);
+    
         bool get_havechanged();
+        void reset_havechanged();
 
         void draw(int camera_x, int camera_y);
 

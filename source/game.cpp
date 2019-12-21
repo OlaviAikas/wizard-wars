@@ -209,24 +209,31 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     double dy = (event.mouse.y / sy + camera.get_y()) - ((*pit)->get_y() + (*pit)->get_height()/2);
                     double dx = (event.mouse.x / sx + camera.get_x()) - ((*pit)->get_x() + (*pit)->get_width()/2);
                     double norm = sqrt(dy*dy + dx*dx);
+                    double dx1=dx;
+                    double dy1=dy;
                     dy = dy/norm;
                     dx = dx/norm;
                     // std::cout << e1*e2;
                     switch(e1*e2) {
-                        case 121: // 11*11 L+L
+                        case 121: // 11*11 L+L Rock+Rock
                             map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
                             break;
-                        case 49: // 7*7 K+K
+                        case 49: // 7*7 K+K Ice+Ice
                             map -> spells.push_back(new Ice((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
                             break;
-                        case 7: // 7*1 K+U
+                        case 7: // 7*1 K+U Ice+Life
                             map -> spells.push_back(new HealP((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
                             break;
-                        case 33: // 11*3 L+O
+                        case 33: // 11*3 L+O Rock+Fire
                             map -> spells.push_back(new FireP((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
                             break;
-                        case 2: // 2*1 I+U
+                        case 2: // 2*1 I+U Shield+Life
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
                             map -> spells.push_back(new HealZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            }
+                            else {
+                            map -> spells.push_back(new HealZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            }
                             break;
                         default:
 
@@ -252,38 +259,38 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
 
             case ALLEGRO_EVENT_KEY_DOWN:
-                if (event.keyboard.keycode == ALLEGRO_KEY_U) {
+                if (event.keyboard.keycode == ALLEGRO_KEY_U) {//life
                     e2=e1;
                     e1=1;
                     
                     //elementlist.push_back(1);
                 }
 
-                if (event.keyboard.keycode == ALLEGRO_KEY_I) {
+                if (event.keyboard.keycode == ALLEGRO_KEY_I) {//shield
                     e2=e1;
                     e1=2;
                     //elementlist.push_back(2);
                 }
 
-                if (event.keyboard.keycode == ALLEGRO_KEY_O) {
+                if (event.keyboard.keycode == ALLEGRO_KEY_O) {//fire
                     e2=e1;
                     e1=3;
                     //elementlist.push_back(3);
                 }
 
-                if (event.keyboard.keycode == ALLEGRO_KEY_J) {
+                if (event.keyboard.keycode == ALLEGRO_KEY_J) {//water
                     e2=e1;
                     e1=5;
                     //elementlist.push_back(4);
                 }
 
-                if (event.keyboard.keycode == ALLEGRO_KEY_K) {
+                if (event.keyboard.keycode == ALLEGRO_KEY_K) {//ice
                     e2=e1;
                     e1=7;
                     //elementlist.push_back(5);
                 }
 
-                if (event.keyboard.keycode == ALLEGRO_KEY_L) {
+                if (event.keyboard.keycode == ALLEGRO_KEY_L) {//rock
                     e2=e1;
                     e1=11;
                     //elementlist.push_back(6);

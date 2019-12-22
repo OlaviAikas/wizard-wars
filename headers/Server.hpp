@@ -35,8 +35,6 @@ class Server : public Interface{
     enum { max_length = 1024 };
     char data_[max_length];
 
-    Gamestatus *game_status;
-
     short port;
 
     boost::thread* listen_thread;

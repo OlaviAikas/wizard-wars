@@ -6,6 +6,7 @@ class Gamestatus {
     Gamestatus(short gs, Map* m);
     short game_state;
     Map* map;
+    int* playerNumber;
     protected:
     private:
 };

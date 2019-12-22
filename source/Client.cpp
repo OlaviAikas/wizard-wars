@@ -75,26 +75,33 @@ void Client::listen(){
 }
 
 void Client::onResponse(std::string message){
-    std::cout << "The servers response is: " << message << std::endl;
-
-    // modify the game depending on message
-    char identifier = message.front();
-    switch (identifier)
-    {
-    case '0': // Player
-        /* code */
-        break;
-    case '1': // Controlpoint
-        /* code */
-        break;
-    case '2': // Spell
-        /* code */
-        break;
-    case '3': // Gameinfo
-        /* code */
-        break;
-    default:
-        break;
+    std::stringstream ss;
+    ss << *(game_status->playerNumber);
+    int player_number = message.front() - '0';
+    message.erase(0,1); // remove the player number from the beginning
+    std::vector<std::string> message_blocks = std::split(message, ':');
+    for(std::vector<std::string>::iterator m = message_blocks.begin(); m != message_blocks.end(); ++m) {
+        if(m->size() == 0) continue;
+        char identifier = m->front();
+        switch (identifier)
+        {
+        case '0': // Player
+            game_status->map->update_player(*m);
+            break;
+        case '1': // Controlpoint
+            game_status->map->update_controlpoint(*m);
+            break;
+        case '2': // Spell
+            game_status->map->update_spell(*m);
+            break;
+        case '3': // Gameinfo
+            if((*m).c_str()[1] == '0'){ // client registered successfully + received playerNumber
+                *(game_status->playerNumber) = m->c_str()[2] - '0';
+            }
+            break;
+        default:
+            break;
+        }
     }
 }
 

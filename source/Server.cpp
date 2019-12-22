@@ -55,27 +55,51 @@ std::string Server::generateResponse(std::string message){
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
     std::stringstream ss;
-    ss << "Hi! I am a server's response";
+    ss << *(game_status->playerNumber);
     int player_number = message.front() - '0';
-    std::vector<std::string> message_blocks;
-    char identifier = message.front();
-    switch (identifier)
-    {
-    case '0': // Player
-        /* code */
-        break;
-    case '1': // Controlpoint
-        /* code */
-        break;
-    case '2': // Spell
-        /* code */
-        break;
-    case '3': // Gameinfo
-        /* code */
-        
-        break;
-    default:
-        break;
+    message.erase(0,1); // remove the player number from the beginning
+    std::vector<std::string> message_blocks = std::split(message, ':');
+    for(std::vector<std::string>::iterator m = message_blocks.begin(); m != message_blocks.end(); ++m) {
+        if(m->size() == 0) continue;
+        char identifier = m->front();
+        switch (identifier)
+        {
+        case '0': // Player
+            std::vector<std::string> mes;
+            boost::split(mes, *m, boost::is_any_of("."));
+            bool exists = false;
+            for (std::list<Player*>::iterator i = game_status->map.players.begin(); i != players.end(); i++) {
+                if (player_number==std::stoi(mes[1])){
+                    (*i)->change_x(std::stoi(mes[2]));
+                    (*i)->change_y(std::stoi(mes[3]));
+                    (*i)->change_destx(std::stoi(mes[4]));
+                    (*i)->change_desty(std::stoi(mes[5]));
+                    (*i)->reset_havechanged();
+                    exists = true;
+                    break;
+                }
+            }
+            // player does not exist yet -> add new player
+            if(!exists){
+                game_status->map.players.push_back(new Player(std::stoi(mes[2]), std::stoi(mes[3]), std::stoi(mes[1])));
+            }
+            break;
+        case '1': // Controlpoint
+            
+            break;
+        case '2': // Spell
+            // todo -> add spells that do not exist yet
+            break;
+        case '3': // Gameinfo
+            if(m->c_str()[1] == '0'){ // client registers and requests number
+                int newPlayerNumber = connected_players.size() + 1;
+                connected_players.put(newPlayerNumber, 0);
+                ss << "3" << "0" << newPlayerNumber;
+            }
+            break;
+        default:
+            break;
+        }
     }
     return ss.str();
 }

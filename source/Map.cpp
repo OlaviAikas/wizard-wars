@@ -128,36 +128,39 @@ std::string Map::encode_spell(Spell &i){
     return to_transmit;
 }
 
-void Map::decode_message(std::string mes_get){
+void Map::update_with_message(std::string mes_get){
     std::vector<std::string> mes;
     boost::split(mes, mes_get, boost::is_any_of("."));
     if(std::stoi(mes[0])==0){
-        Map::decode_players(mes_get);
+        Map::update_player(mes_get);
     }
     if(std::stoi(mes[0])==1){
-        Map::decode_controlpoints(mes_get);
+        Map::update_controlpoint(mes_get);
     }
     if(std::stoi(mes[0])==2){
-        Map::decode_spells(mes_get);
+        Map::update_spell(mes_get);
     }
 }
 
-void Map::decode_players(std::string mes_get){
+void Map::update_player(std::string mes_get){
     std::vector<std::string> mes;
     boost::split(mes, mes_get, boost::is_any_of("."));
     for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
-        if ((*i)->get_number()==std::stoi(mes[1])){
-
+        if ((*i)->get_number()==std::stoi(mes[1]) && (*i)->get_number() != *(interface->game_status->playerNumber)){
             (*i)->change_x(std::stoi(mes[2]));
             (*i)->change_y(std::stoi(mes[3]));
             (*i)->change_destx(std::stoi(mes[4]));
             (*i)->change_desty(std::stoi(mes[5]));
             (*i)->reset_havechanged();
+            return;
         }
     }
+    // player does not exist yet -> add new player
+    
+    players.push_back(new Player(std::stoi(mes[2]), std::stoi(mes[3]), std::stoi(mes[1])));
 }
 
-void Map::decode_controlpoints(std::string mes_get){
+void Map::update_controlpoint(std::string mes_get){
     std::vector<std::string> mes;
     boost::split(mes, mes_get, boost::is_any_of("."));
     for (std::list<Controlpoint*>::iterator i = controlpoints.begin(); i != controlpoints.end(); i++) {
@@ -166,12 +169,37 @@ void Map::decode_controlpoints(std::string mes_get){
             (*i)->change_tgot(std::stoi(mes[3]));
             (*i)->change_ttoget(std::stoi(mes[4]));
             (*i)->reset_havechanged();
+            return;
         }
     }
+    // controlpoint does not exist yet -> add?
+    std::cout << "error: controlpoint does not exist" << std::endl;
 }
 
-void Map::decode_spells(std::string mes_get){
+void Map::update_spell(std::string mes_get){
     std::vector<std::string> mes;
     boost::split(mes, mes_get, boost::is_any_of("."));
+    // todo -> implement spell id + add spell if neccessary (identify spell type with id?) + update position of all spells
+    
 //not sure what changes in spell class mean; spells don't have number to identify and iterate
 } 
+
+void Map::transmit_changes(){
+    std::stringstream ss;
+    for (std::list<Controlpoint*>::iterator i = controlpoints.begin(); i != controlpoints.end(); i++) {
+        if(i->get_havechanged()){
+            ss << encode_controlpoint(*i);
+        }
+    }
+    for (std::list<Spell*>::iterator i = spells.begin(); i != spells.end(); i++) {
+        if(i->get_havechanged()){
+            ss << encode_spell(*i);
+        }
+    }        
+    for (std::list<Player*>::iterator j = std::next(i,1); j != players.end(); j++) {
+        if(i->get_havechanged()){
+            ss << encode_player(*i);
+        }
+    }
+    interface->send_message(ss.str());
+}

@@ -45,7 +45,6 @@ class Client : public Interface {
     protected:
     
     private:
-    Gamestatus *game_status;
 
     boost::asio::io_service& io_service_; 
     udp::socket socket_; 

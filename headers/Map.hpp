@@ -25,10 +25,12 @@ class Map {
         std::string encode_controlpoint(Controlpoint &i);
         std::string encode_spell(Spell &s);
     
-        void decode_players(std::string mes_get);
-        void decode_controlpoints(std::string mes_get);
-        void decode_spells(std::string mes_get);
-        void decode_message(std::string mes_get);
+        void update_player(std::string mes_get);
+        void update_controlpoint(std::string mes_get);
+        void update_spell(std::string mes_get);
+        void update_with_message(std::string mes_get);
+
+        void transmit_changes();
 
         std::list<Player*> players;
         std::list<Spell*> spells;

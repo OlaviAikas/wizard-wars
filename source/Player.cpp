@@ -9,7 +9,8 @@
 #define BASE_HEALTH 20
 #include <allegro5/allegro.h>
 
-Player::Player(int start_x, int start_y, int number, ALLEGRO_BITMAP* sprite) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, int number) : MapObject(start_x, start_y, 64, 64, false) {
+    this->sprite = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->number = number;

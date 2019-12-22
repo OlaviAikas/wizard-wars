@@ -1,4 +1,5 @@
 #pragma once
+#include "Gamestatus.hpp"
 #include "Interface.hpp"
 #include <cstdlib>
 #include <iostream>
@@ -7,7 +8,6 @@
 #include "Map.hpp"
 #include <boost/thread.hpp>
 #include <boost/array.hpp>
-#include "Gamestatus.hpp"
 #include <map>
 using boost::asio::ip::udp;
 class Server : public Interface{

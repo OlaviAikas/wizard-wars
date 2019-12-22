@@ -2,10 +2,10 @@
 #include <string>
 #include <allegro5/allegro.h>
 #include <list>
+#include "Interface.hpp"
 #include "Player.hpp"
 #include "MapObject.hpp"
 #include "Spells.hpp"
-#include "Interface.hpp"
 #include "Controlpoint.hpp"
 #include <boost/algorithm/string.hpp>
 #include <vector>

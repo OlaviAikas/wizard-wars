@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <list>
 #include <iostream>
-#include <cstdlib>
 #include "../headers/Map.hpp"
 #include "../headers/Camera.hpp"
 #include "../headers/MapObject.hpp"
@@ -107,10 +106,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     //Load what you need to load
     
     short client_number = 1;
+    ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
     ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/Projectile.bmp");
     Map* map = new Map("resources/map.bmp", &interface);
-    
-    map->players.push_back(new Player(900, 900, *(game_status->playerNumber), sprites));
+    map->players.push_back(new Player(400, 400, 1, true, sprites));
+    map->players.push_back(new Player(900, 900, 2,  sprites));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     map->statics.push_back(new Controlpoint(800, 800, 1, 50, true));
     game_status->map = map;
@@ -128,13 +128,10 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     bool mouse_north = false;
     bool mouse_south = false;
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
-    int frameCounter = 0;
-    int updateInterval = 10;
+    
     while (game_status->game_state == 2) {
-        if(frameCounter%updateInterval == 0){
-            map->transmit_changes();
-        }
         al_wait_for_event(queue, &event);
+
         switch(event.type)
         {
             case ALLEGRO_EVENT_TIMER:
@@ -264,8 +261,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 
             redraw = false;
         }
-
-        frameCounter++;
     }
     //delete what you loaded
     delete map;
@@ -281,7 +276,7 @@ void must_init(bool test, const char *description) {
 
 void change_state(short & state, short new_state) {
     state = new_state;
-}
+}ter
 
 int main(int argc, char **argv)
 {
@@ -328,9 +323,8 @@ int main(int argc, char **argv)
     al_register_event_source(queue, al_get_timer_event_source(timer));
     al_register_event_source(queue, al_get_mouse_event_source());
 
-    int playerNumber = -1;
 
-    Gamestatus game_status(/*game_state*/ 1, /*map pointer*/0, &playerNumber);
+    Gamestatus game_status(/*game_state*/ 1, /*map pointer*/0);
 
     /*
     Game state states:
@@ -339,6 +333,7 @@ int main(int argc, char **argv)
     2 => game loop
     3 => settings?
     4 => ??? Profit??????
+    5 => wait until other players are ready
     */
     bool redraw = true;
     ALLEGRO_EVENT event;
@@ -346,30 +341,20 @@ int main(int argc, char **argv)
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
 
-    
 
-    bool isServer = std::stoi(argv[1]);
+    bool isServer = true;
     boost::asio::io_service io_service;
     Interface interface;
     if(isServer){
-        playerNumber = 0;
         interface = Server(io_service, 13, &game_status);
     } else {
         interface = Client(io_service, "localhost", "13", &game_status);
-
-        // request connection and player number;
-        // 9 => Dummy player number
-        // 3 => game info
-        // 0 => register and request player number
-        interface.send_message(std::string("930"));
     }
     
-    // block the game until the player is registered
-    while(playerNumber < 0)
-        ;
 
-    
+
     al_start_timer(timer);
+
     while (game_status.game_state != 0) {
         if (game_status.game_state == 1) {
             main_menu_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
@@ -380,6 +365,7 @@ int main(int argc, char **argv)
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
                      scaleY, scaleW, scaleH, sx, sy, interface);
         }
+
     }
 
     al_destroy_display(disp);

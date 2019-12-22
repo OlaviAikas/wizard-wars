@@ -58,17 +58,20 @@ std::string Server::generateResponse(std::string message){
     ss << *(game_status->playerNumber);
     int player_number = message.front() - '0';
     message.erase(0,1); // remove the player number from the beginning
-    std::vector<std::string> message_blocks = std::split(message, ':');
+    std::vector<std::string> message_blocks;
+    boost::split(message_blocks, message, boost::is_any_of(":"));
     for(std::vector<std::string>::iterator m = message_blocks.begin(); m != message_blocks.end(); ++m) {
         if(m->size() == 0) continue;
         char identifier = m->front();
+        std::vector<std::string> mes;
+        bool exists = false;
         switch (identifier)
         {
         case '0': // Player
-            std::vector<std::string> mes;
+            
             boost::split(mes, *m, boost::is_any_of("."));
-            bool exists = false;
-            for (std::list<Player*>::iterator i = game_status->map.players.begin(); i != players.end(); i++) {
+            
+            for (std::list<Player*>::iterator i = game_status->map->players.begin(); i != game_status->map->players.end(); i++) {
                 if (player_number==std::stoi(mes[1])){
                     (*i)->change_x(std::stoi(mes[2]));
                     (*i)->change_y(std::stoi(mes[3]));
@@ -81,7 +84,7 @@ std::string Server::generateResponse(std::string message){
             }
             // player does not exist yet -> add new player
             if(!exists){
-                game_status->map.players.push_back(new Player(std::stoi(mes[2]), std::stoi(mes[3]), std::stoi(mes[1])));
+                game_status->map->players.push_back(new Player(std::stoi(mes[2]), std::stoi(mes[3]), std::stoi(mes[1])));
             }
             break;
         case '1': // Controlpoint
@@ -92,9 +95,8 @@ std::string Server::generateResponse(std::string message){
             break;
         case '3': // Gameinfo
             if(m->c_str()[1] == '0'){ // client registers and requests number
-                int newPlayerNumber = connected_players.size() + 1;
-                connected_players.put(newPlayerNumber, 0);
-                ss << "3" << "0" << newPlayerNumber;
+                connected_players.insert(std::pair<int,int>(connected_players.size() + 1, 0));
+                ss << "3" << "0" << connected_players.size() + 1;
             }
             break;
         default:

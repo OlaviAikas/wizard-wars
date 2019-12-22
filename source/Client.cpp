@@ -79,7 +79,8 @@ void Client::onResponse(std::string message){
     ss << *(game_status->playerNumber);
     int player_number = message.front() - '0';
     message.erase(0,1); // remove the player number from the beginning
-    std::vector<std::string> message_blocks = std::split(message, ':');
+    std::vector<std::string> message_blocks;
+    boost::split(message_blocks, message, boost::is_any_of("."));
     for(std::vector<std::string>::iterator m = message_blocks.begin(); m != message_blocks.end(); ++m) {
         if(m->size() == 0) continue;
         char identifier = m->front();

@@ -1,5 +1,6 @@
 #include "../headers/HealB.hpp"
 #include <iostream>
+#include <math.h>
 
 HealB::HealB(int start_x, int start_y, float dir_x, float dir_y) 
             : Beam::Beam(start_x, start_y, dir_x, dir_y, 2, 50, false) {
@@ -19,9 +20,9 @@ void HealB::draw(int camera_x, int camera_y) {
         //vertex_x = player.get_x();
         //vertex_y = player.get_y();//deal with play thing 
     //};
-    al_draw_line(x - camera_x, y - camera_y, vertex_x, vertex_y, al_map_rgb_f(0, 1, 1), 10);
+    float angle = atan(vertex_y/vertex_x);
+    al_draw_scaled_rotated_bitmap(this->sprite, 1, 1, x - camera_x, y - camera_y, 200, maxdraw, angle, 0);
 }
 
 void HealB::on_collision(MapObject &other) {
-    
 }

@@ -4,6 +4,7 @@
 #include "Beam.hpp"
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro.h>
 
 class HealB: public Beam {
     public:

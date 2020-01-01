@@ -48,7 +48,7 @@ std::string Server::generateResponse(std::string message){
     if(message.find("Hi, this is Bob") != -1){
         std::string answer = "Hi Bob ";
         answer += message.substr(message.length()-2,2);
-        answer += std::string(", this is Aliece");
+        answer += std::string(", this is Alice");
         return answer;
     } else {
         return std::string("Hi Anonymous, this is Alice.");

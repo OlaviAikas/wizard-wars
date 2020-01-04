@@ -1,6 +1,6 @@
 #pragma once
 #include "MapObject.hpp"
-#include "Map.hpp"
+#include "Player.hpp"
 #include <list>
 
 class Controlpoint : public MapObject {
@@ -13,11 +13,14 @@ class Controlpoint : public MapObject {
 
         short get_number();
 
-        void on_collision(Player other);
+        virtual void on_collision(Player &other);
+
+        void draw(int camera_x, int camera_y);
 
     private:
         bool owner;
         int timegot=0;
         int timetoget=450;
         int number;
+        int is_someone=false;
 };

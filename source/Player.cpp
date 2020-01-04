@@ -8,10 +8,10 @@
 #include <list>
 #include <allegro5/allegro.h>
 
-Player::Player(int start_x, int start_y, int number) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, int team) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
-    this->number = number;
+    this->team = team;
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
 	this->sprites0 = al_load_bitmap("resources/Sprite-0002.bmp");
@@ -25,24 +25,39 @@ Player::Player(int start_x, int start_y, int number) : MapObject(start_x, start_
 	this->sprites8 = al_load_bitmap("resources/Sprite-00010.bmp");
 	this->sprites9 = al_load_bitmap("resources/Sprite-00011.bmp");
 	this->sprites10 = al_load_bitmap("resources/Sprite-00012.bmp");
-    this->team = number; //team
     this->speed = 20;
     this->count = 0; //keeps the frame count
     this-> health = 100;
-    this-> healthshow = healthshow;
     this-> damaged = 0;
+    this->time = 0;
 }
 
 int Player::get_hit_points() {
     return hit_points;
 }
 
-short Player::get_number() {
-    return this->number;
-}
-
 bool Player::get_team() {
     return this->team;
+}
+
+void Player::hit(int amount) {
+    hit_points -= amount;
+    std::cout << "New HP " << hit_points << std::endl;
+    if (hit_points<0){
+        hit_points=0;
+    }
+}
+
+void Player::die(int* spawn) {
+    // potentially only if server
+    set_x(*spawn);
+    set_y(*(spawn++));
+    this->dest_x=this->x;
+    this->dest_y=this->y;
+    this->old_x=this->x;
+    this->old_y=this->y;
+    this->time=0; //what is time here?
+    this->noclip=true;
 }
 
 void Player::on_collision(MapObject &other) {
@@ -99,7 +114,7 @@ void Player::set_dest(int dest_x, int dest_y) {
     this->dest_y = dest_y;
 }
 
-int get_next_x(){
+int Player::get_next_x(){
 	int dx = dest_x - x;
 	int dy = dest_y - y;
 	int n2 = round(sqrt(dx*dx + dy*dy));
@@ -107,7 +122,7 @@ int get_next_x(){
 	return x;
 }
 
-int get_next_y(){
+int Player::get_next_y(){
 	  int dy = dest_y - y;
 	  int dx = dest_x - x;
 	  int n2 = round(sqrt(dx*dx + dy*dy));
@@ -117,54 +132,64 @@ int get_next_y(){
 
 void Player::onhit(){
 	this->damaged = 1;
-	this->number = 0; //reset tick count
+	this->count = 0; //reset tick count
 }
 
 void Player::draw(int camera_x, int camera_y) {
+    if (this->hit_points>0){
+	    this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
+	    std::cout<<this->count<<std::endl;
 
-	this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
-	std::cout<<this->count<<std::endl;
+	    //Code to take care of walking animation
+	    if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving
+		    if (this->count % 160 < 40) {
+		    	al_draw_bitmap(this-> sprites0, x - camera_x, y - camera_y, 0);
+		    } else if (this->count % 160 < 80) {
+		    	al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
+		    } else if (this->count % 160 < 120) {
+		    	al_draw_bitmap(this-> sprites2, x - camera_x, y - camera_y, 0);
+		    } else {
+		    	al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
+	    	}
+	    }
+	    else if (dest_x > x) {//walking right animation
+		    if (this->count % 160 < 40) {
+	    		al_draw_bitmap(this->sprites0, x - camera_x, y - camera_y, 0);
+	    	}
+	    	else if (this->count % 160 < 80) {
+	    		al_draw_bitmap(this->sprites3, x - camera_x, y - camera_y, 0);
+	    	}
+	    	else if (this->count % 160 < 120) {
+	    		al_draw_bitmap(this->sprites4, x - camera_x, y - camera_y, 0);
+	    	}
+	    	else {
+	    		al_draw_bitmap(this->sprites5, x - camera_x, y - camera_y, 0);
+	    	}
+	    }
+        else if (dest_x <= x) {//walking left animation
+	    	if (this->count % 160 < 20) {
+	    		al_draw_bitmap(this->sprites0, x - camera_x, y - camera_y, 0);
+	    	}
+	    	else if (this->count % 160 < 80) {
+	    		al_draw_bitmap(this->sprites6, x - camera_x, y - camera_y, 0);
+	    	}
+	    	else if (this->count % 160 < 120) {
+	    		al_draw_bitmap(this->sprites7, x - camera_x, y - camera_y, 0);
+	    	}
+	    	else {
+	    		al_draw_bitmap(this->sprites8, x - camera_x, y - camera_y, 0);
+		    }
+		}
+    }
+    else{ //Do the counter for respawn and respawn when time
+        time+=1;
+        if (time>=120){
+            this->noclip=false;
+            this->hit_points=health;
+        }
+    }
+}
 
-	//Code to take care of walking animation
-	if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving
-		if (this->count % 160 < 40) {
-			al_draw_bitmap(this-> sprites0, x - camera_x, y - camera_y, 0);
-		} else if (this->count % 160 < 80) {
-			al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
-		} else if (this->count % 160 < 120) {
-			al_draw_bitmap(this-> sprites2, x - camera_x, y - camera_y, 0);
-		} else {
-			al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
-		}
-	}
-	else if (dest_x > x) {//walking right animation
-			if (this->count % 160 < 40) {
-				al_draw_bitmap(this->sprites0, x - camera_x, y - camera_y, 0);
-			}
-			else if (this->count % 160 < 80) {
-				al_draw_bitmap(this->sprites3, x - camera_x, y - camera_y, 0);
-			}
-			else if (this->count % 160 < 120) {
-				al_draw_bitmap(this->sprites4, x - camera_x, y - camera_y, 0);
-			}
-			else {
-				al_draw_bitmap(this->sprites5, x - camera_x, y - camera_y, 0);
-			}
-		}
-	else if (dest_x <= x) {//walking left animation
-			if (this->count % 160 < 20) {
-				al_draw_bitmap(this->sprites0, x - camera_x, y - camera_y, 0);
-			}
-			else if (this->count % 160 < 80) {
-				al_draw_bitmap(this->sprites6, x - camera_x, y - camera_y, 0);
-			}
-			else if (this->count % 160 < 120) {
-				al_draw_bitmap(this->sprites7, x - camera_x, y - camera_y, 0);
-			}
-			else {
-				al_draw_bitmap(this->sprites8, x - camera_x, y - camera_y, 0);
-			}
-		}
 
 		/*if (this->healthshow == 1) {
 			if(healthshow == 1){
@@ -181,4 +206,4 @@ void Player::draw(int camera_x, int camera_y) {
 
 		//Code for the damaged animation
 
-	}
+

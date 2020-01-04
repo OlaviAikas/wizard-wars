@@ -101,16 +101,18 @@ void Player::set_dest(int dest_x, int dest_y) {
 
 int get_next_x(){
 	int dx = dest_x - x;
-  int n2 = round(sqrt(dx*dx + dy*dy));
-  x = round(x + dx * speed / n2);
+	int dy = dest_y - y;
+	int n2 = round(sqrt(dx*dx + dy*dy));
+	x = round(x + dx * speed / n2);
 	return x;
 }
 
 int get_next_y(){
 	  int dy = dest_y - y;
-		int n2 = round(sqrt(dx*dx + dy*dy));
-		y = round(y + dy * speed / n2);
-		return y;
+	  int dx = dest_x - x;
+	  int n2 = round(sqrt(dx*dx + dy*dy));
+	  y = round(y + dy * speed / n2);
+	  return y;
 }
 
 void Player::onhit(){

@@ -47,7 +47,7 @@ void MapObject::hit(const int amount) {
 
 void MapObject::on_collision(MapObject &other) {
     // To retrieve from balavoine branch
-    std::cout << "(!) WARN: generic on_collision called for MapObject at " << this << std::endl;
+    //std::cout << "(!) WARN: generic on_collision called for MapObject at " << this << std::endl;
 }
 
 

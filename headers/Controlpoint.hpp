@@ -18,9 +18,13 @@ class Controlpoint : public MapObject {
         void draw(int camera_x, int camera_y);
 
     private:
-        bool owner;
+        char owner;
         int timegot=0;
-        int timetoget=450;
+        int timetoget=90;
         int number;
+		bool contested=false;
         int is_someone=false;
+		ALLEGRO_BITMAP* control_blue = al_load_bitmap("resources/Controlpoint!3.bmp");
+		ALLEGRO_BITMAP* control_red = al_load_bitmap("resources/Controlpoint!2.bmp");
+		ALLEGRO_BITMAP* control_neutral = al_load_bitmap("resources/Controlpoint!1.bmp");
 };

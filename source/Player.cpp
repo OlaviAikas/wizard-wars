@@ -8,7 +8,7 @@
 #include <list>
 #include <allegro5/allegro.h>
 
-Player::Player(int start_x, int start_y, int team) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, int id,int team) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->team = team;
@@ -31,12 +31,19 @@ Player::Player(int start_x, int start_y, int team) : MapObject(start_x, start_y,
     this-> damaged = 0;
     this->time = 0;
 }
+Player::~Player() {
+    al_destroy_bitmap(sprites0);
+}
 
 int Player::get_hit_points() {
     return hit_points;
 }
 
-bool Player::get_team() {
+int Player::get_team() {
+    return this->team;
+}
+
+int Player::get_id() {
     return this->team;
 }
 
@@ -138,7 +145,6 @@ void Player::onhit(){
 void Player::draw(int camera_x, int camera_y) {
     if (this->hit_points>0){
 	    this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
-	    std::cout<<this->count<<std::endl;
 
 	    //Code to take care of walking animation
 	    if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving

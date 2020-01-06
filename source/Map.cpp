@@ -111,7 +111,7 @@ void Map::garbage_collect() {
 
 std::list<Player*>::iterator Map::fetch_pit(short n) {
     std::list<Player*>::iterator it = this->players.begin();
-    while ((*it)->get_number() != n) {
+    while ((*it)->get_id() != n) {
         it++;
     }
     return it;

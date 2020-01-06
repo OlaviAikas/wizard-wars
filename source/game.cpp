@@ -79,6 +79,9 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 state = 0;
                 break;
+
+            default:
+                break;
         }
             if(redraw && al_is_event_queue_empty(queue))
         {
@@ -107,13 +110,11 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to load
     short client_number = 1;
-    ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/rockProjectiles.bmp");
-    ALLEGRO_BITMAP* ice_sprite = al_load_bitmap("resources/iceProjectiles.bmp");
     Map* map = new Map("resources/map.bmp");
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     map->set_spawnpoints(800, 800, 1000, 1000);
-    map->players.push_back(new Player(400, 400, 1, true, "resources/Sprite-0002.bmp"));
-    map->players.push_back(new Player(900, 900, 2, false, "resources/Sprite-0002.bmp"));
+    map->players.push_back(new Player(400, 400, 1, true));
+    map->players.push_back(new Player(900, 900, 2, false));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     map->cp.push_back(new Controlpoint(800, 800, 1, 50, false));
     map->modif_lives(50, 50);
@@ -264,8 +265,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     // } else {
                     // }
                 // define the direction vector when right-click//
-                break;
                 }
+            break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 if (event.keyboard.keycode == ALLEGRO_KEY_U) {//life
@@ -306,6 +307,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 }
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
                 break;
+        
             case ALLEGRO_EVENT_KEY_UP:
                 key[event.keyboard.keycode] &= KEY_RELEASED;
                 break;
@@ -313,9 +315,9 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 state = 0;
                 break;
-
-	        default:
-		        break;
+        
+            default:
+                break;
         }
 
         if(redraw && al_is_event_queue_empty(queue))
@@ -347,8 +349,6 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
         }
     }
     //delete what you loaded
-    delete ice_sprite;
-    delete rock_sprite;
     delete map;
     delete minimap;
 }

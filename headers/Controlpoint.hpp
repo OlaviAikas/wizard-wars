@@ -13,6 +13,7 @@ class Controlpoint : public MapObject {
 
         short get_number();
 
+        using MapObject::on_collision;
         virtual void on_collision(Player &other);
 
         void draw(int camera_x, int camera_y);

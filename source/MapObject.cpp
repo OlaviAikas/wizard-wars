@@ -13,7 +13,9 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->garbage_collect = false;
 }
 
-void MapObject::move() { std::cout << "momove" << std::endl; };
+MapObject::~MapObject(){ }
+
+void MapObject::move() { std::cout << "momove" << std::endl; }
 
 void MapObject::set_x(int x) {
     this->x=x;
@@ -42,7 +44,7 @@ int MapObject::get_height() const {
 bool MapObject::get_garbage_collect() const {
     return garbage_collect;
 }
- 
+
 bool MapObject::get_noclip() const {
     return noclip;
 }

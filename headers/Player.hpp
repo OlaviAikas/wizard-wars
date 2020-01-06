@@ -5,7 +5,7 @@
 
 class Player : public MapObject {
     public:
-        Player(int start_x, int start_y, int number, bool team, const char* sprite_name);
+        Player(int start_x, int start_y, int number, bool team);
         ~Player();
 
         void move();

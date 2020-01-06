@@ -9,14 +9,14 @@
 #define BASE_HEALTH 50
 #include <allegro5/allegro.h>
 
-Player::Player(int start_x, int start_y, int number, bool team, const char* sprite_name) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, int number, bool team) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->number = number;
     this->hit_points = BASE_HEALTH;
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
-    this->sprite = al_load_bitmap(sprite_name);
+    this->sprite = al_load_bitmap("resources/Sprite-0002.bmp");
     this->team = team;
 }
 

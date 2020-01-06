@@ -25,4 +25,4 @@ void Projectile::move() {
 
 void Projectile::draw(int camera_x, int camera_y) {
     std::cout << "(!) WARN: Generic Projectile::draw called for Projectile at " << this << std::endl;
-};
+}

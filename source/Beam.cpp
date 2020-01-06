@@ -9,4 +9,4 @@ Beam::Beam(int start_x, int start_y, float dir_x, float dir_y, int width, int he
 
 }
 
-void Beam::draw(int camera_x, int camera_y) { };
+void Beam::draw(int camera_x, int camera_y) { }

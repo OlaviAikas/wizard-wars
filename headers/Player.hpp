@@ -5,18 +5,20 @@
 
 class Player : public MapObject {
     public:
-        Player(int start_x, int start_y, int number, const char* sprite_name);
+        Player(int start_x, int start_y, int number, bool team, const char* sprite_name);
         ~Player();
 
         void move();
 
-        void on_collision(MapObject &other);
+        virtual void on_collision(MapObject &other);
 
         void set_dest(int dest_x, int dest_y);
 
         short get_number();
         
         int get_hit_points();
+        void hit(const int amount); // Reduce hp by amount without overflow
+        void die(int* spawn); // Will probably respawn the player, awatining decisions
 
         bool get_team();
 
@@ -29,9 +31,10 @@ class Player : public MapObject {
         int old_y;
         int dest_x;
         int dest_y;
-        int hit_points;
+        int hit_points=50;
         int lastgoodposx;
         int lastgoodposy;
         bool team;
+        int time;
         ALLEGRO_BITMAP* sprite;
 };

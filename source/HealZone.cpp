@@ -17,7 +17,6 @@ void HealZ::draw(int camera_x, int camera_y) {
     time=time+1;
     if (time>100) {
         this->garbage_collect = true;
-
     };
     //al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
    
@@ -28,3 +27,5 @@ void HealZ::on_collision(MapObject &other) {
         other.hit(this->get_damage());
     }
  }
+
+void HealZ::move() { /* A zone does not move */ }

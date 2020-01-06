@@ -120,13 +120,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     Map* map = new Map("resources/map.bmp", &interface);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     map->set_spawnpoints(800, 800, 1000, 1000);
-    map->players.push_back(new Player(400, 400, 1, true, "resources/Sprite-0002.bmp"));
-    map->players.push_back(new Player(900, 900, 2, false, "resources/Sprite-0002.bmp"));
+    map->players.push_back(new Player(400, 400, 1,1));
+    map->players.push_back(new Player(900, 900, 2,2));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
-    map->cp.push_back(new Controlpoint(800, 800, 1, 50, false));
+    map->cp.push_back(new Controlpoint(1500, 1500, 1, 50, false));
     map->modif_lives(50, 50);
     game_status->map = map;
     Camera camera = Camera(0, 0);
+    // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
     std::list<int> elementlist;

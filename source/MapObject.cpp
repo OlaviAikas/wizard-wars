@@ -73,9 +73,9 @@ bool MapObject::operator<=(const MapObject &other) const {
 #endif
     if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
-            return true;
+            return true;            
+            }
         }
-    }
     if (this->x + this->width >= other.get_x() && this->x + this->width <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
             return true;

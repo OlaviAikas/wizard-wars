@@ -23,7 +23,7 @@ PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread -lpthread -lboost_fiber 
 # 	$(CXX) $(CFLAGS) $< -MM -MT $(@:.d=.o) >$@
 
 # Rules
-ALL: game
+all: game
 
 debug: CFLAGS := -g
 debug: clean game

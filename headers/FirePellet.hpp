@@ -2,10 +2,9 @@
 #include "MapObject.hpp"
 #include "Spells.hpp"
 #include "Projectile.hpp"
-class Rock: public Projectile {
+class FireP: public Projectile {
     public:
-        Rock(int id, int start_x, int start_y, float dir_x, float dir_y);
-        ~Rock();
+        FireP(int start_x, int start_y, float dir_x, float dir_y);
 
         int get_damage();
 

@@ -8,6 +8,7 @@ Projectile::Projectile(int id, int start_x, int start_y, float dir_x, float dir_
         : Spell( id ,start_x,  start_y,  dir_x,  dir_y, width, height, noclip) {
     this->speed = speed;
     // this->number = number;
+    this->hit_animation = false;
 }
 
 // short Projectile::get_number() {
@@ -16,8 +17,12 @@ Projectile::Projectile(int id, int start_x, int start_y, float dir_x, float dir_
 
 
 void Projectile::move() {
-    x = round(x + dir_x*speed);
-    y = round(y + dir_y*speed);
+    if (!hit_animation) {
+        x = round(x + dir_x*speed);
+        y = round(y + dir_y*speed);
+    }
 }
 
-void Projectile::draw(int camera_x, int camera_y) { };
+void Projectile::draw(int camera_x, int camera_y) {
+    std::cout << "(!) WARN: Generic Projectile::draw called for Projectile at " << this << std::endl;
+};

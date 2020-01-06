@@ -13,7 +13,9 @@ class Controlpoint : public MapObject {
 
         short get_number();
 
-        void on_collision(Player other);
+        virtual void on_collision(Player &other);
+
+        void draw(int camera_x, int camera_y);
 
         int get_timegot();
         int get_timetoget();
@@ -29,4 +31,5 @@ class Controlpoint : public MapObject {
         int timetoget=450;
         int number;
         bool havechanged;
+        int is_someone=false;
 };

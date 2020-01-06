@@ -1,16 +1,15 @@
 #pragma once
 #include "MapObject.hpp"
 #include "Spells.hpp"
-#include "Projectile.hpp"
-class Rock: public Projectile {
+#include "Zone.hpp"
+
+class HealZ: public Zone {
     public:
-        Rock(int id, int start_x, int start_y, float dir_x, float dir_y);
-        ~Rock();
+        HealZ(int start_x, int start_y);
 
         int get_damage();
 
         virtual void on_collision(MapObject &other);
-
         virtual void draw(int camera_x, int camera_y);
 
     private:

@@ -9,5 +9,6 @@ class Projectile: public Spell {
         virtual void draw(int camera_x, int camera_y);
 
     protected:
-    int speed;
+        int speed;
+        bool hit_animation; // Prevents movement and runs the animation
 };

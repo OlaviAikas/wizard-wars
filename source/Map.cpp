@@ -6,6 +6,7 @@
 #include <allegro5/allegro_image.h>
 #include "../headers/Interface.hpp"
 #include <allegro5/allegro_primitives.h>
+#include <iostream>
 
 Map::Map(const char* name, Interface *interface) {
     this->map = al_load_bitmap(name);
@@ -29,6 +30,39 @@ void Map::draw_map(int camera_x, int camera_y) {
     al_draw_bitmap_region(map, camera_x, camera_y, 1920, 1080, 0, 0, 0);
 }
 
+int* Map::get_lives(){
+    return this->lives;
+}
+
+void Map::set_spawnpoints(int x1, int y1, int x2, int y2){
+    spawnpoint1[0] = x1;
+    spawnpoint1[1] = y1;
+    spawnpoint2[0] = x2;
+    spawnpoint2[1] = y2;
+}
+
+void Map::modif_lives(int lives1, int lives2){
+    lives[0]=lives1;
+    lives[1]=lives2;
+}
+
+void Map::check_dead(){
+    for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
+        if (((*i)->get_hit_points()<=0)&&((*i)->get_noclip()==false)){
+            int* spawn;
+            if ((*i)->get_team()){
+                this->lives[0]-=1;
+                spawn = this->spawnpoint1;
+            }
+            else{
+                this->lives[1]-=1;
+                spawn = this->spawnpoint2;
+            }
+            (*i)->die(spawn);
+        }
+    }
+}
+
 void Map::check_collisions() {
     for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
         for (std::list<Player*>::iterator j = std::next(i,1); j != players.end(); j++) {
@@ -49,6 +83,12 @@ void Map::check_collisions() {
                 (*j)->on_collision(**i);
             }
         }
+        for (std::list<Controlpoint*>::iterator j = cp.begin(); j != cp.end(); j++) {
+            if (**i == **j) {
+                (*i)->on_collision(**j);
+                (*j)->on_collision(**i);
+            }
+        }
     }
     for (std::list<Spell*>::iterator i = spells.begin(); i != spells.end(); i++) {
         for (std::list<Spell*>::iterator j = std::next(i,1); j != spells.end(); j++) {
@@ -64,6 +104,12 @@ void Map::check_collisions() {
             }
         }
     }
+}
+
+void Map::garbage_collect() {
+    garbage_collect_list(players);
+    garbage_collect_list(spells);
+    garbage_collect_list(statics);
 }
 
 std::list<Player*>::iterator Map::fetch_pit(short n) {

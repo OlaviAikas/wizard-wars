@@ -1,11 +1,14 @@
 #pragma once
 #include "MapObject.hpp"
 #include "Spells.hpp"
-#include "Projectile.hpp"
-class Rock: public Projectile {
+#include "Beam.hpp"
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro.h>
+
+class HealB: public Beam {
     public:
-        Rock(int id, int start_x, int start_y, float dir_x, float dir_y);
-        ~Rock();
+        HealB(int start_x, int start_y, float dir_x, float dir_y);
 
         int get_damage();
 
@@ -16,4 +19,5 @@ class Rock: public Projectile {
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
+    
 };

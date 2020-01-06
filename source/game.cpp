@@ -107,7 +107,6 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to load
     short client_number = 1;
-    ALLEGRO_BITMAP* sprites = al_load_bitmap("resources/Sprite-0002.bmp");  //Loading character sprites
     ALLEGRO_BITMAP* rock_sprite = al_load_bitmap("resources/rockProjectiles.bmp");
     ALLEGRO_BITMAP* ice_sprite = al_load_bitmap("resources/iceProjectiles.bmp");
     Map* map = new Map("resources/map.bmp");
@@ -348,6 +347,8 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
         }
     }
     //delete what you loaded
+    delete ice_sprite;
+    delete rock_sprite;
     delete map;
     delete minimap;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <allegro5/allegro5.h>
 
+
 class MapObject {
     public:
         MapObject(int x, int y, int width, int height, bool noclip);
@@ -22,6 +23,7 @@ class MapObject {
 
     protected:
         bool noclip;
+        bool havechanged;
         int x;
         int y;
         int width;

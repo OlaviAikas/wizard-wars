@@ -11,6 +11,14 @@
 Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner) : MapObject(x, y, side, side, true) {
     this->number = number;
     this->owner = owner;
+    this->havechanged = false;
+}
+
+bool Controlpoint::get_havechanged(){
+    this->havechanged;
+}
+void Controlpoint::reset_havechanged(){
+    this->havechanged=false;
 }
 
 short Controlpoint::get_number() {
@@ -21,20 +29,24 @@ bool Controlpoint::get_owner() {
     return this->owner;
 }
 
+void Controlpoint::change_owner(bool updated){
+    this->owner=updated;
+}
+
 void Controlpoint::set_owner(short newowner) {
     this->owner = newowner;
+    this->havechanged = true;
 }
 
 void Controlpoint::on_collision(Player &other){
-		if (other.get_team()!=owner) {
-			contested = true;
-			if (other.get_team() == 1) {//Team 1 goes into the positive
-				timegot +=1;
-				if (timegot>=timetoget){
-                    set_owner(1);
-                    timegot=timetoget;
-                }
+	if (other.get_team()!=owner) {
+		if (other.get_team() == 1) {//Team 1 goes into the positive
+			timegot +=1;
+			if (timegot>=timetoget){
+		        set_owner(1);
+                timegot=timetoget;
             }
+        }
 			if (other.get_team() == 2) {//For team 2, we go into the negatives
 				timegot +=-1;
 				if (timegot<=timetoget){
@@ -46,7 +58,13 @@ void Controlpoint::on_collision(Player &other){
 				set_owner(0);//This means that the point is neutral
 			}//You have to 'undo' the control from the opposing team in order to
 		}
+    else {
+        if (timegot>0){
+            timegot-=1;
+        }
     }
+    this->havechanged = true;
+}
 
 void Controlpoint::draw(int camera_x, int camera_y){
     if (owner == 1 && (timegot < timetoget)) {

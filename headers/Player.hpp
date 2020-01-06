@@ -22,6 +22,18 @@ class Player : public MapObject {
 
         int get_id();
 
+        int get_x();
+        int get_y();    
+        int get_dest_x();
+        int get_dest_y();
+        void change_x(int x);
+        void change_y(int y);
+        void change_destx(int destx);
+        void change_desty(int desty);
+    
+        bool get_havechanged();
+        void reset_havechanged();
+
         void draw(int camera_x, int camera_y);
 
         void onhit();
@@ -46,6 +58,9 @@ class Player : public MapObject {
         int count;
         char health;
         bool damaged;
+        bool havechanged;
+        bool team;
+        int game_state;
         int time;
         int id;
         ALLEGRO_BITMAP* sprites1;

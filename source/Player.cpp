@@ -22,9 +22,9 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
 	this->sprites5 = al_load_bitmap("resources/Sprite-0007.bmp");
 	this->sprites6 = al_load_bitmap("resources/Sprite-0008.bmp");
 	this->sprites7 = al_load_bitmap("resources/Sprite-0009.bmp");
-	this->sprites8 = al_load_bitmap("resources/Sprite-00010.bmp");
-	this->sprites9 = al_load_bitmap("resources/Sprite-00011.bmp");
-	this->sprites10 = al_load_bitmap("resources/Sprite-00012.bmp");
+	this->sprites8 = al_load_bitmap("resources/Sprite-0010.bmp");
+	this->sprites9 = al_load_bitmap("resources/Sprite-0011.bmp");
+	this->sprites10 = al_load_bitmap("resources/Sprite-0012.bmp");
     this->speed = 20;
     this->count = 0; //keeps the frame count
     this->health = 100;

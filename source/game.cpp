@@ -123,7 +123,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
-    map->cp.push_back(new Controlpoint(800, 800, 1, 50, false));
+    map->cp.push_back(new Controlpoint(1500, 1500, 1, 50, false));
     map->modif_lives(50, 50);
     game_status->map = map;
     Camera camera = Camera(0, 0);

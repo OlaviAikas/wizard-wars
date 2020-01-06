@@ -143,9 +143,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     bool mouse_north = false;
     bool mouse_south = false;
     
-    while (state == 2) {
+    while (game_status->game_state==2) {
         if (map->get_lives()[0]==0 || map->get_lives()[1]==0){
-            state=0;
+            game_status->game_state=0;
         }
         al_wait_for_event(queue, &event);
 
@@ -440,14 +440,14 @@ int main(int argc, char **argv)
     memset(key, 0, sizeof(key));
 
 
-    bool isServer = true;
-    boost::asio::io_service io_service;
+    // bool isServer = true;
+    // boost::asio::io_service io_service;
     Interface interface;
-    if(isServer){
-        interface = Server(io_service, 13, &game_status);
-    } else {
-        interface = Client(io_service, "localhost", "13", &game_status);
-    }
+    // if(isServer){
+    //     interface = Server(io_service, 13, &game_status);
+    // } else {
+    //     interface = Client(io_service, "localhost", "13", &game_status);
+    // }
     
 
 

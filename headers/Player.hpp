@@ -5,7 +5,7 @@
 
 class Player : public MapObject {
     public:
-        Player(int start_x, int start_y, int team, int id);
+        Player(int start_x, int start_y, short number,int team);
         ~Player();
 
         void move();
@@ -42,11 +42,10 @@ class Player : public MapObject {
 
         int get_next_y();
 
-
-
+        short get_number();
 
     private:
-        int team;
+        short team;
         int speed;
         int old_x;
         int old_y;
@@ -59,10 +58,9 @@ class Player : public MapObject {
         char health;
         bool damaged;
         bool havechanged;
-        bool team;
         int game_state;
         int time;
-        int id;
+        short number; //this is the id of the player (useful for the server)
         ALLEGRO_BITMAP* sprites1;
         ALLEGRO_BITMAP* sprites2;
         ALLEGRO_BITMAP* sprites3;

@@ -30,11 +30,8 @@ class Controlpoint : public MapObject {
         int timegot=0;
         int timetoget=90;
         int number;
-<<<<<<< HEAD
 		bool contested=false;
-=======
         bool havechanged;
->>>>>>> master
         int is_someone=false;
 		ALLEGRO_BITMAP* control_blue = al_load_bitmap("resources/Controlpoint!3.bmp");
 		ALLEGRO_BITMAP* control_red = al_load_bitmap("resources/Controlpoint!2.bmp");

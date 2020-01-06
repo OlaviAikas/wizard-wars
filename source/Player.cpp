@@ -8,7 +8,7 @@
 #include <list>
 #include <allegro5/allegro.h>
 
-Player::Player(int start_x, int start_y, int id,int team) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, short number,int team) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->team = team;
@@ -28,7 +28,7 @@ Player::Player(int start_x, int start_y, int id,int team) : MapObject(start_x, s
     this->speed = 20;
     this->count = 0; //keeps the frame count
     this->health = 100;
-    this-> damaged = 0;
+    this->damaged = 0;
     this->time = 0;
     this->team = team;
     this->havechanged = false;
@@ -75,6 +75,12 @@ void Player::on_collision(MapObject &other) {
         dest_y=lastgoodposy;
     }
 }
+
+short Player::get_number() {
+    return this->number;
+}
+
+
 int Player::get_x(){
     return lastgoodposx;
 }

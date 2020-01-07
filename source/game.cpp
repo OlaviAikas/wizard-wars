@@ -24,7 +24,10 @@
 #include "../headers/HealZone.hpp"
 #include "../headers/HealB.hpp"
 #include "../headers/Beam.hpp"
-
+#include "../headers/Dzone.hpp"
+#include "../headers/FogZone.hpp"
+#include "../headers/FreezeZone.hpp"
+#include "../headers/HealFireZone.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 
@@ -249,6 +252,38 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             }
                             else {
                                 map -> spells.push_back(new HealZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            }
+                            break;
+                        case 3: // 3*1 O+U Fire+Life
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
+                            map -> spells.push_back(new HealFireZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            }
+                            else {
+                            map -> spells.push_back(new HealFireZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            }
+                            break;
+                        case 5: // 5*1 J+U Water+Life
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
+                            map -> spells.push_back(new DamageZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            }
+                            else {
+                            map -> spells.push_back(new DamageZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            }
+                            break;
+                        case 15: // 3*5 O+J Fire+Water
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
+                            map -> spells.push_back(new FogZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            }
+                            else {
+                            map -> spells.push_back(new FogZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            }
+                            break;
+                        case 77: // 7*11 K+L Ice+Rock
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
+                            map -> spells.push_back(new FreezeZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            }
+                            else {
+                            map -> spells.push_back(new FreezeZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
                             }
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam

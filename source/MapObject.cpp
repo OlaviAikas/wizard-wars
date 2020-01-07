@@ -12,6 +12,7 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->noclip = noclip;
     this->havechanged = false;
     this->garbage_collect = false;
+    this->drawsprite=true;
 }
 
 MapObject::~MapObject(){ }
@@ -93,6 +94,10 @@ bool MapObject::operator<=(const MapObject &other) const {
         }
     }
     return false;
+}
+
+bool MapObject::get_drawsprite() const{
+    return drawsprite;
 }
 
 void MapObject::draw(int camera_x, int camera_y) {

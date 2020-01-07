@@ -18,6 +18,7 @@ Player::Player(int start_x, int start_y, int number, bool team) : MapObject(star
     this->lastgoodposy=start_y;
     this->sprite = al_load_bitmap("resources/Sprite-0002.bmp");
     this->team = team;
+    this->havechanged = false;
 }
 
 Player::~Player() {
@@ -62,11 +63,36 @@ void Player::on_collision(MapObject &other) {
         dest_y=lastgoodposy;
     }
 }
+int Player::get_x(){
+    return lastgoodposx;
+}
+int Player::get_y(){
+    return lastgoodposy;
+}
+int Player::get_dest_x(){
+    return dest_x;
+};
+int Player::get_dest_y(){
+    return dest_y;
+};
+void Player::change_x(int x){
+    this->lastgoodposx=x;
+}
+void Player::change_y(int y){
+    this->lastgoodposy=y;
+}
+void Player::change_destx(int destx){
+    this->dest_x=destx;
+}
+void Player::change_desty(int desty){
+    this->dest_y=desty;
+}
 
 void Player::move() {
 #ifdef DEBUG_MODE
     std::cout << "Moving Player at " << this << std::endl;
 #endif
+    havechanged = true;
     lastgoodposx=x;
     lastgoodposy=y;
     if (abs(x - dest_x) >= speed && abs(y - dest_y) >= speed) {
@@ -108,7 +134,8 @@ void Player::move() {
 void Player::set_dest(int dest_x, int dest_y) {
     this->dest_x = dest_x;
     this->dest_y = dest_y;
-}
+    this->havechanged = true;
+    }
 
 void Player::draw(int camera_x, int camera_y) {
     if (this->hit_points>0){
@@ -121,4 +148,12 @@ void Player::draw(int camera_x, int camera_y) {
             this->hit_points=BASE_HEALTH;
         }
     }
+}
+
+bool Player::get_havechanged(){
+    this->havechanged ;
+}
+
+void Player::reset_havechanged(){
+    this->havechanged=false;
 }

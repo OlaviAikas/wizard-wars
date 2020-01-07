@@ -10,12 +10,12 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->width = width;
     this->height = height;
     this->noclip = noclip;
+    this->havechanged = false;
     this->garbage_collect = false;
 }
 
 MapObject::~MapObject(){ }
-
-void MapObject::move() { std::cout << "momove" << std::endl; }
+void MapObject::move() { std::cout << "momove" << std::endl; havechanged=true;}
 
 void MapObject::set_x(int x) {
     this->x=x;

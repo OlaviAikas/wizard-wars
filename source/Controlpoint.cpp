@@ -11,6 +11,14 @@
 Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner) : MapObject(x, y, side, side, true) {
     this->number = number;
     this->owner = owner;
+    this->havechanged = false;
+}
+
+bool Controlpoint::get_havechanged(){
+    this->havechanged;
+}
+void Controlpoint::reset_havechanged(){
+    this->havechanged=false;
 }
 
 short Controlpoint::get_number() {
@@ -21,8 +29,13 @@ bool Controlpoint::get_owner() {
     return this->owner;
 }
 
+void Controlpoint::change_owner(bool updated){
+    this->owner=updated;
+}
+
 void Controlpoint::set_owner(short newowner) {
     this->owner = newowner;
+    this->havechanged = true;
 }
 
 void Controlpoint::on_collision(Player &other){
@@ -39,6 +52,7 @@ void Controlpoint::on_collision(Player &other){
             timegot-=1;
         }
     }
+    this->havechanged = true;
 }
 
 void Controlpoint::draw(int camera_x, int camera_y){

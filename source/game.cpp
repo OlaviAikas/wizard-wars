@@ -28,18 +28,25 @@
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 
+#include "../headers/Server.hpp"
+#include "../headers/Client.hpp"
+#include "../headers/Interface.hpp"
+#include "../headers/Gamestatus.hpp"
+
+
+
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
 
 void must_init(bool, const char);
 void change_state(short &, short new_state);
-void main_menu_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+void main_menu_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
-void game_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
-                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
+void game_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface);
 
-void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
+void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to before the loop:
@@ -48,16 +55,16 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     Button<short &, short>* start_game = new Button<short &, short>(840, 500, "resources/start_game.bmp", changeptr);
     Button<short &, short>* end_game = new Button<short &, short>(840, 600, "resources/quit.bmp", changeptr);
 
-    while(state == 1) {
+    while(game_status->game_state == 1) {
     al_wait_for_event(queue, &event);
     switch(event.type)
         {
             case ALLEGRO_EVENT_TIMER:
                 if (key[ALLEGRO_KEY_ESCAPE]) {
-                    state = 0;
+                    game_status->game_state = 0;
                 }
                 if (key[ALLEGRO_KEY_ENTER]) {
-                    start_game->call_callback(state, 2);
+                    start_game->call_callback(game_status->game_state, 2);
                 }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
@@ -66,8 +73,8 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
                 break;
 
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-                start_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 2);
-                end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 0);
+                start_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 2);
+                end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
                 break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
@@ -77,7 +84,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
                 key[event.keyboard.keycode] &= KEY_RELEASED;
                 break;
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
-                state = 0;
+                game_status->game_state = 0;
                 break;
 
             default:
@@ -104,13 +111,14 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     delete end_game;
 }
 
-void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
+void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface &interface) {
     //Load what you need to load
+    
     short client_number = 1;
-    Map* map = new Map("resources/map.bmp");
+    Map* map = new Map("resources/map.bmp", &interface);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     map->set_spawnpoints(800, 800, 1000, 1000);
     map->players.push_back(new Player(400, 400, 1, true));
@@ -118,6 +126,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     map->cp.push_back(new Controlpoint(800, 800, 1, 50, false));
     map->modif_lives(50, 50);
+    game_status->map = map;
     Camera camera = Camera(0, 0);
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
@@ -134,9 +143,9 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
     bool mouse_north = false;
     bool mouse_south = false;
     
-    while (state == 2) {
+    while (game_status->game_state == 2) {
         if (map->get_lives()[0]==0 || map->get_lives()[1]==0){
-            state=0;
+            game_status->game_state=0;
         }
         al_wait_for_event(queue, &event);
 
@@ -145,7 +154,7 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
             case ALLEGRO_EVENT_TIMER:
 
                 if (key[ALLEGRO_KEY_ESCAPE]) {
-                    state = 1;
+                    game_status->game_state = 1;
                 }
 
                 if (key[ALLEGRO_KEY_A]) {
@@ -235,10 +244,10 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                             break;
                         case 2: // 2*1 I+U Shield+Life
                             if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
-                            map -> spells.push_back(new HealZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                                map -> spells.push_back(new HealZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
                             }
                             else {
-                            map -> spells.push_back(new HealZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                                map -> spells.push_back(new HealZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
                             }
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam
@@ -313,12 +322,15 @@ void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO
                 break;
 
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
-                state = 0;
+                game_status->game_state = 0;
                 break;
         
             default:
                 break;
         }
+
+        if(game_status->game_state == 0)
+            break;
 
         if(redraw && al_is_event_queue_empty(queue))
         {
@@ -360,7 +372,7 @@ void must_init(bool test, const char *description) {
     exit(1);
 }
 
-void change_state(short &state, short new_state) {
+void change_state(short & state, short new_state) {
     state = new_state;
 }
 
@@ -409,7 +421,9 @@ int main(int argc, char **argv)
     al_register_event_source(queue, al_get_timer_event_source(timer));
     al_register_event_source(queue, al_get_mouse_event_source());
 
-    short game_state = 1;
+
+    Gamestatus game_status(/*game_state*/ 1, /*map pointer*/0);
+
     /*
     Game state states:
     0 => End game
@@ -424,16 +438,29 @@ int main(int argc, char **argv)
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
 
+
+    bool isServer = true;
+    boost::asio::io_service io_service;
+    Interface interface;
+    if(isServer){
+        interface = Server(io_service, 13, &game_status);
+    } else {
+        interface = Client(io_service, "localhost", "13", &game_status);
+    }
+    
+
+
     al_start_timer(timer);
 
-    while (game_state != 0) {
-        if (game_state == 1) {
-            main_menu_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
+    while (game_status.game_state != 0) {
+        if (game_status.game_state == 1) {
+            main_menu_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
-        if (game_state == 2) {
-            game_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
-                    screenWidth, screenHeight, windowWidth, windowHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+        if (game_status.game_state == 2) {
+            game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
+                    screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
+                    scaleY, scaleW, scaleH, sx, sy, interface);
         }
 
     }

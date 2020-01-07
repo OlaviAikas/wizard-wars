@@ -10,6 +10,7 @@
 #include <boost/algorithm/string.hpp>
 #include <vector>
 #include <sstream>
+// #include <iostream>
 
 #include "Controlpoint.hpp"
 
@@ -62,6 +63,7 @@ class Map {
         template <typename T> void garbage_collect_list(std::list<T> &list) {
             for (typename std::list<T>::iterator i = list.begin(); i != list.end(); i++) {
                 if ((*i)->get_garbage_collect()) {
+                    // std::cout << "deleted something at " << &(*i) << std::endl;
                     delete *i;
                     i = list.erase(i);
                     // i--;

@@ -24,7 +24,7 @@
 #include "../headers/HealZone.hpp"
 #include "../headers/HealB.hpp"
 #include "../headers/Beam.hpp"
-#include "../headers/Dzone.hpp"
+#include "../headers/DZone.hpp"
 #include "../headers/FogZone.hpp"
 #include "../headers/FreezeZone.hpp"
 #include "../headers/HealFireZone.hpp"

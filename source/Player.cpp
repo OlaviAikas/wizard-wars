@@ -154,7 +154,7 @@ void Player::set_dest(int dest_x, int dest_y) {
     this->dest_x = dest_x;
     this->dest_y = dest_y;
     this->havechanged = true;
-    }
+}
 
 int Player::get_next_x(){
 	int dx = dest_x - x;

@@ -39,15 +39,26 @@ void Controlpoint::set_owner(short newowner) {
 }
 
 void Controlpoint::on_collision(Player &other){
-    if (other.get_team()!=owner){
-        is_someone=true;
-        timegot+=1;
-        if (timegot>=timetoget){
-            set_owner(other.get_team());
-            timegot=0;
+	if (other.get_team()!=owner) {
+		if (other.get_team() == 1) {//Team 1 goes into the positive
+			timegot +=1;
+			if (timegot>=timetoget){
+		        set_owner(1);
+                timegot=timetoget;
+            }
         }
-    }
-    else{
+			if (other.get_team() == 2) {//For team 2, we go into the negatives
+				timegot +=-1;
+				if (timegot<=timetoget){
+			      set_owner(2);
+			      timegot=-timetoget;
+                }
+			}
+			if (timegot == 0){
+				set_owner(0);//This means that the point is neutral
+			}//You have to 'undo' the control from the opposing team in order to
+		}
+    else {
         if (timegot>0){
             timegot-=1;
         }
@@ -56,18 +67,22 @@ void Controlpoint::on_collision(Player &other){
 }
 
 void Controlpoint::draw(int camera_x, int camera_y){
-    if (not is_someone && timegot>0){
-        timegot-=1;
-    }
-    is_someone=false;
-    if (timegot!=0){
-        if (owner){
-            al_draw_filled_rectangle(x-50-camera_x, y-5-camera_y,x+50-camera_x,y+5-camera_y, al_map_rgb(255,0,0));
-		    al_draw_filled_rectangle(x-50-camera_x, y-5-camera_y,x-50-camera_x+100*(timegot)/timetoget,y+5-camera_y, al_map_rgb(0,0,255));
-        }
-        else{
-            al_draw_filled_rectangle(x-50-camera_x, y-5-camera_y,x+50-camera_x,y+5-camera_y, al_map_rgb(0,0,255));
-		    al_draw_filled_rectangle(x-50-camera_x, y-5-camera_y,x-50+100*(timegot)/timetoget - camera_x,y+5-camera_y, al_map_rgb(255,0,0));
-        }
-    }
+    if (owner == 1 && (timegot < timetoget)) {
+	    	timegot +=1;
+	    }
+	else if(owner == 2 && (timegot < -timetoget)){
+	    	timegot +=-1;
+	}
+	if (owner == 1){
+		al_draw_bitmap(control_blue, x - camera_x, y - camera_y, 0);
+	}
+	else if (owner == 2){
+		al_draw_bitmap(control_red, x - camera_x, y - camera_y, 0);
+	}
+	else if (owner == 0){
+		al_draw_bitmap(control_neutral, x - camera_x, y - camera_y, 0);
+	}
+	//This bar shows the progression of how the teams are capturing the control point
+	al_draw_filled_rectangle(x-camera_x, y+10-camera_y,x+50-camera_x + 50*(timegot)/timetoget,y+15-camera_y, al_map_rgb(255,0,0));
+	al_draw_filled_rectangle(x+50-camera_x-50*(timegot)/timetoget, y+10-camera_y,x+100-camera_x,y+15-camera_y, al_map_rgb(0,0,255));
 }

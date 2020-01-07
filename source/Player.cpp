@@ -18,6 +18,7 @@ Player::Player(int start_x, int start_y, int number, bool team, const char* spri
     this->lastgoodposy=start_y;
     this->sprite = al_load_bitmap(sprite_name);
     this->team = team;
+    this->drawsprite=true;
 }
 
 Player::~Player() {
@@ -106,6 +107,14 @@ void Player::set_dest(int dest_x, int dest_y) {
     this->dest_y = dest_y;
 }
 
-void Player::draw(int camera_x, int camera_y) {
-    al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
+bool Player::get_drawsprite() {
+    return this->drawsprite;
 }
+
+void Player::draw(int camera_x, int camera_y) {
+    if (this->drawsprite) {
+    al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
+    }
+    else {
+     }; 
+    };

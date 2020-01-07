@@ -21,7 +21,7 @@ class Player : public MapObject {
         void die(); // Will probably respawn the player, awatining decisions
 
         bool get_team();
-
+        bool get_drawsprite();
         void draw(int camera_x, int camera_y);
 
     private:
@@ -36,4 +36,5 @@ class Player : public MapObject {
         int lastgoodposy;
         bool team;
         ALLEGRO_BITMAP* sprite;
+        bool drawsprite;
 };

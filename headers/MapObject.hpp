@@ -18,7 +18,8 @@ class MapObject {
         bool get_garbage_collect() const;        
         bool operator==(const MapObject &other) const;
         bool operator<=(const MapObject &other) const;
-
+        bool get_drawsprite() const;
+        
     protected:
         bool noclip;
         int x;
@@ -26,4 +27,5 @@ class MapObject {
         int width;
         int height;
         bool garbage_collect;
+        bool drawsprite;
 };

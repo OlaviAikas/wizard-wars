@@ -89,10 +89,10 @@ int Player::get_y(){
 }
 int Player::get_dest_x(){
     return dest_x;
-};
+}
 int Player::get_dest_y(){
     return dest_y;
-};
+}
 void Player::change_x(int x){
     this->lastgoodposx=x;
 }
@@ -248,7 +248,7 @@ void Player::draw(int camera_x, int camera_y) {
 
 
 bool Player::get_havechanged(){
-    this->havechanged ;
+    return this->havechanged;
 }
 
 void Player::reset_havechanged(){

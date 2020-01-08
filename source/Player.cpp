@@ -33,6 +33,7 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
     this->team = team;
     this->havechanged = false;
 }
+
 Player::~Player() {
     al_destroy_bitmap(sprites0);
 }
@@ -153,7 +154,7 @@ void Player::set_dest(int dest_x, int dest_y) {
     this->dest_x = dest_x;
     this->dest_y = dest_y;
     this->havechanged = true;
-    }
+}
 
 int Player::get_next_x(){
 	int dx = dest_x - x;
@@ -177,55 +178,57 @@ void Player::onhit(){
 }
 
 void Player::draw(int camera_x, int camera_y) {
-    if (this->hit_points>0){
-	    this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
+    if (this->drawsprite) {
+        if (this->hit_points>0){
+            this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
 
-	    //Code to take care of walking animation
-	    if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving
-		    if (this->count % 160 < 40) {
-		    	al_draw_bitmap(this-> sprites0, x - camera_x, y - camera_y, 0);
-		    } else if (this->count % 160 < 80) {
-		    	al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
-		    } else if (this->count % 160 < 120) {
-		    	al_draw_bitmap(this-> sprites2, x - camera_x, y - camera_y, 0);
-		    } else {
-		    	al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
-	    	}
-	    }
-	    else if (dest_x > x) {//walking right animation
-		    if (this->count % 160 < 40) {
-	    		al_draw_bitmap(this->sprites0, x - camera_x, y - camera_y, 0);
-	    	}
-	    	else if (this->count % 160 < 80) {
-	    		al_draw_bitmap(this->sprites3, x - camera_x, y - camera_y, 0);
-	    	}
-	    	else if (this->count % 160 < 120) {
-	    		al_draw_bitmap(this->sprites4, x - camera_x, y - camera_y, 0);
-	    	}
-	    	else {
-	    		al_draw_bitmap(this->sprites5, x - camera_x, y - camera_y, 0);
-	    	}
-	    }
-        else if (dest_x <= x) {//walking left animation
-	    	if (this->count % 160 < 20) {
-	    		al_draw_bitmap(this->sprites0, x - camera_x, y - camera_y, 0);
-	    	}
-	    	else if (this->count % 160 < 80) {
-	    		al_draw_bitmap(this->sprites6, x - camera_x, y - camera_y, 0);
-	    	}
-	    	else if (this->count % 160 < 120) {
-	    		al_draw_bitmap(this->sprites7, x - camera_x, y - camera_y, 0);
-	    	}
-	    	else {
-	    		al_draw_bitmap(this->sprites8, x - camera_x, y - camera_y, 0);
-		    }
-		}
-    }
-    else{ //Do the counter for respawn and respawn when time
-        time+=1;
-        if (time>=120){
-            this->noclip=false;
-            this->hit_points=health;
+            //Code to take care of walking animation
+            if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving
+                if (this->count % 160 < 40) {
+                    al_draw_bitmap(this-> sprites0, x - camera_x, y - camera_y, 0);
+                } else if (this->count % 160 < 80) {
+                    al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
+                } else if (this->count % 160 < 120) {
+                    al_draw_bitmap(this-> sprites2, x - camera_x, y - camera_y, 0);
+                } else {
+                    al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
+                }
+            }
+            else if (dest_x > x) {//walking right animation
+                if (this->count % 160 < 40) {
+                    al_draw_bitmap(this->sprites0, x - camera_x, y - camera_y, 0);
+                }
+                else if (this->count % 160 < 80) {
+                    al_draw_bitmap(this->sprites3, x - camera_x, y - camera_y, 0);
+                }
+                else if (this->count % 160 < 120) {
+                    al_draw_bitmap(this->sprites4, x - camera_x, y - camera_y, 0);
+                }
+                else {
+                    al_draw_bitmap(this->sprites5, x - camera_x, y - camera_y, 0);
+                }
+            }
+            else if (dest_x <= x) {//walking left animation
+                if (this->count % 160 < 20) {
+                    al_draw_bitmap(this->sprites0, x - camera_x, y - camera_y, 0);
+                }
+                else if (this->count % 160 < 80) {
+                    al_draw_bitmap(this->sprites6, x - camera_x, y - camera_y, 0);
+                }
+                else if (this->count % 160 < 120) {
+                    al_draw_bitmap(this->sprites7, x - camera_x, y - camera_y, 0);
+                }
+                else {
+                    al_draw_bitmap(this->sprites8, x - camera_x, y - camera_y, 0);
+                }
+            }
+        }
+        else{ //Do the counter for respawn and respawn when time
+            time+=1;
+            if (time>=120){
+                this->noclip=false;
+                this->hit_points=health;
+            }
         }
     }
 }

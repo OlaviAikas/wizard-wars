@@ -5,6 +5,7 @@
 class MapObject {
     public:
         MapObject(int x, int y, int width, int height, bool noclip);
+        virtual ~MapObject();
         virtual void draw(int camera_x, int camera_y);
         virtual void move();
         virtual void on_collision(MapObject &other);
@@ -20,12 +21,15 @@ class MapObject {
         bool get_garbage_collect() const;        
         bool operator==(const MapObject &other) const;
         bool operator<=(const MapObject &other) const;
-
+        bool get_drawsprite() const;
+        
     protected:
         bool noclip;
+        bool havechanged;
         int x;
         int y;
         int width;
         int height;
         bool garbage_collect;
+        bool drawsprite;
 };

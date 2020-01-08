@@ -5,7 +5,7 @@
 
 
 Projectile::Projectile(int start_x, int start_y, float dir_x, float dir_y, int width, int height, bool noclip, int speed)
-        : Spell( start_x,  start_y,  dir_x,  dir_y, width, height, noclip) {
+        : Spell(start_x,  start_y,  dir_x,  dir_y, width, height, noclip) {
     this->speed = speed;
     // this->number = number;
     this->hit_animation = false;
@@ -25,4 +25,4 @@ void Projectile::move() {
 
 void Projectile::draw(int camera_x, int camera_y) {
     std::cout << "(!) WARN: Generic Projectile::draw called for Projectile at " << this << std::endl;
-};
+}

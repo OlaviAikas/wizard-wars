@@ -10,10 +10,13 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->width = width;
     this->height = height;
     this->noclip = noclip;
+    this->havechanged = false;
     this->garbage_collect = false;
+    this->drawsprite=true;
 }
 
-void MapObject::move() { std::cout << "momove" << std::endl; };
+MapObject::~MapObject(){ }
+void MapObject::move() { std::cout << "momove" << std::endl; havechanged=true;}
 
 void MapObject::set_x(int x) {
     this->x=x;
@@ -42,7 +45,7 @@ int MapObject::get_height() const {
 bool MapObject::get_garbage_collect() const {
     return garbage_collect;
 }
- 
+
 bool MapObject::get_noclip() const {
     return noclip;
 }
@@ -72,9 +75,9 @@ bool MapObject::operator<=(const MapObject &other) const {
 #endif
     if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
-            return true;
+            return true;            
+            }
         }
-    }
     if (this->x + this->width >= other.get_x() && this->x + this->width <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
             return true;
@@ -91,6 +94,10 @@ bool MapObject::operator<=(const MapObject &other) const {
         }
     }
     return false;
+}
+
+bool MapObject::get_drawsprite() const{
+    return drawsprite;
 }
 
 void MapObject::draw(int camera_x, int camera_y) {

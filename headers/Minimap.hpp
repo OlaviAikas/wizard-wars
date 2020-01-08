@@ -9,6 +9,7 @@ class Minimap : public HUDobject {
         Minimap(const char* name, int win_x, int win_y);
         ~Minimap();
         void update();
+        using HUDobject::draw;
         void draw(std::list<Player*> players);
 
     private:

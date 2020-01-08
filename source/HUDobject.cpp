@@ -10,6 +10,8 @@ HUDobject::HUDobject(int x, int y, int sx, int sy, int border) {
     this->border = border;
 }
 
+HUDobject::~HUDobject() { }
+
 void HUDobject::draw() {
     al_draw_filled_rectangle(x, y, x + sx, y + sy, al_map_rgb(0, 0, 0));
 }

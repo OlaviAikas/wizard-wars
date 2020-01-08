@@ -11,6 +11,7 @@ class HealZ: public Zone {
 
         virtual void on_collision(MapObject &other);
         virtual void draw(int camera_x, int camera_y);
+        virtual void move();
 
     private:
     ALLEGRO_BITMAP* sprite;

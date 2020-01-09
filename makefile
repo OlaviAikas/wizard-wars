@@ -14,6 +14,7 @@ OBJS := $(patsubst source/%.cpp,objects/%.o,$(SRCS))
 
 # Compiler and flags
 CXX := g++
+CFLAGS := --std=c++11
 PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread -lpthread -lboost_fiber `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
 
 # -include $(DEP)   # include all dep files in the makefile
@@ -25,7 +26,7 @@ PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread -lpthread -lboost_fiber 
 # Rules
 all: game
 
-debug: CFLAGS := -g
+debug: CFLAGS := --std=c++11 -g
 debug: clean game
 	
 verbose: CFLAGS := -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy \

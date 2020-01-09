@@ -26,6 +26,9 @@ PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread -lpthread -lboost_fiber 
 # Rules
 all: game
 
+mac: PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread-mt -lpthread -lboost_fiber-mt `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_primitives-5 --libs --cflags`
+mac: game
+
 debug: CFLAGS := --std=c++11 -g
 debug: clean game
 	

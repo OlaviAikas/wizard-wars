@@ -76,7 +76,9 @@ void Client::listen(){
 
 void Client::onResponse(std::string message){
     std::cout << "The servers response is: " << message << std::endl;
-
+    if (message=="go"){
+        ready=true;
+    }
     // modify the game depending on message
     char identifier = message.front();
     switch (identifier)

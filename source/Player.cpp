@@ -258,6 +258,6 @@ void Player::reset_havechanged(){
     this->havechanged=false;
 }
 
-std::string encode_player(){
+std::string Player::encode_player(){
     //implement it as soon as Damien finished modifying player
 }

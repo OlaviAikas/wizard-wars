@@ -1,5 +1,6 @@
 #pragma once
 #include "MapObject.hpp"
+#include <string>
 
 class Spell : public MapObject {
     public:

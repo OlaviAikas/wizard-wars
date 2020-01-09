@@ -121,14 +121,8 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
     delete end_game;
 }
 
-    bool isServer = true;
-    // boost::asio::io_service io_service;
-    Interface interface;
-    // if(isServer){
-    //     interface = Server(io_service, 13, &game_status);
-    // } else {
-    //     interface = Client(io_service, "localhost", "13", &game_status);
-    // }
+Interface interface;
+bool isServer=true;
 
 void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
@@ -428,6 +422,25 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     delete minimap;
 }
 
+void server_loop(Gamestatus *game_status){
+    isServer = true;
+    boost::asio::io_service io_service;
+    interface = Server(io_service, 13, &*game_status);
+    while(!interface.ready){}
+    game_status->game_state=2;
+}
+
+void client_loop(Gamestatus *game_status){
+    isServer = false;
+    boost::asio::io_service io_service;
+    interface = Client(io_service, "localhost", "13", &*game_status);
+    bool go=false;
+    while(!interface.ready){
+        interface.send_string("ready");
+    }
+    game_status->game_state=2;
+}
+
 void must_init(bool test, const char *description) {
     if(test) return;
 
@@ -515,6 +528,12 @@ int main(int argc, char **argv)
             game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
                     scaleY, scaleW, scaleH, sx, sy, interface);
+        }
+        if (game_status.game_state == 4){
+            server_loop(&game_status);
+        }
+        if (game_status.game_state == 5){
+            client_loop(&game_status);
         }
 
     }

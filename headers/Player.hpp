@@ -2,6 +2,7 @@
 #include "MapObject.hpp"
 #include <allegro5/allegro.h>
 #include <list>
+#include <string>
 
 class Player : public MapObject {
     public:

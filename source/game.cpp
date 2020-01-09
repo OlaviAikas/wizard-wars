@@ -135,7 +135,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
-    std::list<int> elementlist;
     int e1 = 0;
     int e2 = 0;
     ElementPicker* e1p = new ElementPicker(screenWidth * 0.9, screenHeight*0.76, screenWidth * 0.06, screenWidth * 0.06, &e1);
@@ -397,9 +396,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             al_flip_display();
 
             redraw = false;
-        }
-        if(elementlist.size() > 2) {
-            elementlist.pop_front();
         }
     }
     //delete what you loaded

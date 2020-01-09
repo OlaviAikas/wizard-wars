@@ -37,7 +37,7 @@ class Server : public Interface{
 
     Gamestatus *game_status;
 
-    short port;
+    unsigned short port;
 
     boost::thread* listen_thread;
 

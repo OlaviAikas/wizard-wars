@@ -5,6 +5,7 @@ FreezeZ::FreezeZ(int start_x, int start_y)
             : Zone::Zone(start_x, start_y, 200, 200, true) {
     damage = 0;
     sprite = al_load_bitmap("resources/zone.bmp");
+    time = 0;
 }
 
 int FreezeZ::get_damage() {

@@ -14,17 +14,15 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
     this->team = team;
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
-	this->sprites0 = al_load_bitmap("resources/Sprite-0002.bmp");
-    this->sprites1 = al_load_bitmap("resources/Sprite-0003.bmp");
-	this->sprites2 = al_load_bitmap("resources/Sprite-0004.bmp");
-	this->sprites3 = al_load_bitmap("resources/Sprite-0005.bmp");
-	this->sprites4 = al_load_bitmap("resources/Sprite-0006.bmp");
-	this->sprites5 = al_load_bitmap("resources/Sprite-0007.bmp");
-	this->sprites6 = al_load_bitmap("resources/Sprite-0008.bmp");
-	this->sprites7 = al_load_bitmap("resources/Sprite-0009.bmp");
-	this->sprites8 = al_load_bitmap("resources/Sprite-0010.bmp");
-	this->sprites9 = al_load_bitmap("resources/Sprite-0011.bmp");
-	this->sprites10 = al_load_bitmap("resources/Sprite-0012.bmp");
+	this->sprites0 = al_load_bitmap("resources/player1.bmp");
+    this->sprites1 = al_load_bitmap("resources/player1walk.bmp");
+	this->sprites2 = al_load_bitmap("resources/player2.bmp");
+	this->sprites3 = al_load_bitmap("resources/player2walk.bmp");
+	this->sprites4 = al_load_bitmap("resources/player3.bmp");
+	this->sprites5 = al_load_bitmap("resources/player3walk.bmp");
+	this->sprites6 = al_load_bitmap("resources/player4.bmp");
+	this->sprites7 = al_load_bitmap("resources/player4walk.bmp");
+
     this->speed = 20;
     this->count = 0; //keeps the frame count
     this->health = 100;
@@ -54,7 +52,9 @@ void Player::hit(int amount) {
     hit_points -= amount;
     std::cout << "New HP " << hit_points << std::endl;
     if (hit_points<0){
-        hit_points=0;
+        hit_points=0;}
+    if (hit_points>=health){
+        hit_points=health;
     }
 }
 
@@ -184,42 +184,26 @@ void Player::draw(int camera_x, int camera_y) {
 
             //Code to take care of walking animation
             if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving
-                if (this->count % 160 < 40) {
+                if (this->count % 40 < 20) {
                     al_draw_bitmap(this-> sprites0, x - camera_x, y - camera_y, 0);
-                } else if (this->count % 160 < 80) {
-                    al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
-                } else if (this->count % 160 < 120) {
-                    al_draw_bitmap(this-> sprites2, x - camera_x, y - camera_y, 0);
                 } else {
                     al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
                 }
             }
             else if (dest_x > x) {//walking right animation
-                if (this->count % 160 < 40) {
-                    al_draw_bitmap(this->sprites0, x - camera_x, y - camera_y, 0);
+                if (this->count % 20 < 10) {
+                    al_draw_bitmap(this->sprites6, x - camera_x, y - camera_y, 0);
                 }
-                else if (this->count % 160 < 80) {
-                    al_draw_bitmap(this->sprites3, x - camera_x, y - camera_y, 0);
+                else {
+                    al_draw_bitmap(this->sprites7, x - camera_x, y - camera_y, 0);
                 }
-                else if (this->count % 160 < 120) {
+            }
+            else if (dest_x <= x) {//walking left animation
+                if (this->count % 20 < 10) {
                     al_draw_bitmap(this->sprites4, x - camera_x, y - camera_y, 0);
                 }
                 else {
                     al_draw_bitmap(this->sprites5, x - camera_x, y - camera_y, 0);
-                }
-            }
-            else if (dest_x <= x) {//walking left animation
-                if (this->count % 160 < 20) {
-                    al_draw_bitmap(this->sprites0, x - camera_x, y - camera_y, 0);
-                }
-                else if (this->count % 160 < 80) {
-                    al_draw_bitmap(this->sprites6, x - camera_x, y - camera_y, 0);
-                }
-                else if (this->count % 160 < 120) {
-                    al_draw_bitmap(this->sprites7, x - camera_x, y - camera_y, 0);
-                }
-                else {
-                    al_draw_bitmap(this->sprites8, x - camera_x, y - camera_y, 0);
                 }
             }
         }

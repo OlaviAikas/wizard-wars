@@ -1,5 +1,6 @@
 #pragma once
 #include "HUDobject.hpp"
+#include "allegro5/allegro5.h"
 
 class ElementPicker : public HUDobject {
     public:
@@ -14,5 +15,4 @@ class ElementPicker : public HUDobject {
         ALLEGRO_BITMAP* sprite4;
         ALLEGRO_BITMAP* sprite5;
         ALLEGRO_BITMAP* sprite6;
-
 };

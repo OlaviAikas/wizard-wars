@@ -115,6 +115,15 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
     delete end_game;
 }
 
+    bool isServer = true;
+    // boost::asio::io_service io_service;
+    Interface interface;
+    // if(isServer){
+    //     interface = Server(io_service, 13, &game_status);
+    // } else {
+    //     interface = Client(io_service, "localhost", "13", &game_status);
+    // }
+
 void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
@@ -397,6 +406,13 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 
             redraw = false;
         }
+
+        if(!isServer){
+                interface.send_string((*pit)->encode_player());
+                for (std::list<Spell*>::iterator i=map->spells.begin(); i != map->spells.end(); i++){
+                    interface.send_string((*i)->encode_spell());
+                }
+        }
     }
     //delete what you loaded
     delete map;
@@ -475,16 +491,6 @@ int main(int argc, char **argv)
 
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
-
-
-    // bool isServer = true;
-    // boost::asio::io_service io_service;
-    Interface interface;
-    // if(isServer){
-    //     interface = Server(io_service, 13, &game_status);
-    // } else {
-    //     interface = Client(io_service, "localhost", "13", &game_status);
-    // }
     
 
 

@@ -44,6 +44,8 @@ class Player : public MapObject {
 
         short get_number();
 
+        std::string encode_player();
+
     private:
         short team;
         int speed;

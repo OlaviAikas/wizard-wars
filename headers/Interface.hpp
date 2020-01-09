@@ -7,6 +7,6 @@ class Interface {
     public:
     Interface();
     // event handlers
-    virtual void send_message(std::string);
+    virtual void send_string(std::string);
 
 };

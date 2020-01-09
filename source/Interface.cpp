@@ -4,6 +4,6 @@ Interface::Interface(){
 
 }
 
-void Interface::send_message(std::string s){
+void Interface::send_string(std::string s){
     
 }

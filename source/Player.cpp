@@ -257,3 +257,7 @@ bool Player::get_havechanged(){
 void Player::reset_havechanged(){
     this->havechanged=false;
 }
+
+std::string encode_player(){
+    //implement it as soon as Damien finished modifying player
+}

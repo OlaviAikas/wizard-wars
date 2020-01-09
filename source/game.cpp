@@ -4,6 +4,8 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <algorithm>
 #include <list>
 #include <iostream>
@@ -20,6 +22,7 @@
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 
+
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
 
@@ -30,6 +33,8 @@ void main_menu_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, AL
 
 void game_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
+void settings_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);                    
 
 void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
@@ -37,13 +42,16 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     //Load what you need to before the loop:
     void (*changeptr)(short &, short new_state);
     changeptr = change_state;
-    Button<short &, short>* start_game = new Button<short &, short>(840, 500, "resources/start_game.bmp", changeptr);
-    Button<short &, short>* end_game = new Button<short &, short>(840, 600, "resources/quit.bmp", changeptr);
+    ALLEGRO_FONT *Myfont = al_load_ttf_font("MeathFLF.ttf",72,0 );
+    //background = al_load_bitmap("resources.background.bmp.icloud");
+    Button<short &, short>* start_game = new Button<short &, short>(840, 500, "resources/Start.bmp", changeptr);
+    Button<short &, short>* end_game = new Button<short &, short>(840, 600, "resources/Exit.bmp", changeptr);
+    Button<short &, short>* settings = new Button<short &, short>(840, 700, "resources/Settings.bmp", changeptr);
 
     while(state == 1) {
     al_wait_for_event(queue, &event);
     switch(event.type)
-        {
+{
             case ALLEGRO_EVENT_TIMER:
                 if (key[ALLEGRO_KEY_ESCAPE]) {
                     state = 0;
@@ -60,6 +68,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 start_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 2);
                 end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 0);
+                settings->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 3);
                 break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
@@ -79,6 +88,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
             al_clear_to_color(al_map_rgb(0, 0, 0));
             start_game->draw();
             end_game->draw();
+            settings->draw();
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -91,6 +101,7 @@ void main_menu_loop(short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALL
     //delete what you loaded
     delete start_game;
     delete end_game;
+    delete settings;
 }
 
 void game_loop (short &state, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
@@ -298,11 +309,9 @@ int main(int argc, char **argv)
     float scaleH = screenHeight * scale;
     float scaleX = (windowWidth - scaleW) / 2;
     float scaleY = (windowHeight - scaleH) / 2;
-
-    must_init(al_init_primitives_addon(), "primitives");
+     must_init(al_init_primitives_addon(), "primitives");
 
     must_init(al_init_image_addon(), "Image addon");
-
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -314,7 +323,7 @@ int main(int argc, char **argv)
     0 => End game
     1 => main menu
     2 => game loop
-    3 => settings?
+    3 => settings
     4 => ??? Profit??????
     */
     bool redraw = true;
@@ -332,6 +341,10 @@ int main(int argc, char **argv)
         }
         if (game_state == 2) {
             game_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
+                    screenWidth, screenHeight, windowWidth, windowHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+        }
+        if (game_state ==3){
+            void settings_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
 

@@ -10,9 +10,21 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->width = width;
     this->height = height;
     this->noclip = noclip;
+    this->havechanged = false;
+    this->garbage_collect = false;
+    this->drawsprite=true;
 }
 
-void MapObject::move() { std::cout << "momove" << std::endl; };
+MapObject::~MapObject(){ }
+void MapObject::move() { std::cout << "momove" << std::endl; havechanged=true;}
+
+void MapObject::set_x(int x) {
+    this->x=x;
+}
+
+void MapObject::set_y(int y) {
+    this->y=y;
+}
 
 int MapObject::get_x() const {
     return x;
@@ -30,25 +42,42 @@ int MapObject::get_height() const {
     return height;
 }
 
+bool MapObject::get_garbage_collect() const {
+    return garbage_collect;
+}
+
 bool MapObject::get_noclip() const {
     return noclip;
 }
 
+void MapObject::hit(const int amount) {
+#ifdef DEBUG_MODE
+    std::cout << "    INFO: generic hit called, the MapObject at " << this << " shouldn't be a Player." << std::endl;
+#endif
+}
 
 void MapObject::on_collision(MapObject &other) {
     // To retrieve from balavoine branch
+    std::cout << "(!) WARN: generic on_collision called for MapObject at " << this << std::endl;
 }
 
 
 bool MapObject::operator==(const MapObject &other) const {
 #ifdef DEBUG_MODE
+    std::cout << "    INFO: Called equality operator at " << this << " vs " << &other << std::endl;
+#endif
+    return ((*this <= other) | (other <= *this));
+}
+
+bool MapObject::operator<=(const MapObject &other) const {
+#ifdef DEBUG_MODE
     std::cout << "Equality operator at " << this << " vs " << &other << std::endl;
 #endif
     if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
-            return true;
+            return true;            
+            }
         }
-    }
     if (this->x + this->width >= other.get_x() && this->x + this->width <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
             return true;
@@ -67,6 +96,11 @@ bool MapObject::operator==(const MapObject &other) const {
     return false;
 }
 
+bool MapObject::get_drawsprite() const{
+    return drawsprite;
+}
+
 void MapObject::draw(int camera_x, int camera_y) {
     al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
 }
+

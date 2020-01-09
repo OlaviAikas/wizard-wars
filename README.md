@@ -40,6 +40,7 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 * Yasamin
 * Seorim
 * Wanqi
+link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqPbSf0No7_KN3GhcqFwKOEsrraRNXdxw/edit?usp=sharing
 
 ### Team 4: Networking:
 * Ashish

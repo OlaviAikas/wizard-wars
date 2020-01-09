@@ -7,11 +7,29 @@
 Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool noclip) : MapObject::MapObject(x, y, width, height, noclip) {
     this->dir_x = dir_x;
     this->dir_y = dir_y;
+    this->havechanged = false;
 }
 
-void Spell::draw(int camera_x, int camera_y) { std::cout << "hellods" << std::endl; };
-void Spell::move() { std::cout << "helloms" << std::endl; };
+void Spell::draw(int camera_x, int camera_y) { std::cout << "(!) WARN: Generic Spell::draw() called for Spell at " << this << std::endl; }
+void Spell::move() { std::cout << "(!) WARN: Generic Spell::move() called for spell at " << this << std::endl; }
+bool Spell::get_havechanged(){
+    return this->havechanged;
+}
 
+std::string Spell::encode_spell(){
+    
+}
+
+void Spell::reset_havechanged(){
+    this->havechanged=false;
+}
+
+float Spell::get_dir_x(){
+    return dir_x;
+}
+float Spell::get_dir_y(){
+    return dir_y;
+}
 /*
 int Spell::get_damage() {
     return damage;
@@ -84,7 +102,7 @@ Projectile::Projectile(int start_x, int start_y, int width, int height, bool noc
 //     return this->number;
 // }
 
-void Projectile::on_collision(MapObject other) {
+void Projectile::on_collision(MapObject &other) {
     if (not other.get_noclip()) {
         dest_x = x;
         dest_y = y;
@@ -129,3 +147,5 @@ void Projectile::set_target(int target_x, int target_y) {
     this->target_y = target_y;
 };
 */
+
+//collision : map_object

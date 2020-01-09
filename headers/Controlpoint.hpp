@@ -1,6 +1,6 @@
 #pragma once
 #include "MapObject.hpp"
-#include "Map.hpp"
+#include "Player.hpp"
 #include <list>
 
 class Controlpoint : public MapObject {
@@ -13,11 +13,28 @@ class Controlpoint : public MapObject {
 
         short get_number();
 
-        void on_collision(Player other);
+        using MapObject::on_collision;
+        virtual void on_collision(Player &other);
+
+        void draw(int camera_x, int camera_y);
+
+        int get_timegot();
+        int get_timetoget();
+        void change_tgot(int tgot);
+        void change_ttoget(int ttoget);
+        void change_owner(bool updated);
+        bool get_havechanged();
+        void reset_havechanged();
 
     private:
-        bool owner;
+        char owner;
         int timegot=0;
-        int timetoget=450;
+        int timetoget=90;
         int number;
+		bool contested=false;
+        bool havechanged;
+        int is_someone=false;
+		ALLEGRO_BITMAP* control_blue = al_load_bitmap("resources/Controlpoint!3.bmp");
+		ALLEGRO_BITMAP* control_red = al_load_bitmap("resources/Controlpoint!2.bmp");
+		ALLEGRO_BITMAP* control_neutral = al_load_bitmap("resources/Controlpoint!1.bmp");
 };

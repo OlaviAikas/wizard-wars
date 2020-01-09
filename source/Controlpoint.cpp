@@ -15,7 +15,7 @@ Controlpoint::Controlpoint(int x, int y, int number, int side, bool owner) : Map
 }
 
 bool Controlpoint::get_havechanged(){
-    this->havechanged;
+    return this->havechanged;
 }
 void Controlpoint::reset_havechanged(){
     this->havechanged=false;

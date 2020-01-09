@@ -12,7 +12,7 @@
 using boost::asio::ip::udp;
 class Server : public Interface{
     public:
-    Server(boost::asio::io_service &io_service, short port, Gamestatus *gs);
+    Server(boost::asio::io_service &io_service, unsigned short port, Gamestatus *gs);
     ~Server();
     // event handlers
 
@@ -37,7 +37,7 @@ class Server : public Interface{
 
     Gamestatus *game_status;
 
-    short port;
+    unsigned short port;
 
     boost::thread* listen_thread;
 

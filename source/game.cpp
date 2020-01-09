@@ -14,6 +14,7 @@
 #include "../headers/Button.hpp"
 #include "../headers/HUDobject.hpp"
 #include "../headers/Minimap.hpp"
+#include "../headers/ElementPicker.hpp"
 #include "../headers/Spells.hpp"
 #include "../headers/Projectile.hpp"
 #include "../headers/Rock.hpp"
@@ -136,9 +137,10 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
-    std::list<int> elementlist;
     int e1 = 0;
     int e2 = 0;
+    ElementPicker* e1p = new ElementPicker(screenWidth * 0.9, screenHeight*0.76, screenWidth * 0.06, screenWidth * 0.06, &e1);
+    ElementPicker* e2p = new ElementPicker(screenWidth * 0.85, screenHeight*0.85, screenWidth * 0.06, screenWidth * 0.06, &e2);
 
 
 #ifdef DEBUG_MODE    
@@ -237,16 +239,16 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     // std::cout << e1*e2;
                     switch(e1*e2) {
                         case 121: // 11*11 L+L Rock+Rock
-                            map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                            map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
                             break;
                         case 49: // 7*7 K+K Ice+Ice
-                            map -> spells.push_back(new Ice((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                            map -> spells.push_back(new Ice((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
                             break;
                         case 7: // 7*1 K+U Ice+Life
-                            map -> spells.push_back(new HealP((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                            map -> spells.push_back(new HealP((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
                             break;
                         case 33: // 11*3 L+O Rock+Fire
-                            map -> spells.push_back(new FireP((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                            map -> spells.push_back(new FireP((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
                             break;
                         case 2: // 2*1 I+U Shield+Life
                             if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
@@ -292,7 +294,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             }
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam
-                            map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                            map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
                             break;
                             
                         default:
@@ -390,15 +392,15 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 
             map->draw_list(map->cp, camera.get_x(), camera.get_y());
 
+            e1p->draw();
+            e2p->draw();
+
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
             al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
             al_flip_display();
 
             redraw = false;
-        }
-        if(elementlist.size() > 2) {
-            elementlist.pop_front();
         }
     }
     //delete what you loaded

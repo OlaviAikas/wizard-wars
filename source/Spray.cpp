@@ -3,7 +3,7 @@
 #include <math.h>
 #include <iostream>
 
-Spray::Spray(int start_x, int start_y, int width, int height, bool noclip)
+Spray::Spray(int start_x, int start_y, float dir_x, float dir_y, int width, int height, bool noclip)
         : Spell(start_x,  start_y,  dir_x,  dir_y, width, height, noclip) {
     // this->number = number;
     this->hit_animation=false;

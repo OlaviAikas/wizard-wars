@@ -14,6 +14,7 @@
 #include "../headers/Button.hpp"
 #include "../headers/HUDobject.hpp"
 #include "../headers/Minimap.hpp"
+#include "../headers/ElementPicker.hpp"
 #include "../headers/Spells.hpp"
 #include "../headers/Projectile.hpp"
 #include "../headers/Rock.hpp"
@@ -137,6 +138,8 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     std::list<int> elementlist;
     int e1 = 0;
     int e2 = 0;
+    ElementPicker* e1p = new ElementPicker(screenWidth * 0.9, screenHeight*0.76, screenWidth * 0.06, screenWidth * 0.06, &e1);
+    ElementPicker* e2p = new ElementPicker(screenWidth * 0.85, screenHeight*0.85, screenWidth * 0.06, screenWidth * 0.06, &e2);
 
 
 #ifdef DEBUG_MODE    
@@ -384,6 +387,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             map->draw_list(map->statics, camera.get_x(), camera.get_y());
 
             map->draw_list(map->cp, camera.get_x(), camera.get_y());
+
+            e1p->draw();
+            e2p->draw();
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));

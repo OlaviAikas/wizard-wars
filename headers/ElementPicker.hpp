@@ -3,11 +3,9 @@
 
 class ElementPicker : public HUDobject {
     public:
-        ElementPicker(int x, int y, int sx, int sy);
-        void set_element(int new_element);
-        int get_element();
+        ElementPicker(int x, int y, int sx, int sy, int* element);
         void draw();
 
     private:
-        int element;
+        int* element;
 };

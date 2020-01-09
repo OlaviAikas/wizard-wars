@@ -56,8 +56,9 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
     //Load what you need to before the loop:
     void (*changeptr)(short &, short new_state);
     changeptr = change_state;
-    Button<short &, short>* start_game = new Button<short &, short>(840, 500, "resources/start_game.bmp", changeptr);
-    Button<short &, short>* end_game = new Button<short &, short>(840, 600, "resources/quit.bmp", changeptr);
+    Button<short &, short>* create_game = new Button<short &, short>(840, 500, "resources/create_game.bmp", changeptr);
+    Button<short &, short>* join_game = new Button<short &, short>(840, 600, "resources/join_game.bmp", changeptr);
+    Button<short &, short>* end_game = new Button<short &, short>(840, 700, "resources/quit.bmp", changeptr);
 
     while(game_status->game_state == 1) {
     al_wait_for_event(queue, &event);
@@ -68,7 +69,7 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
                     game_status->game_state = 0;
                 }
                 if (key[ALLEGRO_KEY_ENTER]) {
-                    start_game->call_callback(game_status->game_state, 2);
+                    game_status->game_state = 2;
                 }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
@@ -77,7 +78,8 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
                 break;
 
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-                start_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 2);
+                create_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 4);
+                join_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 5);
                 end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
                 break;
 
@@ -99,7 +101,8 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
             al_set_target_bitmap(buffer);
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            start_game->draw();
+            create_game->draw();
+            join_game->draw();
             end_game->draw();
 
             al_set_target_backbuffer(disp);
@@ -111,7 +114,8 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
         }
     }
     //delete what you loaded
-    delete start_game;
+    delete create_game;
+    delete join_game;
     delete end_game;
 }
 
@@ -468,7 +472,8 @@ int main(int argc, char **argv)
     1 => main menu
     2 => game loop
     3 => settings?
-    4 => ??? Profit??????
+    4 => Create game
+    5 => Join game
     */
     bool redraw = true;
     ALLEGRO_EVENT event;

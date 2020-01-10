@@ -45,6 +45,7 @@ class Player : public MapObject {
 
         short get_number();
 
+        int get_speed();
         std::string encode_player();
 
         void status_effect_invisible();

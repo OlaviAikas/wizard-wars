@@ -1,5 +1,7 @@
 #pragma once
 #include <allegro5/allegro5.h>
+#include <cmath>
+
 
 
 class MapObject {
@@ -10,6 +12,8 @@ class MapObject {
         virtual void move();
         virtual void on_collision(MapObject &other);
         virtual void hit(const int amount);
+        // I addded a knockback function for the special functions of spray
+        virtual void knockback();
 
         int get_x() const;
         int get_y() const;
@@ -19,9 +23,12 @@ class MapObject {
         int get_height() const;
         bool get_noclip() const;
         bool get_garbage_collect() const;        
-        bool operator==(const MapObject &other) const;
-        bool operator<=(const MapObject &other) const;
+        bool operator==(MapObject &other);
+        bool operator<=(MapObject &other);
         bool get_drawsprite() const;
+        int get_next_x();
+        int get_next_y();
+        int get_speed();
         
     protected:
         bool noclip;

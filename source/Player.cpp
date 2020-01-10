@@ -6,7 +6,8 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <list>
-#include <allegro5/allegro.h>
+#include <allegro5/allegro5.h>
+#include <allegro5/allegro_primitives.h>
 
 Player::Player(int start_x, int start_y, short number,int team) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
@@ -23,7 +24,7 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
 	this->sprites6 = al_load_bitmap("resources/player4.bmp");
 	this->sprites7 = al_load_bitmap("resources/player4walk.bmp");
 
-    this->speed = 20;
+    this->speed = 10;
     this->count = 0; //keeps the frame count
     this->damaged = 0;
     this->respawn_timer = 0;
@@ -177,6 +178,10 @@ int Player::get_next_y(){
 	  return y;
 }
 
+int Player::get_speed(){
+	return this->speed;
+}
+
 void Player::onhit(){
 	this->damaged = 1;
 	this->count = 0; //reset tick count
@@ -194,7 +199,6 @@ void Player::status_effect_frozen() {
 }
 
 void Player::draw(int camera_x, int camera_y) {
-    this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
 
     // -- Begin status effect logic --
     if(!this->drawsprite && this->count > this->status_effect_timeout_invisible) { // 3 frame cooldown on invisibility, modify as needed
@@ -208,6 +212,9 @@ void Player::draw(int camera_x, int camera_y) {
     // -- End status effect logic --
 
     if (this->drawsprite && this->hit_points>0) {
+        al_draw_filled_rectangle(x-camera_x, y-40-camera_y,x+50-camera_x,y-45-camera_y, al_map_rgb(255,0,0));
+		al_draw_filled_rectangle(x-camera_x, y-40-camera_y,x-camera_x + 50*(hit_points)/100,y-45-camera_y, al_map_rgb(0,255,0));
+        this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
         //Code to take care of walking animation
         if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving
             if (this->count % 40 < 20) {
@@ -240,21 +247,6 @@ void Player::draw(int camera_x, int camera_y) {
         }
     }
 }
-
-		/*if (this->healthshow == 1) {
-			if(healthshow == 1){
-				if (this->damaged == 1){ //Health bar only shows when you are being damaged
-					al_draw_filled_rectangle(x-22 - camera_x, y+50 - camera_y,x+22 - camera_x,y+38,RGB(255,0,0) - camera_y);
-					al_draw_filled_rectangle(x-22 - camera_x, y+50 - camera_y,x - camera_x + (44*health)//100,y+38,RGB(0,255,0) - camera_y);
-					al_draw_bitmap(sprites*[12], x - camera_x, y - camera_y);
-					if (this-> count > 15){
-						this->damaged == 0;
-					}
-			}
-		}
-		*/
-
-		//Code for the damaged animation
 
 
 bool Player::get_havechanged(){

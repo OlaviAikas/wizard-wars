@@ -23,9 +23,9 @@ void Minimap::draw(std::list<Player*> players) {
     for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
         double pxr = ((double) (*i)->get_x()) / al_get_bitmap_width(map);
         double pyr = ((double) (*i)->get_y()) / al_get_bitmap_height(map);
-        if ((*i)->get_team()) {
+        if ((*i)->get_team() == 1) {
             al_draw_filled_circle(x + round(sx*pxr), y + round(sy*pyr), 5, al_map_rgb(0, 0, 255));
-        } else {
+        } else if ((*i)->get_team() == 2) {
             al_draw_filled_circle(x + round(sx*pxr), y + round(sy*pyr), 5, al_map_rgb(255, 0, 0));
         }
     }

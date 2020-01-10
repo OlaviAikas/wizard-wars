@@ -2,6 +2,7 @@
 #include "MapObject.hpp"
 #include "Spells.hpp"
 #include "Zone.hpp"
+#include "Player.hpp"
 
 class FreezeZ: public Zone {
     public:
@@ -9,7 +10,7 @@ class FreezeZ: public Zone {
 
         int get_damage();
 
-        virtual void on_collision(MapObject &other);
+        virtual void on_collision(Player &other);
         virtual void draw(int camera_x, int camera_y);
 
     private:

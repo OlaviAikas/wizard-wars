@@ -448,9 +448,9 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     isServer = false;
     boost::asio::io_service io_service;
     interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
+    interface->send_string("ready");
+    std::cout<<"Sent !"<<std::endl;
     while(!interface->ready){
-        interface->send_string("ready");
-        std::cout<<"Sent !"<<std::endl;
     }
     game_status->game_state=2;
 }

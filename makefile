@@ -31,6 +31,9 @@ mac: game
 
 debug: CFLAGS := --std=c++11 -g
 debug: clean game
+
+debug-no-clean: CFLAGS := --std=c++11 -g
+debug-no-clean: game
 	
 verbose: CFLAGS := -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy \
 				   -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs \

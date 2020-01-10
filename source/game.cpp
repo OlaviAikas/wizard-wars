@@ -126,11 +126,11 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
 void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface &interface, bool &isServer) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer) {
     //Load what you need to load
     
     short client_number = 1;
-    Map* map = new Map("resources/map.bmp", &interface);
+    Map* map = new Map("resources/map.bmp", &*interface);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     map->set_spawnpoints(800, 800, 1000, 1000);
     map->players.push_back(new Player(400, 400, 1,1));
@@ -420,14 +420,15 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             redraw = false;
         }
 
-        if(!isServer){
+        /*if(!isServer){
                 interface.send_string((*pit)->encode_player());
                 for (std::list<Spell*>::iterator i=map->spells.begin(); i != map->spells.end(); i++){
                     interface.send_string((*i)->encode_spell());
                 }
-        }
+        }*/
     }
     //delete what you loaded
+    delete interface;
     delete map;
     delete minimap;
 }
@@ -446,7 +447,7 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
 void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
     isServer = false;
     boost::asio::io_service io_service;
-    interface = new Client(io_service, "localhost", "13", &*game_status);
+    interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
     while(!interface->ready){
         interface->send_string("ready");
         std::cout<<"Sent !"<<std::endl;
@@ -542,7 +543,7 @@ int main(int argc, char **argv)
         if (game_status.game_state == 2) {
             game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, *interface, isServer);
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer);
         }
         if (game_status.game_state == 4){
             server_loop(&game_status, interface, isServer);

@@ -24,7 +24,7 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
 	this->sprites6 = al_load_bitmap("resources/player4.bmp");
 	this->sprites7 = al_load_bitmap("resources/player4walk.bmp");
 
-    this->speed = 20;
+    this->speed = 10;
     this->count = 0; //keeps the frame count
     this->damaged = 0;
     this->respawn_timer = 0;

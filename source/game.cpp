@@ -137,9 +137,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->players.push_back(new Player(900, 900, 2,2));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
-    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 2));
+    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 0));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
-    map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
+    map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 0));
     map->modif_lives(50, 50);
     game_status->map = map;
     Camera camera = Camera(0, 0);
@@ -233,6 +233,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     mouse_south = event.mouse.y > (1-proportionOfScroll)*windowHeight;
                     break;
                 }
+            
+            case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
+                mouse_east = false;
+                mouse_west = false;
+                mouse_north = false;
+                mouse_south = false;
+                break;
+
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
                     (*pit)->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());

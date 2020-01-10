@@ -16,8 +16,8 @@ int WaterSpray::get_damage() {
 
 void WaterSpray::draw(int camera_x, int camera_y) {
     float angle = atan2(dir_y,dir_x)+ALLEGRO_PI/8;
-    al_draw_scaled_rotated_bitmap(this->sprite,0,0, x - camera_x, y - camera_y,2.5,2.5, angle,0);
-    ticks ++;
+    al_draw_scaled_rotated_bitmap(this->sprite,0,0, x - camera_x, y - camera_y,4,2, angle,0);
+    ticks += 3;
     if (ticks>50) {
         this->garbage_collect = true;
     };

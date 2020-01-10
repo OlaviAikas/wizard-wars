@@ -9,6 +9,7 @@ Server::Server(boost::asio::io_service &io_service, unsigned short port, Gamesta
 {
     start_listening();
     game_status = gs;
+    ready=false;
 }
 Server::~Server(){
     terminate();
@@ -54,10 +55,12 @@ std::string Server::generateResponse(std::string message){
     // } else {
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
+    // std::cout<<message<<std::endl;
     if(message.find("ready") != -1){
-        ready=true;
+        std::cout<<"go"<<std::endl;
         std::string answer = "go";
         std::cout<<answer<<std::endl;
+        ready=true;
         return answer;
     }
     //std::stringstream ss;

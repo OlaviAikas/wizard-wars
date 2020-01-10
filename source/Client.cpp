@@ -9,6 +9,7 @@ Client::Client(boost::asio::io_service& io_service, const std::string& host,
     udp::resolver::iterator itr = resolver.resolve(query);
     game_status = gs;
     sender_endpoint_ = *itr;
+    ready=false;
     start_listening(); 
     start_senders();
 }
@@ -18,9 +19,9 @@ Client::~Client(){
     socket_.close();
 }
 
-void Client::send_string(std::string *msg_text){
-    std::cout << "send: " << *msg_text << std::endl;
-    msg_queue.push(msg_text);
+void Client::send_string(std::string msg_text){
+    std::cout << "send: " << msg_text << std::endl;
+    msg_queue.push(&msg_text);
     std::unique_lock<boost::fibers::mutex> lock(wait_send_mtx);
     wait_send_cond.notify_one();
 }

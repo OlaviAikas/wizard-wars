@@ -50,7 +50,7 @@ void main_menu_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT 
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
 void game_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
-                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface);
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
 
 void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
@@ -121,13 +121,12 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
     delete end_game;
 }
 
-Interface interface;
-bool isServer=true;
+
 
 void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface &interface) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface &interface, bool &isServer) {
     //Load what you need to load
     
     short client_number = 1;
@@ -425,22 +424,24 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     delete minimap;
 }
 
-void server_loop(Gamestatus *game_status){
+void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
     isServer = true;
     boost::asio::io_service io_service;
-    interface = Server(io_service, 13, &*game_status);
-    while(!interface.ready){
+    interface = new Server(io_service, 13, &*game_status);
+    while(!interface->ready){
         std::cout<<"Not yet"<<std::endl;
     }
+    std::cout<<"..."<<std::endl;
     game_status->game_state=2;
 }
 
-void client_loop(Gamestatus *game_status){
+void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
     isServer = false;
     boost::asio::io_service io_service;
-    interface = Client(io_service, "localhost", "13", &*game_status);
-    while(!interface.ready){
-        interface.send_string("ready");
+    interface = new Client(io_service, "localhost", "13", &*game_status);
+    while(!interface->ready){
+        interface->send_string("ready");
+        std::cout<<"Sent !"<<std::endl;
     }
     game_status->game_state=2;
 }
@@ -503,6 +504,8 @@ int main(int argc, char **argv)
 
 
     Gamestatus game_status(/*game_state*/ 1, /*map pointer*/0);
+    Interface* interface;
+    bool isServer=true;
 
     /*
     Game state states:
@@ -531,13 +534,13 @@ int main(int argc, char **argv)
         if (game_status.game_state == 2) {
             game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, interface);
+                    scaleY, scaleW, scaleH, sx, sy, *interface, isServer);
         }
         if (game_status.game_state == 4){
-            server_loop(&game_status);
+            server_loop(&game_status, interface, isServer);
         }
         if (game_status.game_state == 5){
-            client_loop(&game_status);
+            client_loop(&game_status, interface, isServer);
         }
 
     }

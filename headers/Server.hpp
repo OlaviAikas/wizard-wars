@@ -23,7 +23,7 @@ class Server : public Interface{
 
 
     // virtual functions of Interface that are overwritten
-    void send_message(std::string);
+    void send_string(std::string);
 
     protected:
     
@@ -37,7 +37,7 @@ class Server : public Interface{
 
     Gamestatus *game_status;
 
-    short port;
+    unsigned short port;
 
     boost::thread* listen_thread;
 

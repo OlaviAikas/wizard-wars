@@ -54,6 +54,11 @@ std::string Server::generateResponse(std::string message){
     // } else {
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
+    if(message.find("ready") != -1){
+        ready=true;
+        std::string answer = "go";
+        return answer;
+    }
     std::stringstream ss;
     ss << "Hi! I am a server's response";
     int player_number = message.front() - '0';
@@ -80,6 +85,6 @@ std::string Server::generateResponse(std::string message){
     return ss.str();
 }
 
-void Server::send_message(std::string s){
+void Server::send_string(std::string s){
     std::cout << "Server cannot send messages" << std::endl;
 }

@@ -5,6 +5,7 @@ FreezeZ::FreezeZ(int start_x, int start_y)
             : Zone::Zone(start_x, start_y, 200, 200, true) {
     damage = 0;
     sprite = al_load_bitmap("resources/zone.bmp");
+    time = 0;
 }
 
 int FreezeZ::get_damage() {
@@ -23,9 +24,10 @@ void FreezeZ::draw(int camera_x, int camera_y) {
    
 }
 
-void FreezeZ::on_collision(MapObject &other) {
+void FreezeZ::on_collision(Player &other) {
     if (!this->get_garbage_collect() && !this->hit_animation) {
         other.hit(this->get_damage());
+        other.status_effect_frozen();
        // other.get_speed()=0;
     }
  }

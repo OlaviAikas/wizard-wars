@@ -5,7 +5,8 @@
 HealFireZ::HealFireZ(int start_x, int start_y) 
             : Zone::Zone(start_x, start_y, 200, 200, true) {
     damage = -2;
-    sprite = al_load_bitmap("resources/HealFireZone.bmp");
+    sprite = al_load_bitmap("resources/HealFireZ.bmp");
+    time = 0;
 }
 
 int HealFireZ::get_damage() {

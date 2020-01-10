@@ -1,5 +1,6 @@
 #pragma once
 #include "MapObject.hpp"
+#include <string>
 
 class Spell : public MapObject {
     public:
@@ -9,12 +10,10 @@ class Spell : public MapObject {
 
     float get_dir_x();
     float get_dir_y();
-    int get_id();
-
+    virtual std::string encode_spell();
     bool get_havechanged();
     void reset_havechanged();
     protected:
-    int id;
     float dir_x;
     float dir_y;
     bool havechanged;

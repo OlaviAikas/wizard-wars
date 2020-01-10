@@ -4,7 +4,7 @@
 HealZ::HealZ(int start_x, int start_y) 
             : Zone::Zone(start_x, start_y, 200, 200, true) {
     damage = -1;
-    sprite = al_load_bitmap("resources/zone.bmp");
+    sprite = al_load_bitmap("resources/HealZ.bmp");
     time = 0;
 }
 
@@ -13,7 +13,7 @@ int HealZ::get_damage() {
 }
 
 void HealZ::draw(int camera_x, int camera_y) {
-    al_draw_scaled_bitmap(this->sprite, 0,0,64,64,x - camera_x, y - camera_y,width,height, 0);
+    al_draw_tinted_scaled_bitmap(this->sprite, al_map_rgba_f(1, 1, 1, -0.5),0,0,64,64,x - camera_x, y - camera_y,width,height, 0);
     //how to count ticks?
     time=time+1;
     if (time>100) {

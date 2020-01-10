@@ -429,7 +429,9 @@ void server_loop(Gamestatus *game_status){
     isServer = true;
     boost::asio::io_service io_service;
     interface = Server(io_service, 13, &*game_status);
-    while(!interface.ready){}
+    while(!interface.ready){
+        std::cout<<"Not yet"<<std::endl;
+    }
     game_status->game_state=2;
 }
 
@@ -437,7 +439,6 @@ void client_loop(Gamestatus *game_status){
     isServer = false;
     boost::asio::io_service io_service;
     interface = Client(io_service, "localhost", "13", &*game_status);
-    bool go=false;
     while(!interface.ready){
         interface.send_string("ready");
     }

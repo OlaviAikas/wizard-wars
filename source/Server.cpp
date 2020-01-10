@@ -57,32 +57,33 @@ std::string Server::generateResponse(std::string message){
     if(message.find("ready") != -1){
         ready=true;
         std::string answer = "go";
+        std::cout<<answer<<std::endl;
         return answer;
     }
-    std::stringstream ss;
-    ss << "Hi! I am a server's response";
-    int player_number = message.front() - '0';
-    std::vector<std::string> message_blocks;
-    char identifier = message.front();
-    switch (identifier)
-    {
-    case '0': // Player
+    //std::stringstream ss;
+    //ss << "Hi! I am a server's response";
+    //int player_number = message.front() - '0';
+    //std::vector<std::string> message_blocks;
+    //char identifier = message.front();
+    //switch (identifier)
+    //{
+    //case '0': // Player
         /* code */
-        break;
-    case '1': // Controlpoint
+        //break;
+    //case '1': // Controlpoint
         /* code */
-        break;
-    case '2': // Spell
+        //break;
+    //case '2': // Spell
         /* code */
-        break;
-    case '3': // Gameinfo
+        //break;
+    //case '3': // Gameinfo
         /* code */
         
-        break;
-    default:
-        break;
-    }
-    return ss.str();
+        //break;
+    //default:
+        //break;
+    //}
+    //return ss.str();
 }
 
 void Server::send_string(std::string s){

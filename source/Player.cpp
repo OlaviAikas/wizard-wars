@@ -25,11 +25,14 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
 
     this->speed = 20;
     this->count = 0; //keeps the frame count
-    this->health = 100;
     this->damaged = 0;
-    this->time = 0;
+    this->respawn_timer = 0;
     this->team = team;
     this->havechanged = false;
+    this->status_effect_timeout_frozen = 0;
+    this->status_effect_timeout_invisible = 0;
+    this->prevent_movement = false;
+    this->drawsprite = true;
 }
 
 Player::~Player() {
@@ -53,8 +56,8 @@ void Player::hit(int amount) {
     std::cout << "New HP " << hit_points << std::endl;
     if (hit_points<0){
         hit_points=0;}
-    if (hit_points>=health){
-        hit_points=health;
+    if (hit_points>=base_health){
+        hit_points=base_health;
     }
 }
 
@@ -66,7 +69,7 @@ void Player::die(int* spawn) {
     this->dest_y=this->y;
     this->old_x=this->x;
     this->old_y=this->y;
-    this->time=0; //what is time here?
+    this->respawn_timer=0; //what is time here?
     this->noclip=true;
 }
 
@@ -151,9 +154,11 @@ void Player::move() {
 }
 
 void Player::set_dest(int dest_x, int dest_y) {
-    this->dest_x = dest_x;
-    this->dest_y = dest_y;
-    this->havechanged = true;
+    if (!this->prevent_movement) {
+        this->dest_x = dest_x;
+        this->dest_y = dest_y;
+        this->havechanged = true;
+    }
 }
 
 int Player::get_next_x(){
@@ -177,46 +182,64 @@ void Player::onhit(){
 	this->count = 0; //reset tick count
 }
 
-void Player::draw(int camera_x, int camera_y) {
-    if (this->drawsprite) {
-        if (this->hit_points>0){
-            this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
+void Player::status_effect_invisible() {\
+    this->set_dest(this->x,this->y);
+    this->drawsprite = false;
+    this->status_effect_timeout_invisible = this->count + 3; // 3 frame cooldown on invisibility, modify as needed
+}
 
-            //Code to take care of walking animation
-            if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving
-                if (this->count % 40 < 20) {
-                    al_draw_bitmap(this-> sprites0, x - camera_x, y - camera_y, 0);
-                } else {
-                    al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
-                }
-            }
-            else if (dest_x > x) {//walking right animation
-                if (this->count % 20 < 10) {
-                    al_draw_bitmap(this->sprites6, x - camera_x, y - camera_y, 0);
-                }
-                else {
-                    al_draw_bitmap(this->sprites7, x - camera_x, y - camera_y, 0);
-                }
-            }
-            else if (dest_x <= x) {//walking left animation
-                if (this->count % 20 < 10) {
-                    al_draw_bitmap(this->sprites4, x - camera_x, y - camera_y, 0);
-                }
-                else {
-                    al_draw_bitmap(this->sprites5, x - camera_x, y - camera_y, 0);
-                }
+void Player::status_effect_frozen() {
+    this->prevent_movement = true;
+    this->status_effect_timeout_frozen = this->count + 30;  // The zone freezes a player for 30 frames, aka it takes 30 frames for the ice to melt
+}
+
+void Player::draw(int camera_x, int camera_y) {
+    this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
+
+    // -- Begin status effect logic --
+    if(!this->drawsprite && this->count > this->status_effect_timeout_invisible) { // 3 frame cooldown on invisibility, modify as needed
+        // this->status_effect_timer = 0;
+        this->drawsprite = true;
+    }
+    if(this->prevent_movement && this->count > this->status_effect_timeout_frozen) {
+        // this->status_effect_timer = 0;
+        this->prevent_movement = false;
+    }
+    // -- End status effect logic --
+
+    if (this->drawsprite && this->hit_points>0) {
+        //Code to take care of walking animation
+        if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving
+            if (this->count % 40 < 20) {
+                al_draw_bitmap(this-> sprites0, x - camera_x, y - camera_y, 0);
+            } else {
+                al_draw_bitmap(this-> sprites1, x - camera_x, y - camera_y, 0);
             }
         }
-        else{ //Do the counter for respawn and respawn when time
-            time+=1;
-            if (time>=120){
-                this->noclip=false;
-                this->hit_points=health;
+        else if (dest_x > x) {//walking right animation
+            if (this->count % 20 < 10) {
+                al_draw_bitmap(this->sprites6, x - camera_x, y - camera_y, 0);
             }
+            else {
+                al_draw_bitmap(this->sprites7, x - camera_x, y - camera_y, 0);
+            }
+        }
+        else if (dest_x <= x) {//walking left animation
+            if (this->count % 20 < 10) {
+                al_draw_bitmap(this->sprites4, x - camera_x, y - camera_y, 0);
+            }
+            else {
+                al_draw_bitmap(this->sprites5, x - camera_x, y - camera_y, 0);
+            }
+        }
+    } else if (this->hit_points <= 0) { //Do the counter for respawn and respawn when time
+        respawn_timer+=1;
+        if (respawn_timer>=120){
+            this->noclip=false;
+            this->hit_points=this->base_health;
         }
     }
 }
-
 
 		/*if (this->healthshow == 1) {
 			if(healthshow == 1){

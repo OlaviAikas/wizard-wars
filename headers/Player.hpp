@@ -47,6 +47,9 @@ class Player : public MapObject {
 
         std::string encode_player();
 
+        void status_effect_invisible();
+        void status_effect_frozen();
+
     private:
         short team;
         int speed;
@@ -58,11 +61,14 @@ class Player : public MapObject {
         int lastgoodposx;
         int lastgoodposy;
         int count;
-        char health;
+        const char base_health = 100;
         bool damaged;
         bool havechanged;
         int game_state;
-        int time;
+        int respawn_timer;
+        int status_effect_timeout_frozen;
+        int status_effect_timeout_invisible;
+        bool prevent_movement;
         short number; //this is the id of the player (useful for the server)
         ALLEGRO_BITMAP* sprites1;
         ALLEGRO_BITMAP* sprites2;

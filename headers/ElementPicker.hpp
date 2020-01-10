@@ -1,6 +1,6 @@
 #pragma once
 #include "HUDobject.hpp"
-#include "allegro5/allegro5.h"
+#include <allegro5/allegro5.h>
 
 class ElementPicker : public HUDobject {
     public:

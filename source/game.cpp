@@ -234,6 +234,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     mouse_south = event.mouse.y > (1-proportionOfScroll)*windowHeight;
                     break;
                 }
+            
+            case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
+                mouse_east = false;
+                mouse_west = false;
+                mouse_north = false;
+                mouse_south = false;
+                break;
+
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
                     (*pit)->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());

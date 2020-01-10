@@ -12,6 +12,8 @@ class MapObject {
         virtual void move();
         virtual void on_collision(MapObject &other);
         virtual void hit(const int amount);
+        // I addded a knockback function for the special functions of spray
+        virtual void knockback();
 
         int get_x() const;
         int get_y() const;

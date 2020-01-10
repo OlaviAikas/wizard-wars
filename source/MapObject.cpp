@@ -74,6 +74,11 @@ void MapObject::on_collision(MapObject &other) {
     std::cout << "(!) WARN: generic on_collision called for MapObject at " << this << std::endl;
 }
 
+void MapObject::knockback(){
+    set_x(x + 2);
+    set_y(y + 2);// To be changed later(knockback in the certain direction
+}
+
 
 bool MapObject::operator==(MapObject &other) {
 #ifdef DEBUG_MODE

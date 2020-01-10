@@ -251,6 +251,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     double norm = sqrt(dy*dy + dx*dx);
                     double dx1=dx;
                     double dy1=dy;
+                    //why do we need dx1 and dy1 here
                     dy = dy/norm;
                     dx = dx/norm;
                     // std::cout << e1*e2;

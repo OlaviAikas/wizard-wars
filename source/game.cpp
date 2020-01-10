@@ -133,15 +133,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     short client_number = 1;
     Map* map = new Map("resources/map.bmp", &interface);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
-    map->set_spawnpoints(800, 800, 1000, 1000);
+    map->set_spawnpoints(200, 300, 3000,  1700, 1500, 1500, 2000, 400);
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
-    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 2));
+    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
-    map->modif_lives(50, 50);
     game_status->map = map;
     Camera camera = Camera(0, 0);
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
@@ -162,7 +161,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     bool mouse_south = false;
     
     while (game_status->game_state==2) {
-        if (map->get_lives()[0]==0 || map->get_lives()[1]==0){
+        if (map->game_ended()){
             game_status->game_state=0;
         }
         al_wait_for_event(queue, &event);

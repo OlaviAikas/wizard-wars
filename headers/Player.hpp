@@ -46,6 +46,11 @@ class Player : public MapObject {
         short get_number();
 
         int get_speed();
+
+        void change_spawnable(bool con);
+
+        bool check_dead();
+
         std::string encode_player();
 
         void status_effect_invisible();
@@ -82,4 +87,6 @@ class Player : public MapObject {
         ALLEGRO_BITMAP* sprites9;
         ALLEGRO_BITMAP* sprites10;
         ALLEGRO_BITMAP* sprites0;
+        bool dead;
+        bool spawnable;
 };

@@ -20,13 +20,12 @@ class Map {
         ~Map();
 
         void draw_map(int camera_x, int camera_y);
-
         void check_collisions();
         void garbage_collect();
-        int* get_lives();
-        void modif_lives(int lives1, int lives2);
+        void modif_lives(int team , bool change);
         void check_dead();
-        void set_spawnpoints(int x1, int y1, int x2, int y2);
+        void set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3,int x4, int y4);
+        bool game_ended();
 
         std::string encode_player(Player &i);
         std::string encode_controlpoint(Controlpoint &i);
@@ -76,7 +75,11 @@ class Map {
     private:
         ALLEGRO_BITMAP* map;
         Interface* interface;
-        int lives[2];
         int spawnpoint1[2];
         int spawnpoint2[2];
+        int spawnpoint3[2];
+        int spawnpoint4[2];
+        bool spawnred;
+        bool spawnblue;
+        int spawns[4];
 };

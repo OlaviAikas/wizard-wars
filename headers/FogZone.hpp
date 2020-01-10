@@ -13,6 +13,6 @@ class FogZ: public Zone {
         virtual void draw(int camera_x, int camera_y);
 
     private:
-    ALLEGRO_BITMAP* sprite;
-    int damage;
+        ALLEGRO_BITMAP* sprite;
+        int damage;
 };

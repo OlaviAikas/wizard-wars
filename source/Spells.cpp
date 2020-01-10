@@ -7,7 +7,6 @@
 Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool noclip) : MapObject::MapObject(x, y, width, height, noclip) {
     this->dir_x = dir_x;
     this->dir_y = dir_y;
-    this->id = id;
     this->havechanged = false;
 }
 
@@ -15,6 +14,10 @@ void Spell::draw(int camera_x, int camera_y) { std::cout << "(!) WARN: Generic S
 void Spell::move() { std::cout << "(!) WARN: Generic Spell::move() called for spell at " << this << std::endl; }
 bool Spell::get_havechanged(){
     return this->havechanged;
+}
+
+std::string Spell::encode_spell(){
+    
 }
 
 void Spell::reset_havechanged(){

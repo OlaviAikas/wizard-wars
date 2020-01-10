@@ -4,6 +4,7 @@ Interface::Interface(){
 
 }
 
-void Interface::send_message(std::string s){
+bool ready=false;
+void Interface::send_string(std::string s){
     
 }

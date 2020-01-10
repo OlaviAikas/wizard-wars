@@ -127,7 +127,10 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
-    map->cp.push_back(new Controlpoint(1500, 1500, 1, 50, false));
+    map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
+    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 2));
+    map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
+    map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     map->modif_lives(50, 50);
     game_status->map = map;
     Camera camera = Camera(0, 0);
@@ -376,14 +379,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 
             map->draw_map(camera.get_x(), camera.get_y());
 
+            map->draw_list(map->cp, camera.get_x(), camera.get_y());
+
             map->draw_list(map->players, camera.get_x(), camera.get_y());
 
             minimap->draw(map->players);
             map->draw_list(map->spells, camera.get_x(), camera.get_y());
 
             map->draw_list(map->statics, camera.get_x(), camera.get_y());
-
-            map->draw_list(map->cp, camera.get_x(), camera.get_y());
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));

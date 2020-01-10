@@ -6,7 +6,8 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <list>
-#include <allegro5/allegro.h>
+#include <allegro5/allegro5.h>
+#include <allegro5/allegro_primitives.h>
 
 Player::Player(int start_x, int start_y, short number,int team) : MapObject(start_x, start_y, 64, 64, false) {
     this->dest_x = start_x;
@@ -25,9 +26,8 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
 	this->sprites8 = al_load_bitmap("resources/Sprite-0010.bmp");
 	this->sprites9 = al_load_bitmap("resources/Sprite-0011.bmp");
 	this->sprites10 = al_load_bitmap("resources/Sprite-0012.bmp");
-    this->speed = 20;
+    this->speed = 15;
     this->count = 0; //keeps the frame count
-    this->health = 100;
     this->damaged = 0;
     this->time = 0;
     this->team = team;
@@ -172,6 +172,10 @@ int Player::get_next_y(){
 	  return y;
 }
 
+int Player::get_speed(){
+	return this->speed;
+}
+
 void Player::onhit(){
 	this->damaged = 1;
 	this->count = 0; //reset tick count
@@ -180,6 +184,8 @@ void Player::onhit(){
 void Player::draw(int camera_x, int camera_y) {
     if (this->drawsprite) {
         if (this->hit_points>0){
+            al_draw_filled_rectangle(x-camera_x, y-40-camera_y,x+50-camera_x,y-45-camera_y, al_map_rgb(255,0,0));
+			al_draw_filled_rectangle(x-camera_x, y-40-camera_y,x-camera_x + 50*(hit_points)/100,y-45-camera_y, al_map_rgb(0,255,0));
             this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
 
             //Code to take care of walking animation
@@ -227,7 +233,7 @@ void Player::draw(int camera_x, int camera_y) {
             time+=1;
             if (time>=120){
                 this->noclip=false;
-                this->hit_points=health;
+                this->hit_points=100;
             }
         }
     }

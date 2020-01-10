@@ -44,6 +44,8 @@ class Player : public MapObject {
 
         short get_number();
 
+        int get_speed();
+
     private:
         short team;
         int speed;
@@ -55,7 +57,6 @@ class Player : public MapObject {
         int lastgoodposx;
         int lastgoodposy;
         int count;
-        char health;
         bool damaged;
         bool havechanged;
         int game_state;

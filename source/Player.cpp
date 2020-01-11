@@ -102,7 +102,7 @@ void Player::change_x(int x){
     this->lastgoodposx=x;
 }
 void Player::change_y(int y){
-    this->lastgoodposy=y;
+   this->lastgoodposy=y;
 }
 void Player::change_destx(int destx){
     this->dest_x=destx;

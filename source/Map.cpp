@@ -216,6 +216,7 @@ void Map::decode_players(std::string mes_get){
                 (*i)->set_frozen(std::stoi(mes2[10]));
                 (*i)->set_prevent(mes2[11]=="1");
                 (*i)->reset_havechanged();
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ class Map {
         std::string encode_controlpoint(Controlpoint &i);
         std::string encode_spell(Spell &s);
     
-        void decode_players(std::string mes_get);
+        void decode_players(std::string mes_get, short client_number);
         void decode_controlpoints(std::string mes_get);
         void decode_spells(std::string mes_get);
         void decode_message(std::string mes_get);

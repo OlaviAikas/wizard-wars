@@ -89,7 +89,7 @@ void Client::onResponse(std::string message){
         client_number=4;
     }
     if (message.find("thisisplayer") != std::string::npos){
-        (this->map)->decode_players(message);
+        (this->map)->decode_players(message, client_number);
     }
     // modify the game depending on message
     //char identifier = message.front();

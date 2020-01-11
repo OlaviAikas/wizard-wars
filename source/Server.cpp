@@ -66,7 +66,7 @@ std::string Server::generateResponse(std::string message){
         return answer;
     }
     if(message.find("thisisplayer") != std::string::npos){
-        (this->map)->decode_players(message);
+        (this->map)->decode_players(message, client_number);
         std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:";
         for(std::list<Player*>::iterator i = (this->map)->players.begin(); i != (this->map)->players.end(); i++){
             s=s+((*i)->encode_player())+":";

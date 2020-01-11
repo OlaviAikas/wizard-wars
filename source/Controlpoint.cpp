@@ -42,14 +42,14 @@ void Controlpoint::on_collision(Player &other){
 	if (other.get_team()!=owner) {
 		contested = true;
 		if (other.get_team() == 1) {//Team 1 goes into the positive
-			timegot +=1;
+			timegot +=2;
 			if (timegot>=timetoget){
 		        set_owner(1);
                 timegot=timetoget;
             }
         }
 			if (other.get_team() == 2) {//For team 2, we go into the negatives
-				timegot -= 1;
+				timegot -= 2;
 				if (timegot<= -timetoget){
 			      set_owner(2);
 			      timegot=-timetoget;
@@ -62,9 +62,6 @@ void Controlpoint::on_collision(Player &other){
     this->havechanged = true;
 }
 
-void Controlpoint::update_contest(){
-	contested = false;
-}
 
 void Controlpoint::draw(int camera_x, int camera_y){
     if (not contested){
@@ -87,4 +84,5 @@ void Controlpoint::draw(int camera_x, int camera_y){
 	//This bar shows the progression of how the teams are capturing the control point
 	al_draw_filled_rectangle(x-camera_x, y+10-camera_y,x+50-camera_x + 50*(timegot)/timetoget,y+15-camera_y, al_map_rgb(255,0,0));
 	al_draw_filled_rectangle(x+50-camera_x+50*(timegot)/timetoget, y+10-camera_y,x+100-camera_x,y+15-camera_y, al_map_rgb(0,0,255));
+	contested = false;
 }

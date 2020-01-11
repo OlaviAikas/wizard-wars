@@ -74,9 +74,9 @@ void MapObject::on_collision(MapObject &other) {
     std::cout << "(!) WARN: generic on_collision called for MapObject at " << this << std::endl;
 }
 
-void MapObject::knockback(){
-    set_x(x + 2);
-    set_y(y + 2);// To be changed later(knockback in the certain direction
+void MapObject::knockback(float di_x, float di_y){
+    set_x(x + round(di_x));
+    set_y(y + round(di_y));// To be changed later(knockback in the certain direction
 }
 
 
@@ -155,5 +155,5 @@ bool MapObject::get_drawsprite() const{
 }
 
 void MapObject::draw(int camera_x, int camera_y) {
-    al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
+    // al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
 }

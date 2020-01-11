@@ -5,7 +5,6 @@
 #include "Player.hpp"
 #include "MapObject.hpp"
 #include "Spells.hpp"
-#include "Interface.hpp"
 #include "Controlpoint.hpp"
 #include <boost/algorithm/string.hpp>
 #include <vector>
@@ -16,7 +15,8 @@
 
 class Map {
     public:
-        Map(const char* name, Interface *interface);
+        Map();
+        Map(const char* name);
         ~Map();
 
         void draw_map(int camera_x, int camera_y);
@@ -74,7 +74,6 @@ class Map {
        // still not sure: std::list<Spell>::iterator fetch_spit(short n);
     private:
         ALLEGRO_BITMAP* map;
-        Interface* interface;
         int spawnpoint1[2];
         int spawnpoint2[2];
         int spawnpoint3[2];

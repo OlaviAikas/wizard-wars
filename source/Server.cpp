@@ -7,6 +7,7 @@ Server::Server(boost::asio::io_service &io_service, unsigned short port, Gamesta
     : io_service_(io_service),
       socket_(io_service, udp::endpoint(udp::v4(), port))
 {
+    players_connected=1;
     start_listening();
     game_status = gs;
     ready=false;
@@ -56,13 +57,26 @@ std::string Server::generateResponse(std::string message){
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
     // std::cout<<message<<std::endl;
-    if(!ready && message.find("ready") != -1){
+    if((!ready) && message=="ready"){
+        players_connected++;
         std::cout<<"go"<<std::endl;
-        std::string answer = "go";
+        std::string answer = "go"+std::to_string(players_connected);
         std::cout<<answer<<std::endl;
         ready=true;
         return answer;
     }
+    else{
+        (this->map)->decode_players(message);
+        return "OK Boomer";
+    }
+    //return "ok Boomer";
+    /*if(std::stoi(mes[0])==1){
+        Map::decode_controlpoints(message);
+    }
+    if(std::stoi(mes[0])==2){
+        Map::decode_spells(message);
+    }*/
+
     //std::stringstream ss;
     //ss << "Hi! I am a server's response";
     //int player_number = message.front() - '0';

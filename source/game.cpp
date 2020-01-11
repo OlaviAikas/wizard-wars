@@ -4,6 +4,8 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <algorithm>
 #include <list>
 #include <iostream>
@@ -35,7 +37,7 @@
 #include "../headers/MainShield.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
-
+#include "../headers/FireSpray.hpp"
 #include "../headers/Server.hpp"
 #include "../headers/Client.hpp"
 #include "../headers/Interface.hpp"
@@ -128,12 +130,12 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
 void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
     //Load what you need to load
     
-    short client_number = 1;
-    Map* map = new Map("resources/map.bmp", &*interface);
+    Map* map=(interface->map);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
+    //map->decode_players("0.14868.815.713");
     map->set_spawnpoints(200, 300, 1500,  1800, 1500, 1500, 2000, 400);
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
@@ -141,9 +143,21 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
     map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
+    map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 0));
+    map->statics.push_back(new MapObject(0, 0, 250, 2160, false));
+    map->statics.push_back(new MapObject(0, 0, 3840, 200, false));
+    map->statics.push_back(new MapObject(0, 1910, 3840, 250, false));
+    map->statics.push_back(new MapObject(3590, 0, 250, 2160, false));
+    map->statics.push_back(new MapObject(0, 0, 800, 350, false));
+    map->statics.push_back(new MapObject(0, 1710, 800, 450, false));
+    map->statics.push_back(new MapObject(3040, 0, 800, 350, false));
+    map->statics.push_back(new MapObject(3240, 1550, 600, 600, false));
+    map->statics.push_back(new MapObject(2002, 1020, 940, 590, false));
+    map->modif_lives(50, 50);
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     game_status->map = map;
     Camera camera = Camera(0, 0);
+    int counter=0;
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
@@ -153,7 +167,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     ElementPicker* e2p = new ElementPicker(screenWidth * 0.85, screenHeight*0.85, screenWidth * 0.06, screenWidth * 0.06, &e2);
 
 
-#ifdef DEBUG_MODE    
+#ifdef DEBUG_MODE
     unsigned long frameNumber = 0;
 #endif
     bool mouse_west = false;
@@ -208,6 +222,10 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     if (mouse_south) {
                         camera.move_y(amountOfMovement);
                     }
+                    // camera.cameraUpdate(cameraPosition, x, y, 32, 32);
+                    // al_identity_transform(camera);
+                    // al_translate_transform(camera, -cameraPosition[0], -cameraPosition[1]);
+                    // al_use_transform(camera);
                 }
 
                 map->move_list(map->players);
@@ -217,7 +235,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 #endif
                 map->check_collisions();
 #ifdef DEBUG_MODE
-                std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;                
+                std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;
                 frameNumber++;
 #endif
                 map->check_dead();
@@ -234,7 +252,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     mouse_south = event.mouse.y > (1-proportionOfScroll)*windowHeight;
                     break;
                 }
-            
+
             case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
                 mouse_east = false;
                 mouse_west = false;
@@ -270,16 +288,16 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             map -> spells.push_back(new FireP((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
                             break;
                         case 2: // 2*1 I+U Shield+Life
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
-                                map -> spells.push_back(new HealZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                                map -> spells.push_back(new HealZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
                             }
                             else {
                                 map -> spells.push_back(new HealZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
                             }
                             break;
                         case 3: // 3*1 O+U Fire+Life
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
-                            map -> spells.push_back(new HealFireZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                            map -> spells.push_back(new HealFireZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
                             }
                             else {
                             map -> spells.push_back(new HealFireZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
@@ -289,24 +307,24 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             map -> spells.push_back(new WaterSpray((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
                             break;
                         case 5: // 5*1 J+U Water+Life
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
-                            map -> spells.push_back(new DamageZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                            map -> spells.push_back(new DamageZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
                             }
                             else {
                             map -> spells.push_back(new DamageZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
                             }
                             break;
                         case 15: // 3*5 O+J Fire+Water
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
-                            map -> spells.push_back(new FogZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                            map -> spells.push_back(new FogZ((*pit)->get_x() - (*pit)->get_width()/2+4*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+4*dy*(*pit)->get_height()));
                             }
                             else {
-                            map -> spells.push_back(new FogZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            map -> spells.push_back(new FogZ(event.mouse.x / sx + camera.get_x() - 3*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 3*(*pit)->get_height()));
                             }
                             break;
                         case 77: // 7*11 K+L Ice+Rock
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
-                            map -> spells.push_back(new FreezeZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                            map -> spells.push_back(new FreezeZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
                             }
                             else {
                             map -> spells.push_back(new FreezeZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
@@ -316,14 +334,17 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
-                                map -> spells.push_back(new MainShield((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                                map -> spells.push_back(new MainShield((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
                             }
                             else {
                                 map -> spells.push_back(new MainShield(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
                             }
                             break;
-                            
+                        
+                        case 9:
+                            map -> spells.push_back(new FireSpray((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                            break;
                         default:
 
                        // } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {
@@ -334,12 +355,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             break;
                     }
                     // if (elementlist.size() == 2) {
-                    //     if (std::count(elementlist.begin(),elementlist.end(),6)==2) { 
+                    //     if (std::count(elementlist.begin(),elementlist.end(),6)==2) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),5)==2) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),5)==1 && std::count(elementlist.begin(),elementlist.end(),1)==1) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),6)==1 && std::count(elementlist.begin(),elementlist.end(),3)==1) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {
-                    //     } else {           
+                    //     } else {
                     //     }
                     // } else {
                     // }
@@ -351,7 +372,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                 if (event.keyboard.keycode == ALLEGRO_KEY_U) {//life
                     e2=e1;
                     e1=1;
-                    
+
                     //elementlist.push_back(1);
                 }
 
@@ -394,7 +415,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 game_status->game_state = 0;
                 break;
-        
+
             default:
                 break;
         }
@@ -414,7 +435,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 
             map->draw_list(map->players, camera.get_x(), camera.get_y());
 
-            minimap->draw(map->players);
             map->draw_list(map->spells, camera.get_x(), camera.get_y());
 
             map->draw_list(map->statics, camera.get_x(), camera.get_y());
@@ -425,25 +445,27 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
             al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            minimap->draw(map->players);
             al_flip_display();
 
             redraw = false;
         }
 
-        /*if(!isServer){
-                interface.send_string((*pit)->encode_player());
-                for (std::list<Spell*>::iterator i=map->spells.begin(); i != map->spells.end(); i++){
-                    interface.send_string((*i)->encode_spell());
+        if(!isServer){
+                counter++;
+                counter=counter%10;
+                if (counter==1){
+                    (*interface).send_string((*pit)->encode_player());
                 }
-        }*/
+        }
     }
     //delete what you loaded
-    delete interface;
     delete map;
     delete minimap;
 }
 
 void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
+    delete interface;
     isServer = true;
     boost::asio::io_service io_service;
     interface = new Server(io_service, 13, &*game_status);
@@ -454,7 +476,8 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     game_status->game_state=2;
 }
 
-void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
+void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number){
+    delete interface;
     isServer = false;
     boost::asio::io_service io_service;
     interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
@@ -462,7 +485,17 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     std::cout<<"Sent !"<<std::endl;
     while(!interface->ready){
     }
+    client_number=interface->get_client();
     game_status->game_state=2;
+    /*for(int i=0; i<10000; i++){
+        if(interface->ready){
+            game_status->game_state=2;
+            break;
+        }
+    }
+    if(!interface->ready){
+        game_status->game_state=1;
+    }*/
 }
 
 void must_init(bool test, const char *description) {
@@ -516,6 +549,11 @@ int main(int argc, char **argv)
 
     must_init(al_init_image_addon(), "Image addon");
 
+    must_init(al_install_audio(), "Audio addon");
+    must_init(al_init_acodec_addon(), "Audio codecs addon");
+    must_init(al_reserve_samples(16), "reserve samples");
+
+
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -523,9 +561,9 @@ int main(int argc, char **argv)
 
 
     Gamestatus game_status(/*game_state*/ 1, /*map pointer*/0);
-    Interface* interface;
+    Interface* interface=new Interface();
     bool isServer=true;
-
+    short client_number=1;
     /*
     Game state states:
     0 => End game
@@ -540,10 +578,12 @@ int main(int argc, char **argv)
 
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
-    
-
 
     al_start_timer(timer);
+
+    ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav");
+    // must_init(music, "music");
+    al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 
     while (game_status.game_state != 0) {
         if (game_status.game_state == 1) {
@@ -553,21 +593,22 @@ int main(int argc, char **argv)
         if (game_status.game_state == 2) {
             game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, interface, isServer);
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
         }
         if (game_status.game_state == 4){
             server_loop(&game_status, interface, isServer);
         }
         if (game_status.game_state == 5){
-            client_loop(&game_status, interface, isServer);
+            client_loop(&game_status, interface, isServer, client_number);
         }
-
     }
 
+    delete interface;
     al_destroy_bitmap(buffer);
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
+    al_destroy_sample(music);
 
     return 0;
 }

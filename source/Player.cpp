@@ -23,7 +23,7 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
 	this->sprites5 = al_load_bitmap("resources/player3walk.bmp");
 	this->sprites6 = al_load_bitmap("resources/player4.bmp");
 	this->sprites7 = al_load_bitmap("resources/player4walk.bmp");
-
+    this->number = number; //The first which touch this, I'll find them, track them and gwdogwgjwio them
     this->speed = 10;
     this->count = 0; //keeps the frame count
     this->damaged = 0;
@@ -280,10 +280,36 @@ bool Player::get_havechanged(){
     return this->havechanged;
 }
 
+void Player::set_hitpoints(int hitpoints){
+    this->hit_points=hitpoints;
+}
+
+void Player::set_count(int count){
+    this->count=count;
+}
+
+void Player::set_timer(int timer){
+    this->respawn_timer=timer;
+}
+
+void Player::set_frozen(int frozen){
+    this->status_effect_timeout_frozen=frozen;
+}
+
+void Player::set_prevent(bool prevent){
+    this->prevent_movement=prevent;
+}
+
 void Player::reset_havechanged(){
     this->havechanged=false;
 }
 
 std::string Player::encode_player(){
-    //implement it as soon as Damien finished modifying player
+    std::string encoded="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.0."+std::to_string(number)+".";
+    encoded=encoded+std::to_string(x)+"."+std::to_string(y)+".";
+    encoded=encoded+std::to_string(dest_x)+"."+std::to_string(dest_y)+".";
+    encoded=encoded+std::to_string(hit_points)+".";
+    encoded=encoded+std::to_string(count)+"."+std::to_string(respawn_timer)+"."+std::to_string(status_effect_timeout_frozen)+"."+std::to_string(prevent_movement);
+    std::cout<<encoded<<std::endl;
+    return encoded;
 }

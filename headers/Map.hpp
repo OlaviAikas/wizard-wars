@@ -79,7 +79,7 @@ class Map {
         int spawnpoint2[2];
         int spawnpoint3[2];
         int spawnpoint4[2];
-        bool spawnred;
-        bool spawnblue;
+        bool spawnred = true;
+        bool spawnblue = true;
         int spawns[4];
 };

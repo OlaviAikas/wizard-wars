@@ -133,7 +133,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     short client_number = 1;
     Map* map = new Map("resources/map.bmp", &interface);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
-    map->set_spawnpoints(200, 300, 3000,  1700, 1500, 1500, 2000, 400);
+    map->set_spawnpoints(200, 300, 1500,  1800, 1500, 1500, 2000, 400);
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));

@@ -71,15 +71,15 @@ void Player::hit(int amount) {
     }
 }
 
-void Player::die(int* spawn) {
+void Player::die() {
     // potentially only if server
-    set_x(*spawn);
-    set_y(*(spawn++));
+    set_x(curspawn1);
+    set_y(curspawn2);
     this->dest_x=this->x;
     this->dest_y=this->y;
     this->old_x=this->x;
     this->old_y=this->y;
-    this->respawn_timer=0; //what is time here?
+    this->respawn_timer=0;
     this->noclip=true;
     this->dead = true;
 }
@@ -128,6 +128,12 @@ void Player::change_spawnable(bool con){
 bool Player::check_dead(){
     return dead;
 }
+
+void Player::change_curspawn(int spawn1, int spawn2){
+    this->curspawn1 = spawn1;
+    this->curspawn2 = spawn2;
+};
+
 
 void Player::move() {
 #ifdef DEBUG_MODE
@@ -259,6 +265,8 @@ void Player::draw(int camera_x, int camera_y) {
         }
     } else if (this->hit_points <= 0) { //Do the counter for respawn and respawn when time
         respawn_timer+=1;
+        set_x(curspawn1);
+        set_y(curspawn2);
         if (respawn_timer>=120 && spawnable){
             this->noclip=false;
             this->hit_points=this->base_health;

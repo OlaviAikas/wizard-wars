@@ -95,7 +95,8 @@ void Map::check_dead(){
                 }
                 
             }
-            (*i)->die(spawn);
+            (*i)->change_curspawn(spawn[1],spawn[2]);
+            (*i)->die();
         }
     }
 }
@@ -111,21 +112,21 @@ bool Map::game_ended(){
                 }
             }
         }
-        if (k == 4){
+        if (k == 1){
             return true; //This means that all the players are dead 
         }
     }
     if (not spawnblue){
-        short k = 0;
+        short g = 0;
         for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++){
             if ((*i)->get_team()==2)
             {
                 if ((*i)->check_dead()){
-                k +=1;
+                g +=1;
                 }
             }
         }
-        if (k == 4){
+        if (g == 1){//this value will depend on the amount of players
             return true; //This means that all the players are dead 
         }
     }

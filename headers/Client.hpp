@@ -40,7 +40,7 @@ class Client : public Interface {
 
     // virtual functions of Interface that are overwritten
     // send a string to the server asynchonously -> onResponse gets called on answer
-    void send_string(std::string *msg);
+    void send_string(std::string msg);
 
     protected:
     

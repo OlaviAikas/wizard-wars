@@ -9,6 +9,7 @@ Client::Client(boost::asio::io_service& io_service, const std::string& host,
     udp::resolver::iterator itr = resolver.resolve(query);
     game_status = gs;
     sender_endpoint_ = *itr;
+    ready=false;
     start_listening(); 
     start_senders();
 }
@@ -18,9 +19,9 @@ Client::~Client(){
     socket_.close();
 }
 
-void Client::send_string(std::string *msg_text){
-    std::cout << "send: " << *msg_text << std::endl;
-    msg_queue.push(msg_text);
+void Client::send_string(std::string msg_text){
+    std::cout << "send: " << msg_text << std::endl;
+    msg_queue.push(&msg_text);
     std::unique_lock<boost::fibers::mutex> lock(wait_send_mtx);
     wait_send_cond.notify_one();
 }
@@ -76,28 +77,28 @@ void Client::listen(){
 
 void Client::onResponse(std::string message){
     std::cout << "The servers response is: " << message << std::endl;
-    if (message=="go"){
+    if (!ready && message=="go"){
         ready=true;
     }
     // modify the game depending on message
-    char identifier = message.front();
-    switch (identifier)
-    {
-    case '0': // Player
+    //char identifier = message.front();
+    //switch (identifier)
+    //{
+    //case '0': // Player
         /* code */
-        break;
-    case '1': // Controlpoint
+        //break;
+    //case '1': // Controlpoint
         /* code */
-        break;
-    case '2': // Spell
+        //break;
+    //case '2': // Spell
         /* code */
-        break;
-    case '3': // Gameinfo
+        //break;
+    //case '3': // Gameinfo
         /* code */
-        break;
-    default:
-        break;
-    }
+        //break;
+    //default:
+        //break;
+    //}
 }
 
 

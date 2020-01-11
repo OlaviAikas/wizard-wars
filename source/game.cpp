@@ -31,6 +31,8 @@
 #include "../headers/HealFireZone.hpp"
 #include "../headers/Spray.hpp"
 #include "../headers/WaterSpray.hpp"
+#include "../headers/Shield.hpp"
+#include "../headers/MainShield.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 
@@ -50,7 +52,7 @@ void main_menu_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT 
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
 void game_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
-                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface);
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
 
 void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
@@ -121,17 +123,16 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
     delete end_game;
 }
 
-Interface interface;
-bool isServer=true;
+
 
 void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface &interface) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer) {
     //Load what you need to load
     
     short client_number = 1;
-    Map* map = new Map("resources/map.bmp", &interface);
+    Map* map = new Map("resources/map.bmp", &*interface);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     map->set_spawnpoints(200, 300, 1500,  1800, 1500, 1500, 2000, 400);
     map->players.push_back(new Player(400, 400, 1,1));
@@ -233,6 +234,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     mouse_south = event.mouse.y > (1-proportionOfScroll)*windowHeight;
                     break;
                 }
+            
+            case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
+                mouse_east = false;
+                mouse_west = false;
+                mouse_north = false;
+                mouse_south = false;
+                break;
+
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 if (event.mouse.button == 2) {
                     (*pit)->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
@@ -243,6 +252,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     double norm = sqrt(dy*dy + dx*dx);
                     double dx1=dx;
                     double dy1=dy;
+                    //why do we need dx1 and dy1 here
                     dy = dy/norm;
                     dx = dx/norm;
                     // std::cout << e1*e2;
@@ -304,6 +314,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam
                             map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                            break;
+                        case 4: // 2*2 I+I Shield + Shield = Main shield
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
+                                map -> spells.push_back(new MainShield((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            }
+                            else {
+                                map -> spells.push_back(new MainShield(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            }
                             break;
                             
                         default:
@@ -412,33 +430,37 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             redraw = false;
         }
 
-        if(!isServer){
+        /*if(!isServer){
                 interface.send_string((*pit)->encode_player());
                 for (std::list<Spell*>::iterator i=map->spells.begin(); i != map->spells.end(); i++){
                     interface.send_string((*i)->encode_spell());
                 }
-        }
+        }*/
     }
     //delete what you loaded
+    delete interface;
     delete map;
     delete minimap;
 }
 
-void server_loop(Gamestatus *game_status){
+void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
     isServer = true;
     boost::asio::io_service io_service;
-    interface = Server(io_service, 13, &*game_status);
-    while(!interface.ready){}
+    interface = new Server(io_service, 13, &*game_status);
+    while(!interface->ready){
+        std::cout<<"Not yet"<<std::endl;
+    }
+    std::cout<<"..."<<std::endl;
     game_status->game_state=2;
 }
 
-void client_loop(Gamestatus *game_status){
+void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
     isServer = false;
     boost::asio::io_service io_service;
-    interface = Client(io_service, "localhost", "13", &*game_status);
-    bool go=false;
-    while(!interface.ready){
-        interface.send_string("ready");
+    interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
+    interface->send_string("ready");
+    std::cout<<"Sent !"<<std::endl;
+    while(!interface->ready){
     }
     game_status->game_state=2;
 }
@@ -501,6 +523,8 @@ int main(int argc, char **argv)
 
 
     Gamestatus game_status(/*game_state*/ 1, /*map pointer*/0);
+    Interface* interface;
+    bool isServer=true;
 
     /*
     Game state states:
@@ -529,13 +553,13 @@ int main(int argc, char **argv)
         if (game_status.game_state == 2) {
             game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, interface);
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer);
         }
         if (game_status.game_state == 4){
-            server_loop(&game_status);
+            server_loop(&game_status, interface, isServer);
         }
         if (game_status.game_state == 5){
-            client_loop(&game_status);
+            client_loop(&game_status, interface, isServer);
         }
 
     }

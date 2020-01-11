@@ -9,6 +9,7 @@ Server::Server(boost::asio::io_service &io_service, unsigned short port, Gamesta
 {
     start_listening();
     game_status = gs;
+    ready=false;
 }
 Server::~Server(){
     terminate();
@@ -54,35 +55,38 @@ std::string Server::generateResponse(std::string message){
     // } else {
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
-    if(message.find("ready") != -1){
-        ready=true;
+    // std::cout<<message<<std::endl;
+    if(!ready && message.find("ready") != -1){
+        std::cout<<"go"<<std::endl;
         std::string answer = "go";
+        std::cout<<answer<<std::endl;
+        ready=true;
         return answer;
     }
-    std::stringstream ss;
-    ss << "Hi! I am a server's response";
-    int player_number = message.front() - '0';
-    std::vector<std::string> message_blocks;
-    char identifier = message.front();
-    switch (identifier)
-    {
-    case '0': // Player
+    //std::stringstream ss;
+    //ss << "Hi! I am a server's response";
+    //int player_number = message.front() - '0';
+    //std::vector<std::string> message_blocks;
+    //char identifier = message.front();
+    //switch (identifier)
+    //{
+    //case '0': // Player
         /* code */
-        break;
-    case '1': // Controlpoint
+        //break;
+    //case '1': // Controlpoint
         /* code */
-        break;
-    case '2': // Spell
+        //break;
+    //case '2': // Spell
         /* code */
-        break;
-    case '3': // Gameinfo
+        //break;
+    //case '3': // Gameinfo
         /* code */
         
-        break;
-    default:
-        break;
-    }
-    return ss.str();
+        //break;
+    //default:
+        //break;
+    //}
+    //return ss.str();
 }
 
 void Server::send_string(std::string s){

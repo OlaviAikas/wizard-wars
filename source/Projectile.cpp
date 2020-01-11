@@ -7,6 +7,7 @@
 Projectile::Projectile(int start_x, int start_y, float dir_x, float dir_y, int width, int height, bool noclip, int speed)
         : Spell(start_x,  start_y,  dir_x,  dir_y, width, height, noclip) {
     this->speed = speed;
+    this->subclass="projectile";
     // this->number = number;
     this->hit_animation = false;
 }
@@ -37,4 +38,11 @@ int Projectile::get_next_x(){
 
 int Projectile::get_next_y(){
 	return round(y + dir_y*speed);
+}
+
+std::string Projectile::encode_spell(){
+    std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisspell;"+std::to_string(id)+";0;";
+    s=s+element+";";
+    s=s+std::to_string(x)+";"+std::to_string(y)+";";
+    s=s+std::to_string(dir_x)+";"+std::to_string(dir_y);
 }

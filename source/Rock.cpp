@@ -7,6 +7,7 @@ Rock::Rock(int start_x, int start_y, float dir_x, float dir_y)
             : Projectile::Projectile( start_x, start_y, dir_x, dir_y, 12, 12, false, 20) {
     damage = 10;
     sprite = al_load_bitmap("resources/rock_projectile.bmp");
+    element = "0";
 }
 
 Rock::~Rock() {

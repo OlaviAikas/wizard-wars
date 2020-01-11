@@ -166,6 +166,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     int e2 = 0;
     ElementPicker* e1p = new ElementPicker(screenWidth * 0.9, screenHeight*0.76, screenWidth * 0.06, screenWidth * 0.06, &e1);
     ElementPicker* e2p = new ElementPicker(screenWidth * 0.85, screenHeight*0.85, screenWidth * 0.06, screenWidth * 0.06, &e2);
+    bool spell_created;
 
 
 #ifdef DEBUG_MODE
@@ -266,6 +267,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     (*pit)->set_dest(event.mouse.x / sx + camera.get_x(), event.mouse.y / sy + camera.get_y());
                 }
                 if (event.mouse.button == 1) {
+                    spell_created=true;
                     double dy = (event.mouse.y / sy + camera.get_y()) - ((*pit)->get_y() + (*pit)->get_height()/2);
                     double dx = (event.mouse.x / sx + camera.get_x()) - ((*pit)->get_x() + (*pit)->get_width()/2);
                     double norm = sqrt(dy*dy + dx*dx);
@@ -457,6 +459,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                 counter=counter%10;
                 if (counter==1){
                     (*interface).send_string("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:"+(*pit)->encode_player());
+                }
+                if (spell_created){
+                    spell_created=false;
+                    for(std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++){
+                        if((*i)->just_created){
+                            (*interface).send_string((*i)->encode_spell());
+                        }
+                    }
                 }
         }
     }

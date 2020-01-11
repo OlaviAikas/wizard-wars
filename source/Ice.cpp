@@ -5,6 +5,7 @@ Ice::Ice(int start_x, int start_y, float dir_x, float dir_y)
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 12, 12, false, 40) {
     damage = 5;
     sprite = al_load_bitmap("resources/iceProjectiles.bmp");
+    element = "2";
 }
 
 int Ice::get_damage() {

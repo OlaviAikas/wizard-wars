@@ -57,7 +57,7 @@ std::string Server::generateResponse(std::string message){
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
     // std::cout<<message<<std::endl;
-    if(!ready && message=="ready"){
+    if((!ready) && message=="ready"){
         players_connected++;
         std::cout<<"go"<<std::endl;
         std::string answer = "go"+std::to_string(players_connected);
@@ -65,12 +65,16 @@ std::string Server::generateResponse(std::string message){
         ready=true;
         return answer;
     }
-
-    std::vector<std::string> mes;
-    boost::split(mes, message, boost::is_any_of("."));
-    if(std::stoi(mes[0])==0){
+    if(message.find("thisisplayer") != std::string::npos){
         (this->map)->decode_players(message);
+        std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:";
+        for(std::list<Player*>::iterator i = (this->map)->players.begin(); i != (this->map)->players.end(); i++){
+            s=s+((*i)->encode_player())+":";
+        }
+        s.pop_back();
+        return s;
     }
+    //return "ok Boomer";
     /*if(std::stoi(mes[0])==1){
         Map::decode_controlpoints(message);
     }

@@ -135,10 +135,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     
     Map* map=(interface->map);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
+    //map->decode_players("0.14868.815.713");
     map->set_spawnpoints(200, 300, 1500,  1800, 1500, 1500, 2000, 400);
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
-    map->statics.push_back(new MapObject(0, 0, 450, 200, false));
+    map->statics.push_back(new MapObject(1000, 1000, 450, 200, true));
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
     map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
@@ -156,7 +157,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     game_status->map = map;
     Camera camera = Camera(0, 0);
+<<<<<<< HEAD
     bool left_mouse_down = false;
+=======
+    int counter=0;
+>>>>>>> 75ab2eab341c8b433b7d23bb9f4a73468e63d5f8
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
@@ -315,10 +320,10 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             break;
                         case 15: // 3*5 O+J Fire+Water
                             if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
-                            map -> spells.push_back(new FogZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
+                            map -> spells.push_back(new FogZ((*pit)->get_x() - (*pit)->get_width()/2+4*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+4*dy*(*pit)->get_height()));
                             }
                             else {
-                            map -> spells.push_back(new FogZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            map -> spells.push_back(new FogZ(event.mouse.x / sx + camera.get_x() - 3*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 3*(*pit)->get_height()));
                             }
                             break;
                         case 77: // 7*11 K+L Ice+Rock
@@ -451,7 +456,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
         }
 
         if(!isServer){
-                (*interface).send_string((*pit)->encode_player());
+                counter++;
+                counter=counter%10;
+                if (counter==1){
+                    (*interface).send_string((*pit)->encode_player());
+                }
         }
     }
     //delete what you loaded
@@ -478,6 +487,8 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
     interface->send_string("ready");
     std::cout<<"Sent !"<<std::endl;
+    while(!interface->ready){
+    }
     client_number=interface->get_client();
     game_status->game_state=2;
     /*for(int i=0; i<10000; i++){

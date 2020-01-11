@@ -544,6 +544,7 @@ int main(int argc, char **argv)
 
     must_init(al_install_audio(), "Audio addon");
     must_init(al_init_acodec_addon(), "Audio codecs addon");
+    must_init(al_reserve_samples(16), "reserve samples");
 
 
     al_register_event_source(queue, al_get_keyboard_event_source());
@@ -573,8 +574,9 @@ int main(int argc, char **argv)
 
     al_start_timer(timer);
 
-    // ALLEGRO_SAMPLE* music = al_load_sample("backgroud_music.mp3");
-    // al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+    ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav");
+    // must_init(music, "music");
+    al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 
     while (game_status.game_state != 0) {
         if (game_status.game_state == 1) {
@@ -599,7 +601,7 @@ int main(int argc, char **argv)
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-    // al_destroy_sample(music);
+    al_destroy_sample(music);
 
     return 0;
 }

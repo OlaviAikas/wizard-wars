@@ -34,10 +34,19 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
     this->status_effect_timeout_invisible = 0;
     this->prevent_movement = false;
     this->drawsprite = true;
+    this->spawnable = true;
+
 }
 
 Player::~Player() {
     al_destroy_bitmap(sprites0);
+    al_destroy_bitmap(sprites1);
+    al_destroy_bitmap(sprites2);
+    al_destroy_bitmap(sprites3);
+    al_destroy_bitmap(sprites4);
+    al_destroy_bitmap(sprites5);
+    al_destroy_bitmap(sprites6);
+    al_destroy_bitmap(sprites7);
 }
 
 int Player::get_hit_points() {
@@ -62,16 +71,17 @@ void Player::hit(int amount) {
     }
 }
 
-void Player::die(int* spawn) {
+void Player::die() {
     // potentially only if server
-    set_x(*spawn);
-    set_y(*(spawn++));
+    set_x(curspawn1);
+    set_y(curspawn2);
     this->dest_x=this->x;
     this->dest_y=this->y;
     this->old_x=this->x;
     this->old_y=this->y;
-    this->respawn_timer=0; //what is time here?
+    this->respawn_timer=0;
     this->noclip=true;
+    this->dead = true;
 }
 
 void Player::on_collision(MapObject &other) {
@@ -110,6 +120,20 @@ void Player::change_destx(int destx){
 void Player::change_desty(int desty){
     this->dest_y=desty;
 }
+
+void Player::change_spawnable(bool con){
+    this->spawnable = con;
+}
+
+bool Player::check_dead(){
+    return dead;
+}
+
+void Player::change_curspawn(int spawn1, int spawn2){
+    this->curspawn1 = spawn1;
+    this->curspawn2 = spawn2;
+};
+
 
 void Player::move() {
 #ifdef DEBUG_MODE
@@ -166,16 +190,16 @@ int Player::get_next_x(){
 	int dx = dest_x - x;
 	int dy = dest_y - y;
 	int n2 = round(sqrt(dx*dx + dy*dy));
-	x = round(x + dx * speed / n2);
-	return x;
+	int nx = round(x + dx * speed / n2);
+	return nx;
 }
 
 int Player::get_next_y(){
 	  int dy = dest_y - y;
 	  int dx = dest_x - x;
 	  int n2 = round(sqrt(dx*dx + dy*dy));
-	  y = round(y + dy * speed / n2);
-	  return y;
+	  int ny = round(y + dy * speed / n2);
+	  return ny;
 }
 
 int Player::get_speed(){
@@ -241,13 +265,15 @@ void Player::draw(int camera_x, int camera_y) {
         }
     } else if (this->hit_points <= 0) { //Do the counter for respawn and respawn when time
         respawn_timer+=1;
-        if (respawn_timer>=120){
+        set_x(curspawn1);
+        set_y(curspawn2);
+        if (respawn_timer>=120 && spawnable){
             this->noclip=false;
             this->hit_points=this->base_health;
+            this->dead = false;
         }
     }
 }
-
 
 bool Player::get_havechanged(){
     return this->havechanged;

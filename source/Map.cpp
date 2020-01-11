@@ -8,6 +8,14 @@
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
 
+Map::Map() {
+    // this->map = al_load_bitmap(name);
+    this->spawns[0] = 1;
+    this->spawns[1] = 0;
+    this->spawns[2] = 0;
+    this->spawns[3] = 2;
+}
+
 Map::Map(const char* name) {
     this->map = al_load_bitmap(name);
     this->spawns[0] = 1;
@@ -202,7 +210,7 @@ void Map::decode_players(std::string mes_get){
             (*i)->set_hitpoints(std::stoi(mes[6]));
             (*i)->set_count(std::stoi(mes[7]));
             (*i)->set_timer(std::stoi(mes[8]));
-            (*i)->status_effect_frozen=std::stoi(mes[9]);
+            (*i)->set_frozen(std::stoi(mes[9]));
             (*i)->set_prevent(mes[10]=="True");
             (*i)->reset_havechanged();
         }

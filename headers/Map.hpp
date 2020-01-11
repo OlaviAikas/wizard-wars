@@ -5,7 +5,6 @@
 #include "Player.hpp"
 #include "MapObject.hpp"
 #include "Spells.hpp"
-#include "Interface.hpp"
 #include "Controlpoint.hpp"
 #include <boost/algorithm/string.hpp>
 #include <vector>

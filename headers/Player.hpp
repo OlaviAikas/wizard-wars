@@ -59,6 +59,8 @@ class Player : public MapObject {
 
         void set_timer(int timer);
 
+        void set_frozen(int frozen);
+
         void set_prevent(bool prevent);
 
         std::string encode_player();

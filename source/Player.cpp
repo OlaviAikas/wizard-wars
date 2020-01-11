@@ -291,6 +291,10 @@ void Player::set_timer(int timer){
     this->respawn_timer=timer;
 }
 
+void Player::set_frozen(int frozen){
+    this->status_effect_timeout_frozen=frozen;
+}
+
 void Player::set_prevent(bool prevent){
     this->prevent_movement=prevent;
 }

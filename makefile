@@ -32,6 +32,9 @@ mac: game
 debug: CFLAGS := --std=c++11 -g
 debug: clean game
 
+debug-mac: CFLAGS := --std=c++11 -g
+debug-mac: clean mac
+
 debug-no-clean: CFLAGS := --std=c++11 -g
 debug-no-clean: game
 	

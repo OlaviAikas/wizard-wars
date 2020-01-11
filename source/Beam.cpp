@@ -4,6 +4,10 @@
 #include "../headers/Map.hpp"
 #include "../headers/Player.hpp"
 #include <allegro5/allegro5.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <math.h>
 #include <iostream>
 #include <list>
@@ -38,4 +42,8 @@ void Beam::move() {
     }
 }
 
-void Beam::draw(int camera_x, int camera_y) { }
+void Beam::draw(int camera_x, int camera_y) { 
+    ALLEGRO_SAMPLE* music00 = al_load_sample("music01.wav");
+    al_play_sample(music00, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+    // must_init(music01, "music01");
+}

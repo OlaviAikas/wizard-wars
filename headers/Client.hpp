@@ -33,7 +33,6 @@ class Client : public Interface {
     void terminate();
     void run();
 
-    
 
     // event handler for arriving messages
     void onResponse(std::string message);
@@ -46,7 +45,6 @@ class Client : public Interface {
     
     private:
     Gamestatus *game_status;
-
     boost::asio::io_service& io_service_; 
     udp::socket socket_; 
     udp::endpoint sender_endpoint_;

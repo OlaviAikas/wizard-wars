@@ -19,4 +19,5 @@ class HealB: public Beam {
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
+    int maxdraw;
 };

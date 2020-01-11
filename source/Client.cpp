@@ -18,7 +18,6 @@ Client::~Client(){
     terminate();
     socket_.close();
 }
-
 void Client::send_string(std::string msg_text){
     std::cout << "send: " << msg_text << std::endl;
     msg_queue.push(&msg_text);
@@ -77,8 +76,17 @@ void Client::listen(){
 
 void Client::onResponse(std::string message){
     std::cout << "The servers response is: " << message << std::endl;
-    if (!ready && message=="go"){
+    if (!ready && message=="go2"){
         ready=true;
+        client_number=2;
+    }
+    if (!ready && message=="go3"){
+        ready=true;
+        client_number=3;
+    }
+    if (!ready && message=="go4"){
+        ready=true;
+        client_number=4;
     }
     // modify the game depending on message
     //char identifier = message.front();

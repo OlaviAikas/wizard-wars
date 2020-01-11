@@ -332,7 +332,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             }
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam
-                            map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy, map));
+                            map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy, map));
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
                             if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {

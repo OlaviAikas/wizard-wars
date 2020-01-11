@@ -15,14 +15,26 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
     this->team = team;
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
-	this->sprites0 = al_load_bitmap("resources/player1.bmp");
-    this->sprites1 = al_load_bitmap("resources/player1walk.bmp");
-	this->sprites2 = al_load_bitmap("resources/player2.bmp");
-	this->sprites3 = al_load_bitmap("resources/player2walk.bmp");
-	this->sprites4 = al_load_bitmap("resources/player3.bmp");
-	this->sprites5 = al_load_bitmap("resources/player3walk.bmp");
-	this->sprites6 = al_load_bitmap("resources/player4.bmp");
-	this->sprites7 = al_load_bitmap("resources/player4walk.bmp");
+    if (team==0) { 
+        this->sprites0 = al_load_bitmap("resources/player1.bmp");
+        this->sprites1 = al_load_bitmap("resources/player1walk.bmp");
+        this->sprites2 = al_load_bitmap("resources/player2.bmp");
+        this->sprites3 = al_load_bitmap("resources/player2walk.bmp");
+        this->sprites4 = al_load_bitmap("resources/player3.bmp");
+        this->sprites5 = al_load_bitmap("resources/player3walk.bmp");
+        this->sprites6 = al_load_bitmap("resources/player4.bmp");
+        this->sprites7 = al_load_bitmap("resources/player4walk.bmp");
+    }
+    else {
+        this->sprites0 = al_load_bitmap("resources/player18.bmp");
+        this->sprites1 = al_load_bitmap("resources/player19.bmp");
+        this->sprites2 = al_load_bitmap("resources/player2.bmp");
+        this->sprites3 = al_load_bitmap("resources/player2walk.bmp");
+        this->sprites4 = al_load_bitmap("resources/player22.bmp");
+        this->sprites5 = al_load_bitmap("resources/player24.bmp");
+        this->sprites6 = al_load_bitmap("resources/player20.bmp");
+        this->sprites7 = al_load_bitmap("resources/player21.bmp");
+    }
     this->number = number; //The first which touch this, I'll find them, track them and gwdogwgjwio them
     this->speed = 10;
     this->count = 0; //keeps the frame count

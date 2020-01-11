@@ -5,7 +5,7 @@
 MainShield::MainShield(int start_x, int start_y) 
             : Shield::Shield(start_x, start_y, 200, 200, false) {
     damage = 0;
-    sprite = al_load_bitmap("resources/Shield.bmp");
+    sprite = al_load_bitmap("resources/shield0.bmp");
 }
 
 int MainShield::get_damage() {

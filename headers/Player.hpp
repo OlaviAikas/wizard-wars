@@ -17,7 +17,7 @@ class Player : public MapObject {
         
         int get_hit_points();
         void hit(const int amount); // Reduce hp by amount without overflow
-        void die(int* spawn); // Will probably respawn the player, awatining decisions
+        void die(); // Will probably respawn the player, awatining decisions
 
         int get_team();
 
@@ -46,6 +46,13 @@ class Player : public MapObject {
         short get_number();
 
         int get_speed();
+
+        void change_spawnable(bool con);
+
+        bool check_dead();
+
+        void change_curspawn(int spawn1, int spawn2);
+
         std::string encode_player();
 
         void status_effect_invisible();
@@ -82,4 +89,8 @@ class Player : public MapObject {
         ALLEGRO_BITMAP* sprites9;
         ALLEGRO_BITMAP* sprites10;
         ALLEGRO_BITMAP* sprites0;
+        bool dead = false;
+        bool spawnable = true;
+        int curspawn1;
+        int curspawn2;
 };

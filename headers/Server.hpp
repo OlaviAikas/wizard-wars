@@ -34,7 +34,7 @@ class Server : public Interface{
     udp::endpoint sender_endpoint_;
     enum { max_length = 1024 };
     char data_[max_length];
-
+    short players_connected;
     Gamestatus *game_status;
 
     unsigned short port;

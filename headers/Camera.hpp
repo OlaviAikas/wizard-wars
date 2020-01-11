@@ -10,9 +10,13 @@ class Camera {
         void move_x(int d);
         void move_y(int d);
 
+        // void cameraUpdate(int *cameraPosition, int x, int y, int width, int height);
     private:
         int x;
         int y;
         int maxx;
         int maxy;
+
+        // int screenWidth;
+        // int screenHeight;
 };

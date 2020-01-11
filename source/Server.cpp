@@ -7,6 +7,7 @@ Server::Server(boost::asio::io_service &io_service, unsigned short port, Gamesta
     : io_service_(io_service),
       socket_(io_service, udp::endpoint(udp::v4(), port))
 {
+    players_connected=1;
     start_listening();
     game_status = gs;
     ready=false;
@@ -57,8 +58,9 @@ std::string Server::generateResponse(std::string message){
     // }
     // std::cout<<message<<std::endl;
     if(!ready && message.find("ready") != -1){
+        players_connected++;
         std::cout<<"go"<<std::endl;
-        std::string answer = "go";
+        std::string answer = "go"+std::to_string(players_connected);
         std::cout<<answer<<std::endl;
         ready=true;
         return answer;

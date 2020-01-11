@@ -37,7 +37,7 @@
 #include "../headers/MainShield.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
-
+#include "../headers/FireSpray.hpp"
 #include "../headers/Server.hpp"
 #include "../headers/Client.hpp"
 #include "../headers/Interface.hpp"
@@ -339,7 +339,10 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                                 map -> spells.push_back(new MainShield(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
                             }
                             break;
-                            
+                        
+                        case 9:
+                            map -> spells.push_back(new FireSpray((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                            break;
                         default:
 
                        // } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {

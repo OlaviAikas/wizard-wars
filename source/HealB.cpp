@@ -20,6 +20,7 @@ void HealB::draw(int camera_x, int camera_y) {
     float angle = atan2(dir_y,dir_x) - ALLEGRO_PI/30;
     if(HealB::get_noclip() == false){
         ticks++;
+        height *= ticks;
         al_draw_scaled_rotated_bitmap(this->sprite, 0, 0, x-camera_x, y-camera_y, ticks, 3, angle, 0);
     }else{
         sprite = al_load_bitmap("resources/HealB_Collision.bmp");

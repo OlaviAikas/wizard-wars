@@ -13,7 +13,7 @@ class MapObject {
         virtual void on_collision(MapObject &other);
         virtual void hit(const int amount);
         // I addded a knockback function for the special functions of spray
-        virtual void knockback();
+        virtual void knockback(float di_x, float di_y);
 
         int get_x() const;
         int get_y() const;

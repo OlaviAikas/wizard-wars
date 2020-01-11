@@ -452,7 +452,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 
         if(!isServer){
                 counter++;
-                counter=counter%5;
+                counter=counter%10;
                 if (counter==1){
                     (*interface).send_string((*pit)->encode_player());
                 }
@@ -479,7 +479,7 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     delete interface;
     isServer = false;
     boost::asio::io_service io_service;
-    interface = new Client(io_service, "localhost", "13", &*game_status);
+    interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
     interface->send_string("ready");
     std::cout<<"Sent !"<<std::endl;
     while(!interface->ready){

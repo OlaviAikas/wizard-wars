@@ -65,8 +65,9 @@ std::string Server::generateResponse(std::string message){
         ready=true;
         return answer;
     }
-
-    //(this->map)->decode_players(message);
+    else{
+        (this->map)->decode_players(message);
+    }
     //return "ok Boomer";
     /*if(std::stoi(mes[0])==1){
         Map::decode_controlpoints(message);

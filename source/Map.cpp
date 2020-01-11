@@ -200,7 +200,7 @@ std::list<Player*>::iterator Map::fetch_pit(short n) {
 
 void Map::decode_players(std::string mes_get){
     std::vector<std::string> mes1;
-    boost::split(mes1, mes_get, boost::is_any_of("."));
+    boost::split(mes1, mes_get, boost::is_any_of(":"));
     for(int j=1; j<sizeof(mes1); j++){
         std::vector<std::string> mes2;
         boost::split(mes2, mes1[j], boost::is_any_of("."));

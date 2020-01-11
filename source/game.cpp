@@ -133,7 +133,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
     //Load what you need to load
     
-    Map* map = new Map("resources/map.bmp", &*interface);
+    Map* map=(interface->map);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     map->set_spawnpoints(200, 300, 1500,  1800, 1500, 1500, 2000, 400);
     map->players.push_back(new Player(400, 400, 1,1));
@@ -449,9 +449,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             redraw = false;
         }
 
-        /*if(!isServer){
+        if(!isServer){
                 (*interface).send_string((*pit)->encode_player());
-        }*/
+        }
     }
     //delete what you loaded
     delete map;
@@ -459,6 +459,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 }
 
 void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
+    delete interface;
     isServer = true;
     boost::asio::io_service io_service;
     interface = new Server(io_service, 13, &*game_status);
@@ -470,6 +471,7 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
 }
 
 void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number){
+    delete interface;
     isServer = false;
     boost::asio::io_service io_service;
     interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
@@ -519,7 +521,7 @@ int main(int argc, char **argv)
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-    ALLEGRO_DISPLAY* disp = al_create_display(1280, 720); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(1920, 1080); //Change this resolution to change window size
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 
@@ -553,7 +555,7 @@ int main(int argc, char **argv)
 
 
     Gamestatus game_status(/*game_state*/ 1, /*map pointer*/0);
-    Interface* interface;
+    Interface* interface=new Interface();
     bool isServer=true;
     short client_number=1;
     /*

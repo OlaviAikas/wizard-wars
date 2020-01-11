@@ -8,9 +8,16 @@
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
 
-Map::Map(const char* name, Interface *interface) {
+Map::Map() {
+    // this->map = al_load_bitmap(name);
+    this->spawns[0] = 1;
+    this->spawns[1] = 0;
+    this->spawns[2] = 0;
+    this->spawns[3] = 2;
+}
+
+Map::Map(const char* name) {
     this->map = al_load_bitmap(name);
-    this->interface = interface;
     this->spawns[0] = 1;
     this->spawns[1] = 0;
     this->spawns[2] = 0;
@@ -191,6 +198,24 @@ std::list<Player*>::iterator Map::fetch_pit(short n) {
     return it;
 }
 
+void Map::decode_players(std::string mes_get){
+    std::vector<std::string> mes;
+    boost::split(mes, mes_get, boost::is_any_of("."));
+    for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
+        if ((*i)->get_number()==std::stoi(mes[1])){
+            (*i)->change_x(std::stoi(mes[2]));
+            (*i)->change_y(std::stoi(mes[3]));
+            (*i)->change_destx(std::stoi(mes[4]));
+            (*i)->change_desty(std::stoi(mes[5]));
+            (*i)->set_hitpoints(std::stoi(mes[6]));
+            (*i)->set_count(std::stoi(mes[7]));
+            (*i)->set_timer(std::stoi(mes[8]));
+            (*i)->set_frozen(std::stoi(mes[9]));
+            (*i)->set_prevent(mes[10]=="True");
+            (*i)->reset_havechanged();
+        }
+    }
+}
 
 // std::string Map::encode_player(Player &i){
 //     std::string to_transmit="";

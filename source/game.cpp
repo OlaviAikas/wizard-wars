@@ -56,6 +56,9 @@ void main_menu_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT 
 void game_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
 
+void settings_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
+
 void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
@@ -65,6 +68,7 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
     Button<short &, short>* create_game = new Button<short &, short>(840, 500, "resources/create_game.bmp", changeptr);
     Button<short &, short>* join_game = new Button<short &, short>(840, 600, "resources/join_game.bmp", changeptr);
     Button<short &, short>* end_game = new Button<short &, short>(840, 700, "resources/quit.bmp", changeptr);
+    Button<short &, short>* settings = new Button<short &, short>(840, 800, "resources/quit.bmp", changeptr);
 
     while(game_status->game_state == 1) {
     al_wait_for_event(queue, &event);
@@ -87,6 +91,7 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
                 create_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 4);
                 join_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 5);
                 end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
+                settings->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 3);
                 break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
@@ -110,6 +115,8 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
             create_game->draw();
             join_game->draw();
             end_game->draw();
+            settings->draw();
+
 
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -123,6 +130,7 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
     delete create_game;
     delete join_game;
     delete end_game;
+    delete settings;
 }
 
 
@@ -457,7 +465,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     delete map;
     delete minimap;
 }
-
+ 
 void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
     isServer = true;
     boost::asio::io_service io_service;
@@ -488,6 +496,12 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     if(!interface->ready){
         game_status->game_state=1;
     }*/
+}
+void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+
+    
 }
 
 void must_init(bool test, const char *description) {
@@ -586,6 +600,10 @@ int main(int argc, char **argv)
             game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
                     scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
+        }
+        if (game_status.game_state == 3) {
+            settings_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
+                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
         if (game_status.game_state == 4){
             server_loop(&game_status, interface, isServer);

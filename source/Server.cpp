@@ -57,7 +57,7 @@ std::string Server::generateResponse(std::string message){
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
     // std::cout<<message<<std::endl;
-    if(!ready && message.find("ready") != -1){
+    if((!ready) && message=="ready"){
         players_connected++;
         std::cout<<"go"<<std::endl;
         std::string answer = "go"+std::to_string(players_connected);
@@ -65,6 +65,23 @@ std::string Server::generateResponse(std::string message){
         ready=true;
         return answer;
     }
+    if(message.find("thisisplayer") != std::string::npos){
+        (this->map)->decode_players(message, client_number);
+        std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:";
+        for(std::list<Player*>::iterator i = (this->map)->players.begin(); i != (this->map)->players.end(); i++){
+            s=s+((*i)->encode_player())+":";
+        }
+        s.pop_back();
+        return s;
+    }
+    //return "ok Boomer";
+    /*if(std::stoi(mes[0])==1){
+        Map::decode_controlpoints(message);
+    }
+    if(std::stoi(mes[0])==2){
+        Map::decode_spells(message);
+    }*/
+
     //std::stringstream ss;
     //ss << "Hi! I am a server's response";
     //int player_number = message.front() - '0';

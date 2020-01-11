@@ -5,14 +5,15 @@
 #include <allegro5/allegro_acodec.h>
 #include <iostream>
 #include <math.h>
+#include <allegro5/allegro_primitives.h>
 
-HealB::HealB(int start_x, int start_y, float dir_x, float dir_y) 
-            : Beam::Beam(start_x, start_y, dir_x, dir_y, 2, 2, false) {
+HealB::HealB(int start_x, int start_y, float dir_x, float dir_y, Map* &map) 
+            : Beam::Beam(start_x, start_y, dir_x, dir_y, 12, 12, false, map) {
     damage = -10;
     sprite = al_load_bitmap("resources/HealB.bmp");
     maxdraw = 50;
-    ticks = 0; // count time and scan check
 }
+HealB::~HealB() { };
 
 int HealB::get_damage() {
     return damage;
@@ -24,6 +25,7 @@ int HealB::get_damage() {
 // void must_init(bool, const char);
 
 void HealB::draw(int camera_x, int camera_y) {
+<<<<<<< HEAD
     float angle = atan2(dir_y,dir_x) - ALLEGRO_PI/30;
     if(HealB::get_noclip() == false){
         ticks++;
@@ -49,6 +51,9 @@ void HealB::draw(int camera_x, int camera_y) {
     // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");
     // al_draw_text(font, al_map_rgb(255, 255, 255), 300, 200, ALLEGRO_ALIGN_CENTRE, "Dzooooone");
     // al_destroy_sample(music06);
+=======
+    al_draw_filled_rectangle(x - camera_x, y - camera_y, x - camera_x + width, y - camera_y + height, al_map_rgb(0, 255, 0));
+>>>>>>> 3ee6dbe2e544d079a772fe281d2eff68a3fe112b
 }
 
 void HealB::on_collision(MapObject &other) {

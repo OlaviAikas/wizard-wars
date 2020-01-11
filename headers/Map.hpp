@@ -5,7 +5,6 @@
 #include "Player.hpp"
 #include "MapObject.hpp"
 #include "Spells.hpp"
-#include "Interface.hpp"
 #include "Controlpoint.hpp"
 #include <boost/algorithm/string.hpp>
 #include <vector>
@@ -16,7 +15,8 @@
 
 class Map {
     public:
-        Map(const char* name, Interface *interface);
+        Map();
+        Map(const char* name);
         ~Map();
 
         void draw_map(int camera_x, int camera_y);
@@ -31,7 +31,7 @@ class Map {
         std::string encode_controlpoint(Controlpoint &i);
         std::string encode_spell(Spell &s);
     
-        void decode_players(std::string mes_get);
+        void decode_players(std::string mes_get, short client_number);
         void decode_controlpoints(std::string mes_get);
         void decode_spells(std::string mes_get);
         void decode_message(std::string mes_get);
@@ -74,7 +74,6 @@ class Map {
        // still not sure: std::list<Spell>::iterator fetch_spit(short n);
     private:
         ALLEGRO_BITMAP* map;
-        Interface* interface;
         int spawnpoint1[2];
         int spawnpoint2[2];
         int spawnpoint3[2];

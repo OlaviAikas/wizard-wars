@@ -25,12 +25,11 @@ class Controlpoint : public MapObject {
         void change_owner(bool updated);
         bool get_havechanged();
         void reset_havechanged();
-        void update_contest();
 
     private:
         char owner;
         int timegot=0;
-        int timetoget=90;
+        int timetoget=180;
         int number;
 		bool contested=false;
         bool havechanged;

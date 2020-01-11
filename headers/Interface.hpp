@@ -7,6 +7,7 @@ class Interface {
     public:
         bool ready;
         Interface();
+        virtual ~Interface();
         // event handlers
         virtual void send_string(std::string);
 

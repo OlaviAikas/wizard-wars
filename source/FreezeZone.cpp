@@ -21,7 +21,6 @@ void FreezeZ::draw(int camera_x, int camera_y) {
 
     };
     //al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
-   
 }
 
 void FreezeZ::on_collision(Player &other) {
@@ -30,4 +29,4 @@ void FreezeZ::on_collision(Player &other) {
         other.status_effect_frozen();
        // other.get_speed()=0;
     }
- }
+}

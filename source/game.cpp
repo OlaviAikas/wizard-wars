@@ -428,7 +428,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
         }*/
     }
     //delete what you loaded
-    delete interface;
     delete map;
     delete minimap;
 }
@@ -551,9 +550,9 @@ int main(int argc, char **argv)
         if (game_status.game_state == 5){
             client_loop(&game_status, interface, isServer);
         }
-
     }
 
+    delete interface;
     al_destroy_bitmap(buffer);
     al_destroy_display(disp);
     al_destroy_timer(timer);

@@ -25,35 +25,27 @@ int HealB::get_damage() {
 // void must_init(bool, const char);
 
 void HealB::draw(int camera_x, int camera_y) {
-<<<<<<< HEAD
-    float angle = atan2(dir_y,dir_x) - ALLEGRO_PI/30;
-    if(HealB::get_noclip() == false){
-        ticks++;
-        height *= ticks;
-        al_draw_scaled_rotated_bitmap(this->sprite, 0, 0, x-camera_x, y-camera_y, ticks, 3, angle, 0);
-    }else{
-        sprite = al_load_bitmap("resources/HealB_Collision.bmp");
-        al_draw_scaled_rotated_bitmap(this->sprite, 0, 0, x-camera_x, y-camera_y, ticks, 3, angle, 0);
-        //still can't check collision thing
-        this->garbage_collect = true;
-    }
-    if (ticks>100) {
-        this->garbage_collect = true;
-    };
+    // float angle = atan2(dir_y,dir_x) - ALLEGRO_PI/30;
+    // if(HealB::get_noclip() == false){
+    //     ticks++;
+    //     height *= ticks;
+    //     al_draw_scaled_rotated_bitmap(this->sprite, 0, 0, x-camera_x, y-camera_y, ticks, 3, angle, 0);
+    // }else{
+    //     sprite = al_load_bitmap("resources/HealB_Collision.bmp");
+    //     al_draw_scaled_rotated_bitmap(this->sprite, 0, 0, x-camera_x, y-camera_y, ticks, 3, angle, 0);
+    //     //still can't check collision thing
+    //     this->garbage_collect = true;
+    // }
+    // if (ticks>100) {
+    //     this->garbage_collect = true;
+    // };
 
-    // must_init(al_init_primitives_addon(), "primitives");
-    // must_init(al_init_image_addon(), "Image addon");
-    // must_init(al_install_audio(), "Audio addon");
-    // must_init(al_init_acodec_addon(), "Audio codecs addon");
-    // must_init(al_reserve_samples(16), "reserve samples");
+    al_draw_filled_rectangle(x - camera_x, y - camera_y, x - camera_x + width, y - camera_y + height, al_map_rgb(0, 255, 0));
     // ALLEGRO_SAMPLE* music06 = al_load_sample("resources/music06.wav");
     // al_play_sample(music06, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
     // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");
     // al_draw_text(font, al_map_rgb(255, 255, 255), 300, 200, ALLEGRO_ALIGN_CENTRE, "Dzooooone");
     // al_destroy_sample(music06);
-=======
-    al_draw_filled_rectangle(x - camera_x, y - camera_y, x - camera_x + width, y - camera_y + height, al_map_rgb(0, 255, 0));
->>>>>>> 3ee6dbe2e544d079a772fe281d2eff68a3fe112b
 }
 
 void HealB::on_collision(MapObject &other) {

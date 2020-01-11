@@ -21,10 +21,10 @@ void HealB::draw(int camera_x, int camera_y) {
     if(HealB::get_noclip() == false){
         ticks++;
         height *= ticks;
-        al_draw_scaled_rotated_bitmap(this->sprite, 0, 0, x-camera_x, y-camera_y, ticks, 3, angle, 0);
+        al_draw_scaled_rotated_bitmap(this->sprite, 0, 10, x-camera_x, y-camera_y, ticks, 3, angle, 0);
     }else{
         sprite = al_load_bitmap("resources/HealB_Collision.bmp");
-        al_draw_scaled_rotated_bitmap(this->sprite, 0, 0, x-camera_x, y-camera_y, ticks, 3, angle, 0);
+        al_draw_scaled_rotated_bitmap(this->sprite, 0, 10, x-camera_x, y-camera_y, ticks, 3, angle, 0);
         //still can't check collision thing
         this->garbage_collect = true;
     }

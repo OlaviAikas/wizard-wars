@@ -102,50 +102,50 @@ bool MapObject::operator<=(MapObject &other)  {
 			if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
             return true;
-        	}
-    	}
+        }
+    }
     if (this->x + this->width >= other.get_x() && this->x + this->width <= other.get_x() + other.get_width()) {
         if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
             return true;
-        	}
-    	}
+		}
+	}
     if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
         if (this->y + this->height >= other.get_y() && this->y + this->height <= other.get_y() + other.get_height()) {
             return true;
-        	}
-    	}
+		}
+	}
     if (this->x + this->width >= other.get_x() && this->x + this->width <= other.get_x() + other.get_width()) {
         if (this->y + this->height >= other.get_y() && this->y + this->height <= other.get_y() + other.get_height()) {
             return true;
-        	}
-    	}
+        }
+    }
 			return false;
 		}
 
-		for (size_t k = speed; k > 1; k--) {
-            int dxx = round(x + (newpos_x - x)/k);
-			int dyy = round(y + (newpos_y - y)/k);
-			if (dxx >= othx && dxx <= othx + othwidth) {
-	        if (dyy >= othy && dyy <= othy + othheight) {
-	            return true;
-	        }
+	for (size_t k = speed; k > 1; k--) {
+        int dxx = round(x + (newpos_x - x)/k);
+		int dyy = round(y + (newpos_y - y)/k);
+		if (dxx >= othx && dxx <= othx + othwidth) {
+	    if (dyy >= othy && dyy <= othy + othheight) {
+	        return true;
 	    }
-	    if (dxx + this->width >= othx && dxx + this->width <= othx + othwidth) {
-	        if (dyy >= othy && dyy <= othy + othheight) {
-	            return true;
-	        }
+	}
+	if (dxx + this->width >= othx && dxx + this->width <= othx + othwidth) {
+	    if (dyy >= othy && dyy <= othy + othheight) {
+	        return true;
 	    }
-	    if (dxx >= othx && dxx <= othx + othwidth) {
-	        if (dyy + this->height >= othy && dyy + this->height <= othy + othheight) {
-	            return true;
-	        }
+	}
+	if (dxx >= othx && dxx <= othx + othwidth) {
+	    if (dyy + this->height >= othy && dyy + this->height <= othy + othheight) {
+	        return true;
 	    }
-	    if (dxx + this->width >= othx && dxx + this->width <= othx + othwidth) {
-	        if (dyy + this->height >= othy && dyy + this->height <= othy + othheight) {
-	            return true;
-	        }
+	}
+	if (dxx + this->width >= othx && dxx + this->width <= othx + othwidth) {
+	    if (dyy + this->height >= othy && dyy + this->height <= othy + othheight) {
+	        return true;
 	    }
-	    return false;
+	}
+	return false;
 	}
 }
 

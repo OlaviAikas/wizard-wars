@@ -135,10 +135,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     
     Map* map=(interface->map);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
+    //map->decode_players("0.14868.815.713");
     map->set_spawnpoints(200, 300, 1500,  1800, 1500, 1500, 2000, 400);
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
-    map->statics.push_back(new MapObject(0, 0, 450, 200, false));
+    map->statics.push_back(new MapObject(1000, 1000, 450, 200, true));
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
     map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
@@ -156,6 +157,8 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     game_status->map = map;
     Camera camera = Camera(0, 0);
+    bool left_mouse_down = false;
+    int counter=0;
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
@@ -329,7 +332,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             }
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam
-                            map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                            map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy, map));
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
                             if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
@@ -450,7 +453,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
         }
 
         if(!isServer){
-                (*interface).send_string((*pit)->encode_player());
+                counter++;
+                counter=counter%10;
+                if (counter==1){
+                    (*interface).send_string((*pit)->encode_player());
+                }
         }
     }
     //delete what you loaded

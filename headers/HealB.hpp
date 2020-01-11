@@ -8,7 +8,8 @@
 
 class HealB: public Beam {
     public:
-        HealB(int start_x, int start_y, float dir_x, float dir_y);
+        HealB(int start_x, int start_y, float dir_x, float dir_y, Map* &map);
+        ~HealB();
 
         int get_damage();
 

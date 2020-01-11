@@ -156,6 +156,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     game_status->map = map;
     Camera camera = Camera(0, 0);
+    int counter=0;
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
@@ -450,7 +451,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
         }
 
         if(!isServer){
-                (*interface).send_string((*pit)->encode_player());
+                counter++;
+                counter=counter%5;
+                if (counter==1){
+                    (*interface).send_string((*pit)->encode_player());
+                }
         }
     }
     //delete what you loaded
@@ -474,7 +479,7 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     delete interface;
     isServer = false;
     boost::asio::io_service io_service;
-    interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
+    interface = new Client(io_service, "localhost", "13", &*game_status);
     interface->send_string("ready");
     std::cout<<"Sent !"<<std::endl;
     while(!interface->ready){

@@ -66,12 +66,8 @@ std::string Server::generateResponse(std::string message){
         return answer;
     }
 
-    std::vector<std::string> mes;
-    boost::split(mes, message, boost::is_any_of("."));
-    if(std::stoi(mes[0])==0){
-        (this->map)->decode_players(message);
-        return "ok Boomer";
-    }
+    //(this->map)->decode_players(message);
+    //return "ok Boomer";
     /*if(std::stoi(mes[0])==1){
         Map::decode_controlpoints(message);
     }

@@ -6,6 +6,7 @@
 class DamageZ: public Zone {
     public:
         DamageZ(int start_x, int start_y);
+        ~DamageZ();
 
         int get_damage();
 

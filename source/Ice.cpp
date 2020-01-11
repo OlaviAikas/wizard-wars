@@ -12,6 +12,10 @@ Ice::Ice(int start_x, int start_y, float dir_x, float dir_y)
     element = "2";
 }
 
+Ice::~Ice() {
+    al_destroy_bitmap(sprite);
+}
+
 int Ice::get_damage() {
     return damage;
 }

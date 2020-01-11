@@ -17,6 +17,10 @@ WaterSpray::WaterSpray(int start_x, int start_y, float dir_x, float dir_y)
     ticks = 0; //Count time 
 }
 
+WaterSpray::~WaterSpray() {
+    al_destroy_bitmap(sprite);
+}
+
 int WaterSpray::get_damage() {
     return damage;
 }

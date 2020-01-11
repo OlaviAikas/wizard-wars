@@ -8,6 +8,7 @@ Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool
     this->dir_x = dir_x;
     this->dir_y = dir_y;
     this->havechanged = false;
+    this->id=(x+y+int(al_get_time()*1000))%5943;
 }
 Spell::~Spell() { };
 
@@ -17,12 +18,16 @@ bool Spell::get_havechanged(){
     return this->havechanged;
 }
 
-std::string Spell::encode_spell(){
-    
-}
-
 void Spell::reset_havechanged(){
     this->havechanged=false;
+}
+
+int Spell::get_id(){
+    return id;
+}
+
+std::string Spell::encode_spell(){
+    return("error, encoding not defined");
 }
 
 float Spell::get_dir_x(){

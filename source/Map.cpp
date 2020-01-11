@@ -1,6 +1,9 @@
 #include "../headers/Map.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Spells.hpp"
+#include "../headers/Rock.hpp"
+#include "../headers/FirePellet.hpp"
+#include "../headers/Ice.hpp"
 #include <list>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -216,6 +219,38 @@ void Map::decode_players(std::string mes_get, short client_number){
                 (*i)->set_frozen(std::stoi(mes2[10]));
                 (*i)->set_prevent(mes2[11]=="1");
                 (*i)->reset_havechanged();
+            }
+        }
+    }
+}
+
+void Map::decode_spells(std::string mes_get){
+    std::vector<std::string> mes1;
+    boost::split(mes1, mes_get, boost::is_any_of(":"));
+    for(int j=1; j<mes1.size(); j++){
+        bool found=false;
+        std::vector<std::string> mes2;
+        boost::split(mes2, mes1[j], boost::is_any_of(";"));
+        for (std::list<Spell*>::iterator i = spells.begin(); i != spells.end(); i++) {
+            if ((*i)->get_id()==std::stoi(mes2[1])){
+                found=true;
+                if(std::stoi(mes2[2])==0){
+                    (*i)->set_x(std::stoi(mes2[4]));
+                    (*i)->set_y(std::stoi(mes2[5]));
+                }
+            }
+        }
+        if(!found){
+            if(std::stoi(mes2[3])==0){
+                if(std::stoi(mes2[4])==0){
+                    spells.push_back(new Rock(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7])));
+                }
+                if(std::stoi(mes2[4])==1){
+                    spells.push_back(new FireP(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7])));
+                }
+                if(std::stoi(mes2[4])==2){
+                    spells.push_back(new Ice(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7])));
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ Rock::Rock(int start_x, int start_y, float dir_x, float dir_y)
             : Projectile::Projectile( start_x, start_y, dir_x, dir_y, 12, 12, false, 20) {
     damage = 10;
     sprite = al_load_bitmap("resources/rock_projectile.bmp");
+    element = "0";
     sound = al_load_sample("resources/rock.wav");
     al_play_sample(sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }

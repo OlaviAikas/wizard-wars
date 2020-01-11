@@ -63,7 +63,7 @@ void Client::listen(){
     try {
         // listening loop
         for (;;){
-            boost::array<char, 1024> recv_buf;
+            boost::array<char, 4096> recv_buf;
             boost::system::error_code error;
             size_t size = socket_.receive_from(boost::asio::buffer(recv_buf), sender_endpoint_);
             this->onResponse(std::string(recv_buf.c_array(), size));

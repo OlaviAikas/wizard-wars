@@ -10,6 +10,7 @@ FireP::FireP(int start_x, int start_y, float dir_x, float dir_y)
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 20, 20, false, 20) {
     damage = 20;
     sprite = al_load_bitmap("resources/fireProjectile.bmp");
+    element = "1";
 }
 
 int FireP::get_damage() {

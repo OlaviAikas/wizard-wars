@@ -31,10 +31,12 @@ void WaterSpray::draw(int camera_x, int camera_y) {
     typedef struct ALLEGRO_MOUSE_STATE ALLEGRO_MOUSE_STATE;
     ALLEGRO_MOUSE_STATE state;
     al_get_mouse_state(&state);
-    float angle = atan2(x - state.x,state.y-y);//-pi/10
-    al_draw_scaled_rotated_bitmap(this->sprite,0,0, x - camera_x, y - camera_y,4,2, angle,0);
+    float angle = atan2(state.y - y,state.x-x);//-pi/10
+    int bitmapw = al_get_bitmap_width(sprite);
+    int bitmaph = al_get_bitmap_height(sprite);
+    al_draw_scaled_rotated_bitmap(this->sprite,0,bitmaph/2, x -camera_x, y - camera_y,4,2, angle,0);
     ticks += 3;
-    if (ticks>200) {
+    if (ticks>100) {
         this->garbage_collect = true;
     };
 

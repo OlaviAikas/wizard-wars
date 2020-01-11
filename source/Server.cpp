@@ -31,7 +31,7 @@ void Server::listen(){
 
         // listening loop
         for (;;){
-            boost::array<char, 1024> recv_buf;
+            boost::array<char, 4096> recv_buf;
             boost::system::error_code error;
             size_t size = socket_.receive_from(boost::asio::buffer(recv_buf), sender_endpoint_);
             std::cout << std::string(recv_buf.c_array(), size) << std::endl;
@@ -73,6 +73,10 @@ std::string Server::generateResponse(std::string message){
         }
         s.pop_back();
         return s;
+    }
+
+    if(message.find("thisisspell") != std::string::npos){
+        (this->map)->decode_spells(message);
     }
     //return "ok Boomer";
     /*if(std::stoi(mes[0])==1){

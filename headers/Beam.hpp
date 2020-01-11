@@ -15,4 +15,7 @@ class Beam: public Spell {
     protected:
         int range;
         int lifetime;
+        int originx;
+        int originy;
+        //bool hitted;
 };

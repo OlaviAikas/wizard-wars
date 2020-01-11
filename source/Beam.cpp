@@ -4,6 +4,10 @@
 #include "../headers/Map.hpp"
 #include "../headers/Player.hpp"
 #include <allegro5/allegro5.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <math.h>
 #include <iostream>
 #include <list>
@@ -12,17 +16,20 @@ Beam::Beam(int start_x, int start_y, float dir_x, float dir_y, int width, int he
 : Spell( start_x,  start_y,  dir_x,  dir_y, width, height, noclip) {
     lifetime = 2;
     range = 3;
-    bool hit = false;
+    originx = start_x;
+    originy = start_y;
+    bool hitted = false;
     for (float i = 1; i <= range; i = i + 0.05) {
+        // A loop that checks if it collides any player on the map
         for (std::list<Player*>::iterator j = map->players.begin(); j != map->players.end(); j++) {
             this->x = round(x + dir_x*i*width);
             this->y = round(y + dir_y*i*height);    
             if (*this == **j) {
-                hit = true;
+                hitted = true;
                 break;
             }
         }
-    if (hit) { break; }
+    if (hitted) { break; }
     }
 }
 
@@ -35,4 +42,8 @@ void Beam::move() {
     }
 }
 
-void Beam::draw(int camera_x, int camera_y) { }
+void Beam::draw(int camera_x, int camera_y) { 
+    ALLEGRO_SAMPLE* music00 = al_load_sample("music01.wav");
+    al_play_sample(music00, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+    // must_init(music01, "music01");
+}

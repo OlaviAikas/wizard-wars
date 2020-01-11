@@ -9,6 +9,7 @@ Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool
     this->dir_y = dir_y;
     this->havechanged = false;
     this->id=(x+y+int(al_get_time()*1000))%5943;
+    this->just_created=true;
 }
 Spell::~Spell() { };
 

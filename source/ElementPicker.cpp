@@ -1,5 +1,6 @@
 #include "../headers/ElementPicker.hpp"
 #include <allegro5/allegro5.h>
+#include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 
 ElementPicker::ElementPicker(int x, int y, int sx, int sy, int* element) : HUDobject(x, y, sx, sy, 0) {

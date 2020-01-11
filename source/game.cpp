@@ -35,16 +35,12 @@
 #include "../headers/WaterSpray.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
+#include <string>
 
-<<<<<<< HEAD
-=======
 #include "../headers/Server.hpp"
 #include "../headers/Client.hpp"
 #include "../headers/Interface.hpp"
 #include "../headers/Gamestatus.hpp"
-
-
->>>>>>> master
 
 #define KEY_SEEN     1
 #define KEY_RELEASED 2
@@ -54,33 +50,25 @@ void change_state(short &, short new_state);
 void main_menu_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
-<<<<<<< HEAD
-void game_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
-                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
-void settings_loop(short &, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
-                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);                    
-=======
 void game_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface);
->>>>>>> master
-
+void settings_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&);
 void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to before the loop:
     void (*changeptr)(short &, short new_state);
     changeptr = change_state;
-<<<<<<< HEAD
-    ALLEGRO_FONT *Myfont = al_load_ttf_font("MeathFLF.ttf",72,0 );
-    //background = al_load_bitmap("resources.background.bmp.icloud");
-    Button<short &, short>* start_game = new Button<short &, short>(840, 500, "resources/Start.bmp", changeptr);
-    Button<short &, short>* end_game = new Button<short &, short>(840, 600, "resources/Exit.bmp", changeptr);
-    Button<short &, short>* settings = new Button<short &, short>(840, 700, "resources/Settings.bmp", changeptr);
-=======
-    Button<short &, short>* create_game = new Button<short &, short>(840, 500, "resources/create_game.bmp", changeptr);
+    Button<short &, short>* create_game = new Button<short &, short>(840, 500, "resources/create_game.bmp", changeptr); 
     Button<short &, short>* join_game = new Button<short &, short>(840, 600, "resources/join_game.bmp", changeptr);
-    Button<short &, short>* end_game = new Button<short &, short>(840, 700, "resources/quit.bmp", changeptr);
->>>>>>> master
+    std::cout << "Made it" << std::endl;
+    Button<short &, short>* end_game = new Button<short &, short>(840, 700, "resources/create_game.bmp", changeptr);
+    std::cout << "Made it 2" << std::endl;
+    Button<short &, short>* settings = new Button<short &, short>(840, 800, "resources/join_game.bmp", changeptr);
+    ALLEGRO_BITMAP *back_ground;
+    back_ground = al_load_bitmap("background.bmp");
+     al_draw_bitmap(back_ground, 0, 0, 0); 
 
     while(game_status->game_state == 1) {
     al_wait_for_event(queue, &event);
@@ -100,15 +88,10 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
                 break;
 
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-<<<<<<< HEAD
-                start_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 2);
-                end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 0);
-                settings->mouse_input(event.mouse.x / sx, event.mouse.y / sy, state, 3);
-=======
                 create_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 4);
                 join_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 5);
                 end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
->>>>>>> master
+                settings->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 3);
                 break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
@@ -450,6 +433,38 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     delete minimap;
 }
 
+void settings_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
+                    const float &windowWidth, const float &windowHeight, const float &scaleX,
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+
+
+ ALLEGRO_BITMAP *back_ground;
+    back_ground = al_load_bitmap("background.bmp");
+     al_draw_bitmap(back_ground, 0, 0, 0);
+ ALLEGRO_FONT *settings_font = al_load_font("fonte.ttf",160, 0);
+
+ al_draw_text(settings_font,al_map_rgb(250,0,0),580,100, 0,"IP Box");
+ 
+
+ al_draw_text(settings_font,al_map_rgb(250,0,0),580,100,0,"Resolution");
+ void (*changeptr)(short &, short new_state);
+    changeptr = change_state;
+    Button<short &, short>* resolution_1 = new Button<short &, short>(4200, 500, "resources/create_game.bmp", changeptr);
+    Button<short &, short>* resolution_2 = new Button<short &, short>(640, 500, "resources/join_game.bmp", changeptr);
+    Button<short &, short>* resolution_3= new Button<short &, short>(880, 500, "resources/quit.bmp", changeptr);
+    Button<short &, short>* resolution_4 = new Button<short &, short>(1000, 500, "resources/join_game.bmp", changeptr);
+
+ al_draw_text(settings_font,al_map_rgb(250,0,0),580,100,0,"Buffer"); 
+
+ al_draw_text(settings_font,al_map_rgb(250,0,0),580,100,0,"VSYNC");
+ Button<short &, short>* VSYNC_on = new Button<short &, short>(4200, 500, "resources/create_game.bmp", changeptr);
+ Button<short &, short>* VSYNC_off = new Button<short &, short>(640, 500, "resources/join_game.bmp", changeptr);
+
+ al_draw_text(settings_font,al_map_rgb(250,0,0),580,100,0,"Samples");
+ al_draw_text(settings_font,al_map_rgb(250,0,0),580,100,0,"Key Bindings");   
+}
+
 void server_loop(Gamestatus *game_status){
     isServer = true;
     boost::asio::io_service io_service;
@@ -485,6 +500,9 @@ int main(int argc, char **argv)
     must_init(al_init(), "allegro");
     must_init(al_install_keyboard(), "keyboard");
     must_init(al_install_mouse(), "mouse");
+    must_init(al_init_font_addon(), "fonts");
+    must_init(al_init_ttf_addon(), "ttf addon");
+    std::cout << "Initialised everything" << std::endl;
 
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 30.0);
     must_init(timer, "timer");
@@ -531,14 +549,9 @@ int main(int argc, char **argv)
     0 => End game
     1 => main menu
     2 => game loop
-<<<<<<< HEAD
-    3 => settings
-    4 => ??? Profit??????
-=======
     3 => settings?
     4 => Create game
     5 => Join game
->>>>>>> master
     */
     bool redraw = true;
     ALLEGRO_EVENT event;
@@ -566,8 +579,8 @@ int main(int argc, char **argv)
         if (game_status.game_state == 5){
             client_loop(&game_status);
         }
-        if (game_state ==3){
-            void settings_loop(game_state, redraw, queue, event, timer, key, buffer, disp,
+        if (game_status.game_state == 3){
+            settings_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
 

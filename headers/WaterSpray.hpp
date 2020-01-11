@@ -7,6 +7,7 @@
 class WaterSpray: public Spray {
     public:
         WaterSpray(int start_x, int start_y, float dir_x, float dir_y);
+        ~WaterSpray();
 
         int get_damage();
 

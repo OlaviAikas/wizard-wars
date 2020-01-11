@@ -6,6 +6,7 @@
 class Controlpoint : public MapObject {
     public:
         Controlpoint(int x, int y, int number, int side, int owner);
+        ~Controlpoint();
 
         void set_owner(short newowner);
 

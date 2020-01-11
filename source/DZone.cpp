@@ -11,6 +11,9 @@ DamageZ::DamageZ(int start_x, int start_y)
     sprite = al_load_bitmap("resources/waterzone.bmp");
     time = 0;
 }
+DamageZ::~DamageZ() {
+    al_destroy_bitmap(sprite);
+}
 
 int DamageZ::get_damage() {
     return damage;

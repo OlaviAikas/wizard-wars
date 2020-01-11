@@ -11,6 +11,10 @@ Ice::Ice(int start_x, int start_y, float dir_x, float dir_y)
     sprite = al_load_bitmap("resources/iceProjectiles.bmp");
 }
 
+Ice::~Ice() {
+    al_destroy_bitmap(sprite);
+}
+
 int Ice::get_damage() {
     return damage;
 }

@@ -229,6 +229,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     // al_use_transform(camera);
                 }
 
+                std::cout << (left_mouse_down) << std::endl;
                 map->move_list(map->players);
                 map->move_list(map->spells);
 #ifdef DEBUG_MODE
@@ -353,6 +354,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             std::cout << "No spells associated to this combo of two buttons" << std::endl;
                             break;
                     }
+                    left_mouse_down = true;
                     // if (elementlist.size() == 2) {
                     //     if (std::count(elementlist.begin(),elementlist.end(),6)==2) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),5)==2) {
@@ -366,6 +368,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                 // define the direction vector when right-click//
                 }
             break;
+
+            case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+                if (event.mouse.button == 1) {
+                    left_mouse_down = false;
+                }
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 if (event.keyboard.keycode == ALLEGRO_KEY_U) {//life

@@ -67,6 +67,7 @@ std::string Server::generateResponse(std::string message){
     }
     else{
         (this->map)->decode_players(message);
+        return "OK Boomer";
     }
     //return "ok Boomer";
     /*if(std::stoi(mes[0])==1){

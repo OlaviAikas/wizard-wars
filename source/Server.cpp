@@ -67,7 +67,12 @@ std::string Server::generateResponse(std::string message){
     }
     else{
         (this->map)->decode_players(message);
-        return "OK Boomer";
+        std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:";
+        for(std::list<Player*>::iterator i = (this->map)->players.begin(); i != (this->map)->players.end(); i++){
+            s=s+((*i)->encode_player())+":";
+        }
+        s.pop_back();
+        return s;
     }
     //return "ok Boomer";
     /*if(std::stoi(mes[0])==1){

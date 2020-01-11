@@ -57,7 +57,7 @@ std::string Server::generateResponse(std::string message){
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
     // std::cout<<message<<std::endl;
-    if(!ready && message.find("ready") != -1){
+    if(!ready && message=="ready"){
         players_connected++;
         std::cout<<"go"<<std::endl;
         std::string answer = "go"+std::to_string(players_connected);

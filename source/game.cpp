@@ -477,8 +477,6 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
     interface->send_string("ready");
     std::cout<<"Sent !"<<std::endl;
-    while(!interface->ready){
-    }
     client_number=interface->get_client();
     game_status->game_state=2;
     /*for(int i=0; i<10000; i++){

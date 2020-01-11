@@ -130,21 +130,30 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
 void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
     //Load what you need to load
-
-    short client_number = 1;
+    
     Map* map = new Map("resources/map.bmp", &*interface);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
-    map->set_spawnpoints(800, 800, 1000, 1000);
+    map->set_spawnpoints(200, 300, 1500,  1800, 1500, 1500, 2000, 400);
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
-    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 0));
+    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 0));
+    map->statics.push_back(new MapObject(0, 0, 250, 2160, false));
+    map->statics.push_back(new MapObject(0, 0, 3840, 200, false));
+    map->statics.push_back(new MapObject(0, 1910, 3840, 250, false));
+    map->statics.push_back(new MapObject(3590, 0, 250, 2160, false));
+    map->statics.push_back(new MapObject(0, 0, 800, 350, false));
+    map->statics.push_back(new MapObject(0, 1710, 800, 450, false));
+    map->statics.push_back(new MapObject(3040, 0, 800, 350, false));
+    map->statics.push_back(new MapObject(3240, 1550, 600, 600, false));
+    map->statics.push_back(new MapObject(2002, 1020, 940, 590, false));
     map->modif_lives(50, 50);
+    map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     game_status->map = map;
     Camera camera = Camera(0, 0);
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
@@ -165,7 +174,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     bool mouse_south = false;
     
     while (game_status->game_state==2) {
-        if (map->get_lives()[0]==0 || map->get_lives()[1]==0){
+        if (map->game_ended()){
             game_status->game_state=0;
         }
         al_wait_for_event(queue, &event);
@@ -438,10 +447,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
         }
 
         /*if(!isServer){
-                interface.send_string((*pit)->encode_player());
-                for (std::list<Spell*>::iterator i=map->spells.begin(); i != map->spells.end(); i++){
-                    interface.send_string((*i)->encode_spell());
-                }
+                (*interface).send_string((*pit)->encode_player());
         }*/
     }
     //delete what you loaded
@@ -461,7 +467,7 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     game_status->game_state=2;
 }
 
-void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
+void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number){
     isServer = false;
     boost::asio::io_service io_service;
     interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
@@ -469,7 +475,17 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     std::cout<<"Sent !"<<std::endl;
     while(!interface->ready){
     }
+    client_number=interface->get_client();
     game_status->game_state=2;
+    /*for(int i=0; i<10000; i++){
+        if(interface->ready){
+            game_status->game_state=2;
+            break;
+        }
+    }
+    if(!interface->ready){
+        game_status->game_state=1;
+    }*/
 }
 
 void must_init(bool test, const char *description) {
@@ -536,7 +552,7 @@ int main(int argc, char **argv)
     Gamestatus game_status(/*game_state*/ 1, /*map pointer*/0);
     Interface* interface;
     bool isServer=true;
-
+    short client_number=1;
     /*
     Game state states:
     0 => End game
@@ -565,13 +581,13 @@ int main(int argc, char **argv)
         if (game_status.game_state == 2) {
             game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, interface, isServer);
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
         }
         if (game_status.game_state == 4){
             server_loop(&game_status, interface, isServer);
         }
         if (game_status.game_state == 5){
-            client_loop(&game_status, interface, isServer);
+            client_loop(&game_status, interface, isServer, client_number);
         }
 
     }

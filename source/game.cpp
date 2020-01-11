@@ -587,7 +587,7 @@ int main(int argc, char **argv)
 
     ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav");
     // must_init(music, "music");
-    al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+    al_play_sample(music, 0.2, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 
     while (game_status.game_state != 0) {
         if (game_status.game_state == 1) {

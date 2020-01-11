@@ -304,7 +304,8 @@ void Player::reset_havechanged(){
 }
 
 std::string Player::encode_player(){
-    std::string encoded="0."+std::to_string(number)+".";
+    std::cout<<number<<std::endl;
+    std::string encoded="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.0."+std::to_string(number)+".";
     encoded=encoded+std::to_string(x)+"."+std::to_string(y)+".";
     encoded=encoded+std::to_string(dest_x)+"."+std::to_string(dest_y)+".";
     encoded=encoded+std::to_string(hit_points)+".";

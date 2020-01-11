@@ -202,16 +202,16 @@ void Map::decode_players(std::string mes_get){
     std::vector<std::string> mes;
     boost::split(mes, mes_get, boost::is_any_of("."));
     for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
-        if ((*i)->get_number()==std::stoi(mes[1])){
-            (*i)->change_x(std::stoi(mes[2]));
-            (*i)->change_y(std::stoi(mes[3]));
-            (*i)->change_destx(std::stoi(mes[4]));
-            (*i)->change_desty(std::stoi(mes[5]));
-            (*i)->set_hitpoints(std::stoi(mes[6]));
-            (*i)->set_count(std::stoi(mes[7]));
-            (*i)->set_timer(std::stoi(mes[8]));
-            (*i)->set_frozen(std::stoi(mes[9]));
-            (*i)->set_prevent(mes[10]=="True");
+        if ((*i)->get_number()==std::stoi(mes[2])){
+            (*i)->change_x(std::stoi(mes[3]));
+            (*i)->change_y(std::stoi(mes[4]));
+            (*i)->change_destx(std::stoi(mes[5]));
+            (*i)->change_desty(std::stoi(mes[6]));
+            (*i)->set_hitpoints(std::stoi(mes[7]));
+            (*i)->set_count(std::stoi(mes[8]));
+            (*i)->set_timer(std::stoi(mes[9]));
+            (*i)->set_frozen(std::stoi(mes[10]));
+            (*i)->set_prevent(mes[11]=="1");
             (*i)->reset_havechanged();
         }
     }

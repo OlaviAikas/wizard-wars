@@ -304,6 +304,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                         case 25: // 5*5 J+J Water+Water = WaterSpray
                             map -> spells.push_back(new WaterSpray((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
                             break;
+                            // ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav");
+    // // must_init(music, "music");
+    // al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
                         case 5: // 5*1 J+U Water+Life
                             if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
                             map -> spells.push_back(new DamageZ((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));

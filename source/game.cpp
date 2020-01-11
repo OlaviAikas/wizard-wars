@@ -4,6 +4,8 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <algorithm>
 #include <list>
 #include <iostream>
@@ -128,21 +130,30 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
 void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
     //Load what you need to load
     
-    short client_number = 1;
     Map* map = new Map("resources/map.bmp", &*interface);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
-    map->set_spawnpoints(800, 800, 1000, 1000);
+    map->set_spawnpoints(200, 300, 1500,  1800, 1500, 1500, 2000, 400);
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
     map->statics.push_back(new MapObject(0, 0, 450, 200, false));
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
-    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 0));
+    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 0));
+    map->statics.push_back(new MapObject(0, 0, 250, 2160, false));
+    map->statics.push_back(new MapObject(0, 0, 3840, 200, false));
+    map->statics.push_back(new MapObject(0, 1910, 3840, 250, false));
+    map->statics.push_back(new MapObject(3590, 0, 250, 2160, false));
+    map->statics.push_back(new MapObject(0, 0, 800, 350, false));
+    map->statics.push_back(new MapObject(0, 1710, 800, 450, false));
+    map->statics.push_back(new MapObject(3040, 0, 800, 350, false));
+    map->statics.push_back(new MapObject(3240, 1550, 600, 600, false));
+    map->statics.push_back(new MapObject(2002, 1020, 940, 590, false));
     map->modif_lives(50, 50);
+    map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     game_status->map = map;
     Camera camera = Camera(0, 0);
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
@@ -154,7 +165,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     ElementPicker* e2p = new ElementPicker(screenWidth * 0.85, screenHeight*0.85, screenWidth * 0.06, screenWidth * 0.06, &e2);
 
 
-#ifdef DEBUG_MODE    
+#ifdef DEBUG_MODE
     unsigned long frameNumber = 0;
 #endif
     bool mouse_west = false;
@@ -163,7 +174,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     bool mouse_south = false;
     
     while (game_status->game_state==2) {
-        if (map->get_lives()[0]==0 || map->get_lives()[1]==0){
+        if (map->game_ended()){
             game_status->game_state=0;
         }
         al_wait_for_event(queue, &event);
@@ -209,6 +220,10 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     if (mouse_south) {
                         camera.move_y(amountOfMovement);
                     }
+                    // camera.cameraUpdate(cameraPosition, x, y, 32, 32);
+                    // al_identity_transform(camera);
+                    // al_translate_transform(camera, -cameraPosition[0], -cameraPosition[1]);
+                    // al_use_transform(camera);
                 }
 
                 map->move_list(map->players);
@@ -218,7 +233,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 #endif
                 map->check_collisions();
 #ifdef DEBUG_MODE
-                std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;                
+                std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;
                 frameNumber++;
 #endif
                 map->check_dead();
@@ -235,7 +250,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     mouse_south = event.mouse.y > (1-proportionOfScroll)*windowHeight;
                     break;
                 }
-            
+
             case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
                 mouse_east = false;
                 mouse_west = false;
@@ -330,12 +345,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             break;
                     }
                     // if (elementlist.size() == 2) {
-                    //     if (std::count(elementlist.begin(),elementlist.end(),6)==2) { 
+                    //     if (std::count(elementlist.begin(),elementlist.end(),6)==2) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),5)==2) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),5)==1 && std::count(elementlist.begin(),elementlist.end(),1)==1) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),6)==1 && std::count(elementlist.begin(),elementlist.end(),3)==1) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {
-                    //     } else {           
+                    //     } else {
                     //     }
                     // } else {
                     // }
@@ -347,7 +362,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                 if (event.keyboard.keycode == ALLEGRO_KEY_U) {//life
                     e2=e1;
                     e1=1;
-                    
+
                     //elementlist.push_back(1);
                 }
 
@@ -390,7 +405,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 game_status->game_state = 0;
                 break;
-        
+
             default:
                 break;
         }
@@ -427,10 +442,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
         }
 
         /*if(!isServer){
-                interface.send_string((*pit)->encode_player());
-                for (std::list<Spell*>::iterator i=map->spells.begin(); i != map->spells.end(); i++){
-                    interface.send_string((*i)->encode_spell());
-                }
+                (*interface).send_string((*pit)->encode_player());
         }*/
     }
     //delete what you loaded
@@ -450,7 +462,7 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     game_status->game_state=2;
 }
 
-void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
+void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number){
     isServer = false;
     boost::asio::io_service io_service;
     interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
@@ -458,7 +470,17 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     std::cout<<"Sent !"<<std::endl;
     while(!interface->ready){
     }
+    client_number=interface->get_client();
     game_status->game_state=2;
+    /*for(int i=0; i<10000; i++){
+        if(interface->ready){
+            game_status->game_state=2;
+            break;
+        }
+    }
+    if(!interface->ready){
+        game_status->game_state=1;
+    }*/
 }
 
 void must_init(bool test, const char *description) {
@@ -512,6 +534,10 @@ int main(int argc, char **argv)
 
     must_init(al_init_image_addon(), "Image addon");
 
+    must_init(al_install_audio(), "Audio addon");
+    must_init(al_init_acodec_addon(), "Audio codecs addon");
+
+
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -521,7 +547,7 @@ int main(int argc, char **argv)
     Gamestatus game_status(/*game_state*/ 1, /*map pointer*/0);
     Interface* interface;
     bool isServer=true;
-
+    short client_number=1;
     /*
     Game state states:
     0 => End game
@@ -536,10 +562,11 @@ int main(int argc, char **argv)
 
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
-    
-
 
     al_start_timer(timer);
+
+    // ALLEGRO_SAMPLE* music = al_load_sample("backgroud_music.mp3");
+    // al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 
     while (game_status.game_state != 0) {
         if (game_status.game_state == 1) {
@@ -549,13 +576,13 @@ int main(int argc, char **argv)
         if (game_status.game_state == 2) {
             game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, interface, isServer);
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
         }
         if (game_status.game_state == 4){
             server_loop(&game_status, interface, isServer);
         }
         if (game_status.game_state == 5){
-            client_loop(&game_status, interface, isServer);
+            client_loop(&game_status, interface, isServer, client_number);
         }
 
     }
@@ -564,6 +591,7 @@ int main(int argc, char **argv)
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
+    // al_destroy_sample(music);
 
     return 0;
 }

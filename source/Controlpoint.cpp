@@ -59,20 +59,20 @@ void Controlpoint::on_collision(Player &other){
 				set_owner(0);//This means that the point is neutral
 			}//You have to 'undo' the control from the opposing team in order to
 		}
-	else {
-		contested = false;
-	}
-	
     this->havechanged = true;
+}
+
+void Controlpoint::update_contest(){
+	contested = false;
 }
 
 void Controlpoint::draw(int camera_x, int camera_y){
     if (not contested){
 		if (owner == 1 && (timegot < timetoget)) {
-	    	timegot +=1;
-	    }
+			timegot +=1;
+		}
 		else if(owner == 2 && (timegot > -timetoget)){
-	    	timegot -= 1;
+			timegot -= 1;
 		}
 	}
 	if (owner == 1){

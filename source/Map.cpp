@@ -198,14 +198,14 @@ std::list<Player*>::iterator Map::fetch_pit(short n) {
     return it;
 }
 
-void Map::decode_players(std::string mes_get){
+void Map::decode_players(std::string mes_get, short client_number){
     std::vector<std::string> mes1;
     boost::split(mes1, mes_get, boost::is_any_of(":"));
     for(int j=1; j<mes1.size(); j++){
         std::vector<std::string> mes2;
         boost::split(mes2, mes1[j], boost::is_any_of("."));
         for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
-            if ((*i)->get_number()==std::stoi(mes2[2])){
+            if ((*i)->get_number()!=client_number&&(*i)->get_number()==std::stoi(mes2[2])){
                 (*i)->change_x(std::stoi(mes2[3]));
                 (*i)->change_y(std::stoi(mes2[4]));
                 (*i)->change_destx(std::stoi(mes2[5]));

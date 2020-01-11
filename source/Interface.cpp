@@ -13,3 +13,7 @@ void Interface::send_string(std::string s){
 short Interface::get_client(){
     return this->client_number;
 }
+
+void Interface::set_map(Map* &map){
+    (this->map)=map;
+}

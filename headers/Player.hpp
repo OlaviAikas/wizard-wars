@@ -53,6 +53,14 @@ class Player : public MapObject {
 
         void change_curspawn(int spawn1, int spawn2);
 
+        void set_hitpoints(int hitpoints);
+
+        void set_count(int count);
+
+        void set_timer(int timer);
+
+        void set_prevent(bool prevent);
+
         std::string encode_player();
 
         void status_effect_invisible();

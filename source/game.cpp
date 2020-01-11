@@ -429,9 +429,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             redraw = false;
         }
 
-        /*if(!isServer){
+        if(!isServer){
                 (*interface).send_string((*pit)->encode_player());
-        }*/
+        }
     }
     //delete what you loaded
     delete interface;

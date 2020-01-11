@@ -1,23 +1,20 @@
 #pragma once
 #include "MapObject.hpp"
 #include "Spells.hpp"
-#include "Beam.hpp"
-#include <allegro5/allegro_image.h>
-#include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro.h>
+#include "Shield.hpp"
+#include "Spells.hpp"
 
-class HealB: public Beam {
+class MainShield: public Shield {
     public:
-        HealB(int start_x, int start_y, float dir_x, float dir_y);
+        MainShield(int start_x, int start_y);
 
         int get_damage();
 
         virtual void on_collision(MapObject &other);
-
         virtual void draw(int camera_x, int camera_y);
+        virtual void move();
 
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
-    int maxdraw;
 };

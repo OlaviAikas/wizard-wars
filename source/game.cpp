@@ -31,6 +31,8 @@
 #include "../headers/HealFireZone.hpp"
 #include "../headers/Spray.hpp"
 #include "../headers/WaterSpray.hpp"
+#include "../headers/Shield.hpp"
+#include "../headers/MainShield.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 
@@ -139,15 +141,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 0));
-    map->statics.push_back(new MapObject(0, 0, 250, 2160, false));
-    map->statics.push_back(new MapObject(0, 0, 3840, 200, false));
-    map->statics.push_back(new MapObject(0, 1910, 3840, 250, false));
-    map->statics.push_back(new MapObject(3590, 0, 250, 2160, false));
-    map->statics.push_back(new MapObject(0, 0, 800, 350, false));
-    map->statics.push_back(new MapObject(0, 1710, 800, 450, false));
-    map->statics.push_back(new MapObject(3040, 0, 800, 350, false));
-    map->statics.push_back(new MapObject(3240, 1550, 600, 600, false));
-    map->statics.push_back(new MapObject(2002, 1020, 940, 590, false));
     map->modif_lives(50, 50);
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     game_status->map = map;
@@ -260,6 +253,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     double norm = sqrt(dy*dy + dx*dx);
                     double dx1=dx;
                     double dy1=dy;
+                    //why do we need dx1 and dy1 here
                     dy = dy/norm;
                     dx = dx/norm;
                     // std::cout << e1*e2;
@@ -321,6 +315,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam
                             map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                            break;
+                        case 4: // 2*2 I+I Shield + Shield = Main shield
+                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>300) {
+                                map -> spells.push_back(new MainShield((*pit)->get_x() - (*pit)->get_width()/2+3*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+3*dy*(*pit)->get_height()));
+                            }
+                            else {
+                                map -> spells.push_back(new MainShield(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            }
                             break;
                             
                         default:
@@ -446,6 +448,7 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     while(!interface->ready){
         std::cout<<"Not yet"<<std::endl;
     }
+    std::cout<<"..."<<std::endl;
     game_status->game_state=2;
 }
 
@@ -459,15 +462,6 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     }
     client_number=interface->get_client();
     game_status->game_state=2;
-    /*for(int i=0; i<10000; i++){
-        if(interface->ready){
-            game_status->game_state=2;
-            break;
-        }
-    }
-    if(!interface->ready){
-        game_status->game_state=1;
-    }*/
 }
 
 void must_init(bool test, const char *description) {

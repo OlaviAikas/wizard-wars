@@ -2,9 +2,9 @@
 #include <iostream>
 #include <math.h>
 FogZ::FogZ(int start_x, int start_y) 
-            : Zone::Zone(start_x, start_y, 200, 200, true) {
+            : Zone::Zone(start_x, start_y, 400, 400, true) {
     damage = 0;
-    sprite = al_load_bitmap("resources/zone.bmp");
+    sprite = al_load_bitmap("resources/fogZone.bmp");
     time = 0;
 }
 

@@ -10,6 +10,7 @@ class Interface {
         Map* map;
         bool ready;
         Interface();
+        virtual ~Interface();
         short get_client();
         // event handlers
         virtual void send_string(std::string);

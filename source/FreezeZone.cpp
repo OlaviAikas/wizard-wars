@@ -31,11 +31,11 @@ void FreezeZ::draw(int camera_x, int camera_y) {
     // must_init(al_install_audio(), "Audio addon");
     // must_init(al_init_acodec_addon(), "Audio codecs addon");
     // must_init(al_reserve_samples(16), "reserve samples");
-    ALLEGRO_SAMPLE* music05 = al_load_sample("resources/freeze_zone.wav");
-    al_play_sample(music05, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+    //ALLEGRO_SAMPLE* music05 = al_load_sample("resources/freeze_zone.wav");
+    //al_play_sample(music05, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
     // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");
     // al_draw_text(font, al_map_rgb(255, 255, 255), 300, 200, ALLEGRO_ALIGN_CENTRE, "Dzooooone");
-    al_destroy_sample(music05);
+    //al_destroy_sample(music05);
     };
     //al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);
 }

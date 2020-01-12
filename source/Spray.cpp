@@ -22,29 +22,8 @@ Spray::Spray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int widt
     this->dyp = dyp;
     this->mouse_down = mouse_down;
     bool hit = false;
-    for (float i = 1; i <= range; i = i + 0.05) {
-        this->x = round(x + (*dxp)*i*width);
-        this->y = round(y + (*dyp)*i*height); 
-        // A loop that checks if it collides any player on the map
-        for (std::list<Player*>::iterator j = map->players.begin(); j != map->players.end(); j++) {
-            if (*this == **j) {
-                hit = true;
-                break;
-            }
-        }
-        if (hit) { break; }
-        for (std::list<MapObject*>::iterator j = map->statics.begin(); j != map->statics.end(); j++) {
-            if (*this == **j) {
-                hit = true;
-                break;
-            }
-        }
-    if (hit) { break; }
-    }
 }
-
 Spray::~Spray() { }
-
 void Spray::move() {
     if (!*mouse_down) {
         noclip = true;
@@ -78,4 +57,4 @@ void Spray::move() {
     }
 }
 
-void Spray::draw(int camera_x, int camera_y) { }
+

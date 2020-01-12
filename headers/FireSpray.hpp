@@ -6,16 +6,10 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
-#include <list>
-#include "Player.hpp"
-#include "Map.hpp"
-class WaterSpray: public Spray {
+class FireSpray: public Spray {
     public:
-
-        WaterSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map);
-        ~WaterSpray();
-
-
+        FireSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map);
+        ~FireSpray();
         int get_damage();
 
         virtual void on_collision(MapObject &other);
@@ -25,5 +19,5 @@ class WaterSpray: public Spray {
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
-    ALLEGRO_SAMPLE* music21;
+    ALLEGRO_SAMPLE* music03;
 };

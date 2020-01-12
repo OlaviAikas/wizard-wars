@@ -2,6 +2,9 @@
 #include "MapObject.hpp"
 #include "Spells.hpp"
 #include "Projectile.hpp"
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
+
 class Ice: public Projectile {
     public:
         Ice(int start_x, int start_y, float dir_x, float dir_y);
@@ -17,4 +20,5 @@ class Ice: public Projectile {
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
+    ALLEGRO_SAMPLE* music10;
 };

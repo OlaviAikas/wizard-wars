@@ -57,7 +57,7 @@ void WaterSpray::on_collision(MapObject &other) {
     // must_init(al_reserve_samples(16), "reserve samples");
     //ALLEGRO_SAMPLE* music21 = al_load_sample("resources/water_spray.wav");
     //al_play_sample(music21, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
-    // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");
+    // ALLEGRO_FONT *font = al_load_bitmap_LEGRO_SAMPLE* music20;font("a4_font.tga");
     // al_draw_text(font, al_map_rgb(255, 255, 255), 300, 200, ALLEGRO_ALIGN_CENTRE, "Dzooooone");
     //al_destroy_sample(music21);
 

@@ -87,7 +87,6 @@ std::string Server::generateResponse(std::string message){
 
     if(message.find("thisisspell") != std::string::npos){
         (this->map)->decode_spells(message);
-        return("roger");
     }
     //return "ok Boomer";
     /*if(std::stoi(mes[0])==1){
@@ -121,6 +120,7 @@ std::string Server::generateResponse(std::string message){
         //break;
     //}
     //return ss.str();
+    return "";
 }
 
 void Server::send_string(std::string s){

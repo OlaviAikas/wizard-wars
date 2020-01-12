@@ -6,6 +6,7 @@
 class HealZ: public Zone {
     public:
         HealZ(int start_x, int start_y);
+        HealZ(int start_x, int start_y, int ID, bool transmitted[5]);
         ~HealZ();
         int get_damage();
 

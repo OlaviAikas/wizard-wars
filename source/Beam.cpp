@@ -13,7 +13,7 @@
 #include <list>
 #include "../headers/Player.hpp"
 
-Beam::Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width, int height, bool noclip, bool &mouse_down, Map* map)
+Beam::Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width, int height, bool noclip, bool* mouse_down, Map* map)
 : Spell( (*pit)->get_x() + (*pit)->get_width()/2 + (*pit)->get_width()*(*dxp),  (*pit)->get_y() + (*pit)->get_height()/2 + (*pit)->get_height()*(*dyp),  *dxp,  *dyp, width, height, noclip) {
     range = 3;
     this->pit = pit;
@@ -25,10 +25,17 @@ Beam::Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width,
     this->mouse_down = mouse_down;
     bool hit = false;
     for (float i = 1; i <= range; i = i + 0.05) {
+        this->x = round(x + (*dxp)*i*width);
+        this->y = round(y + (*dyp)*i*height); 
         // A loop that checks if it collides any player on the map
         for (std::list<Player*>::iterator j = map->players.begin(); j != map->players.end(); j++) {
-            this->x = round(x + (*dxp)*i*width);
-            this->y = round(y + (*dxp)*i*height);    
+            if (*this == **j) {
+                hit = true;
+                break;
+            }
+        }
+        if (hit) { break; }
+        for (std::list<MapObject*>::iterator j = map->statics.begin(); j != map->statics.end(); j++) {
             if (*this == **j) {
                 hit = true;
                 break;
@@ -41,10 +48,10 @@ Beam::Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width,
 Beam::~Beam() { }
 
 void Beam::move() {
-    //if (!mouse_down) {
-    //    this->garbage_collect = true;
-    //    std::cout << "killed beam" << std::endl;
-    //}
+    if (!*mouse_down) {
+        noclip = true;
+        this->garbage_collect = true;
+    }
     float dx = *dxp;
     float dy = *dyp;
     this->x = (*pit)->get_x() + (*pit)->get_width()/2 + (*pit)->get_width()*(dx);
@@ -53,12 +60,17 @@ void Beam::move() {
     this->origin_y = y;
     bool hit = false;
     for (float i = 1; i <= range; i = i + 0.05) {
+        this->x = round(x + (dx)*i*width);
+        this->y = round(y + (dy)*i*height); 
         // A loop that checks if it collides any player on the map
-        for (std::list<Player*>::iterator j = map->players.begin(); j != map->players.end(); j++) {
-            this->x = round(x + (dx)*i*width);
-            this->y = round(y + (dy)*i*height);    
-            std::cout << dx << std::endl;
-            std::cout << dx << std::endl;
+        for (std::list<Player*>::iterator j = map->players.begin(); j != map->players.end(); j++) {   
+            if (*this == **j) {
+                hit = true;
+                break;
+            }
+        }
+        if (hit) { break; }
+        for (std::list<MapObject*>::iterator j = map->statics.begin(); j != map->statics.end(); j++) {
             if (*this == **j) {
                 hit = true;
                 break;

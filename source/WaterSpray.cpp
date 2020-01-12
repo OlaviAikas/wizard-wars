@@ -10,8 +10,8 @@
 
 
 
-WaterSpray::WaterSpray(int start_x, int start_y, float dir_x, float dir_y) 
-            : Spray::Spray(start_x, start_y, dir_x, dir_y, 100, 100, false) {
+WaterSpray::WaterSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map) 
+            : Spray::Spray(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
     damage = 20;
     sprite = al_load_bitmap("resources/waveSpray.bmp");
     ticks = 0; //Count time 
@@ -28,17 +28,17 @@ int WaterSpray::get_damage() {
 // void must_init(bool, const char);
 
 void WaterSpray::draw(int camera_x, int camera_y) {
-    typedef struct ALLEGRO_MOUSE_STATE ALLEGRO_MOUSE_STATE;
-    ALLEGRO_MOUSE_STATE state;
-    al_get_mouse_state(&state);
-    float angle = atan2(state.y - y,state.x-x);//-pi/10
-    int bitmapw = al_get_bitmap_width(sprite);
-    int bitmaph = al_get_bitmap_height(sprite);
-    al_draw_scaled_rotated_bitmap(this->sprite,0,bitmaph/2, x -camera_x, y - camera_y,4,2, angle,0);
-    ticks += 3;
-    if (ticks>100) {
-        this->garbage_collect = true;
-    };
+    //typedef struct ALLEGRO_MOUSE_STATE ALLEGRO_MOUSE_STATE;
+    //ALLEGRO_MOUSE_STATE state;
+    //al_get_mouse_state(&state);
+    //float angle = atan2(state.y - y,state.x-x);//-pi/10
+    //int bitmapw = al_get_bitmap_width(sprite);
+    //int bitmaph = al_get_bitmap_height(sprite);
+    //al_draw_scaled_rotated_bitmap(this->sprite,0,bitmaph/2, x -camera_x, y - camera_y,4,2, angle,0);
+    //ticks += 3;
+    //if (ticks>100) {
+    //    this->garbage_collect = true;
+    //};
 
     // must_init(al_init_primitives_addon(), "primitives");
     // must_init(al_init_image_addon(), "Image addon");
@@ -50,6 +50,8 @@ void WaterSpray::draw(int camera_x, int camera_y) {
     // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");
     // al_draw_text(font, al_map_rgb(255, 255, 255), 300, 200, ALLEGRO_ALIGN_CENTRE, "Dzooooone");
     //al_destroy_sample(music21);
+
+    al_draw_line(origin_x - camera_x, origin_y - camera_y, x - camera_x, y - camera_y, al_map_rgb(0,0,255), 3);
 }
 
 void WaterSpray::on_collision(MapObject &other) {
@@ -58,5 +60,6 @@ void WaterSpray::on_collision(MapObject &other) {
         other.knockback(300*dir_x,300*dir_y);
         // Set garbage_collect to true iif other is not a Player?
         this->hit_animation = true;
-        this->noclip = true;}
+        this->noclip = true;
+    }
 }

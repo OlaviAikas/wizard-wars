@@ -7,9 +7,9 @@
 #include <math.h>
 #include <allegro5/allegro_primitives.h>
 
-HealB::HealB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool &mouse_down, Map* map) 
+HealB::HealB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map) 
             : Beam::Beam(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
-    damage = -10;
+    damage = -2;
     sprite = al_load_bitmap("resources/HealB.bmp");
     //maxdraw = 0;
     //ticks = 0;
@@ -45,7 +45,7 @@ void HealB::draw(int camera_x, int camera_y) {
     //     this->garbage_collect = true;
     // };
 
-    al_draw_line(origin_x - camera_x, origin_y - camera_y, x - camera_x, y - camera_y, al_map_rgb(0, 255, 0), 2);
+    al_draw_line(origin_x - camera_x, origin_y - camera_y, x - camera_x, y - camera_y, al_map_rgb(0, 255, 0), 4);
     // ALLEGRO_SAMPLE* music06 = al_load_sample("resources/music06.wav");
     // al_play_sample(music06, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
     // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");
@@ -53,11 +53,11 @@ void HealB::draw(int camera_x, int camera_y) {
     // al_destroy_sample(music06);
 }
 void HealB::on_collision(MapObject &other) {
-    //if (!this->get_garbage_collect() && !other.get_noclip()) {
-      //  other.hit(this->get_damage());
-        //this->noclip = true;
-        //maxdraw = sqrt((other.get_x()-x)* (other.get_x()-x)+ (other.get_y()-y)*(other.get_y()-y));
-    //}
+    if (!this->get_garbage_collect() && !other.get_noclip()) {
+        other.hit(this->get_damage());
+        this->noclip = true;
+        maxdraw = sqrt((other.get_x()-x)* (other.get_x()-x)+ (other.get_y()-y)*(other.get_y()-y));
+    }
 }
 
 

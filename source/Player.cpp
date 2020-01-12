@@ -96,10 +96,6 @@ void Player::die() {
     this->respawn_timer=0;
     this->noclip=true;
     this->dead = true;
-    std::cout << dest_x << std::endl;
-    std::cout << dest_y << std::endl;
-    std::cout << curspawn1 << std::endl;
-    std::cout << curspawn2 << std::endl;
 }
 
 void Player::on_collision(MapObject &other) {

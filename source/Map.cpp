@@ -93,28 +93,31 @@ void Map::check_dead(){
             int spawn1 = 0;
             int spawn2 = 0;
             int k = rand()%4;
+            int R = rand()%500;
+            double theta = rand()%360;
+            double ang = cos(theta);
             std::cout << k << std::endl;
             if ((*i)->get_team()==1){
                 //spawn = spawnpoint1;//Randomize the spawns
                 if (k == 0 && spawns[0] == 1){
-                    spawn1 = spawnpoint1[0];
-                    spawn2 = spawnpoint1[1];
+                    spawn1 = spawnpoint1[0] + R*ang;
+                    spawn2 = spawnpoint1[1] + R*ang;
                 }
                 else if (k == 1 && spawns[1] == 1){
-                        spawn1 = spawnpoint2[0];
-                        spawn2 = spawnpoint2[1];
+                        spawn1 = spawnpoint2[0] + R*ang;
+                        spawn2 = spawnpoint2[1] + R*ang;
                 }
                 else if (k == 2 && spawns[2] == 1){
-                    spawn1 = spawnpoint3[0];
-                    spawn2 = spawnpoint3[1];
+                    spawn1 = spawnpoint3[0] + R*ang;
+                    spawn2 = spawnpoint3[1] + R*ang;
                 }
                 else if (k == 3 && spawns[3] == 1){
-                    spawn1 = spawnpoint4[0];
-                    spawn2 = spawnpoint4[1];
+                    spawn1 = spawnpoint4[0] + R*ang;
+                    spawn2 = spawnpoint4[1] + R*ang;
                 }
                 else{
-                    spawn1 = spawnpoint1[0];
-                    spawn2 = spawnpoint1[1];
+                    spawn1 = spawnpoint1[0] + R*ang;
+                    spawn2 = spawnpoint1[1] + R*ang;
                 }
                 if (not spawnred){
                     (*i)->change_spawnable(false); //Tells the player class that it cant spawn anymore
@@ -126,24 +129,24 @@ void Map::check_dead(){
             else{
                 
                 if (k == 0 && spawns[0] == 2){
-                    spawn1 = spawnpoint1[0];
-                    spawn2 = spawnpoint1[1];
+                    spawn1 = spawnpoint1[0] + R*ang;
+                    spawn2 = spawnpoint1[1] + R*ang;
                 }
                 else if (k == 1 && spawns[1] == 2){
-                    spawn1 = spawnpoint2[0];
-                    spawn2 = spawnpoint2[1];
+                    spawn1 = spawnpoint2[0] + R*ang;
+                    spawn2 = spawnpoint2[1] + R*ang;
                 }
                 else if (k == 2 && spawns[2] == 2){
-                    spawn1 = spawnpoint3[0];
-                    spawn2 = spawnpoint3[1];
+                    spawn1 = spawnpoint3[0] + R*ang;
+                    spawn2 = spawnpoint3[1] + R*ang;
                 }
                 else if (k == 3 && spawns[3] == 2){
-                    spawn1 = spawnpoint4[0];
-                    spawn2 = spawnpoint4[1];
+                    spawn1 = spawnpoint4[0] + R*ang;
+                    spawn2 = spawnpoint4[1] + R*ang;
                 }
                 else{
-                    spawn1 = spawnpoint1[0];
-                    spawn2 = spawnpoint1[1];
+                    spawn1 = spawnpoint1[0] + R*ang;
+                    spawn2 = spawnpoint1[1] + R*ang;
                 }
                 if (not spawnblue){
                     (*i)->change_spawnable(false); //Tells the player class that it cant spawn anymore

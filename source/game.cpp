@@ -178,10 +178,6 @@ void red_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUE
                 if (key[ALLEGRO_KEY_ESCAPE]) {
                     game_status->game_state = 0;
                 }
-                if (key[ALLEGRO_KEY_ENTER]) {
-                    game_status->game_state = 1;
-                }
-
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
                 redraw = true;
@@ -243,9 +239,6 @@ void blue_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QU
                 if (key[ALLEGRO_KEY_ESCAPE]) {
                     game_status->game_state = 0;
                 }
-                if (key[ALLEGRO_KEY_ENTER]) {
-                    game_status->game_state = 1;
-                }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
@@ -301,13 +294,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     Map* map=(interface->map);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     //map->decode_players("0.14868.815.713");
-    map->set_spawnpoints(200, 300, 1500,  1500, 2000, 400, 3000, 1700);
-    map->players.push_back(new Player(400, 400, 1,1));
-    map->players.push_back(new Player(900, 900, 2,2));
-    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
-    map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
-    map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
-    map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
+    map->set_spawnpoints(500, 1450, 1700, 1100, 3050, 700);
+    map->players.push_back(new Player(400, 1050, 1,1));
+    map->players.push_back(new Player(2950, 900, 2,2));
+    map->cp.push_back(new Controlpoint(500, 1450, 1, 128, 0));
+    map->cp.push_back(new Controlpoint(1700, 1100, 1, 128, 0));
+    map->cp.push_back(new Controlpoint(3050, 700, 1, 128, 0));
     map->statics.push_back(new MapObject(0, 0, 250, 2160, false));
     map->statics.push_back(new MapObject(0, 0, 3840, 200, false));
     map->statics.push_back(new MapObject(0, 1910, 3840, 250, false));
@@ -769,7 +761,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
             al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
-            minimap->draw(map->players);
+            minimap->draw(map->players, map->cp);
             al_flip_display();
 
             redraw = false;
@@ -809,14 +801,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                         }
                     }
                 }
-                for(std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++){
-                    if((*i)->isBorS){
-                        ((*i)->counter)++;
-                        if(((*i)->counter)>20){
-                            (*i)->set_mouse_down(map->iamnot);
-                        }
-                    }
-                }
+                // for(std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++){
+                //     if((*i)->isBorS){
+                //         ((*i)->counter)++;
+                //         if(((*i)->counter)>20){
+                //             (*i)->set_mouse_down(map->iamnot);
+                //         }
+                //     }
+                // }
             }
         }
     //delete what you loaded
@@ -1407,7 +1399,7 @@ int main(int argc, char **argv)
                 al_play_sample(victory02, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
                 if (victory02) i += 1;
                 if (i == 3){
-                al_destroy_sample(victory01);
+                al_destroy_sample(victory02);
                 i += 1;
             }
             }

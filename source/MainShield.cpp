@@ -13,6 +13,28 @@ MainShield::MainShield(int start_x, int start_y, float dir_x, float dir_y,bool s
     int time1 = 0;
     music11 = al_load_sample("resources/main_shield.wav");
     if (music11) al_play_sample(music11, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id);
+    element="0";
+}
+
+MainShield::MainShield(int start_x, int start_y, float dir_x, float dir_y,bool subshield, int ID, bool transmitted[5]) 
+            : Shield::Shield(start_x, start_y, dir_x, dir_y, 16, 16, false) {
+    damage = 0;
+    sprite = al_load_bitmap("resources/shield0.bmp");
+    int time1 = 0;
+    music11 = al_load_sample("resources/main_shield.wav");
+    if (music11) al_play_sample(music11, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id);
+    element="0";
+    id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
+}
+
+std::string MainShield::encode_spell(){
+    std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaathisisspell;"+std::to_string(id)+";3;"+std::to_string(transmitted[1])+";"+std::to_string(transmitted[2])+";"+std::to_string(transmitted[3])+";"+std::to_string(transmitted[4])+";";
+    s=s+element+";";
+    s=s+std::to_string(this->x)+";"+std::to_string(this->y)+";"+std::to_string(this->dir_x)+";"+std::to_string(this->dir_y)+";"+std::to_string(this->subshield);
+    return s;
 }
 
 MainShield::~MainShield(){

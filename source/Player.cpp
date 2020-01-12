@@ -9,7 +9,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 
-Player::Player(int start_x, int start_y, short number,int team) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, short number,int team) : MapObject(start_x, start_y, 48, 54, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->team = team;
@@ -85,10 +85,12 @@ void Player::hit(int amount) {
 
 void Player::die() {
     // potentially only if server
-    set_x(curspawn1);
-    set_y(curspawn2);
-    this->dest_x=this->x;
-    this->dest_y=this->y;
+    change_x(curspawn1);
+    change_y(curspawn2);
+    this->x = curspawn1;
+    this->y = curspawn2;
+    this->dest_x=curspawn1;
+    this->dest_y=curspawn2;
     this->old_x=this->x;
     this->old_y=this->y;
     this->respawn_timer=0;

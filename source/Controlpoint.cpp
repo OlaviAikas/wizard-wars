@@ -35,11 +35,11 @@ int Controlpoint::get_owner() {
     return this->owner;
 }
 
-void Controlpoint::change_owner(bool updated){
+void Controlpoint::change_owner(int updated){
     this->owner=updated;
 }
 
-void Controlpoint::set_owner(short newowner) {
+void Controlpoint::set_owner(int newowner) {
     this->owner = newowner;
     this->havechanged = true;
 }

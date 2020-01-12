@@ -14,7 +14,13 @@ WaterSpray::WaterSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp
             : Spray::Spray(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
     damage = 20;
     sprite = al_load_bitmap("resources/waveSpray.bmp");
-    ticks = 0; //Count time 
+    ticks = 0; //Count time
+    // music21 = al_load_sample("resources/water_spray.wav");
+    // if (music21) al_play_sample(music21, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+}
+
+WaterSpray::~WaterSpray(){
+    // al_destroy_sample(music21);
 }
 
 WaterSpray::~WaterSpray() {
@@ -47,7 +53,7 @@ void WaterSpray::draw(int camera_x, int camera_y) {
     // must_init(al_reserve_samples(16), "reserve samples");
     //ALLEGRO_SAMPLE* music21 = al_load_sample("resources/water_spray.wav");
     //al_play_sample(music21, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
-    // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");
+    // ALLEGRO_FONT *font = al_load_bitmap_LEGRO_SAMPLE* music20;font("a4_font.tga");
     // al_draw_text(font, al_map_rgb(255, 255, 255), 300, 200, ALLEGRO_ALIGN_CENTRE, "Dzooooone");
     //al_destroy_sample(music21);
 

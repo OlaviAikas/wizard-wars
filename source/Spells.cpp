@@ -2,14 +2,17 @@
 #include <math.h>
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
+#include <random>
 
 
 Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool noclip) : MapObject::MapObject(x, y, width, height, noclip) {
     this->dir_x = dir_x;
     this->dir_y = dir_y;
     this->havechanged = false;
+    this->id=(x+y+int(rand())*1000)%5943;
+    this->transmitted;
 }
-Spell::~Spell() { };
+Spell::~Spell() { }
 
 void Spell::draw(int camera_x, int camera_y) { std::cout << "(!) WARN: Generic Spell::draw() called for Spell at " << this << std::endl; }
 void Spell::move() { std::cout << "(!) WARN: Generic Spell::move() called for spell at " << this << std::endl; }
@@ -17,12 +20,16 @@ bool Spell::get_havechanged(){
     return this->havechanged;
 }
 
-std::string Spell::encode_spell(){
-    
-}
-
 void Spell::reset_havechanged(){
     this->havechanged=false;
+}
+
+int Spell::get_id(){
+    return id;
+}
+
+std::string Spell::encode_spell(){
+    return("error, encoding not defined");
 }
 
 float Spell::get_dir_x(){

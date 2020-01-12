@@ -6,9 +6,13 @@
 #include <allegro5/allegro_acodec.h>
 #include <iostream>
 #include <math.h>
+#include <list>
+#include "../headers/Player.hpp"
+#include "../headers/Map.hpp"
 
-FireSpray::FireSpray(int start_x, int start_y, float dir_x, float dir_y) 
-            : Spray::Spray(start_x, start_y, dir_x, dir_y, 100, 100, true) {
+
+FireSpray::FireSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map) 
+            : Spray::Spray(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
     damage = 20;
     sprite = al_load_bitmap("resources/firespray.bmp");
     ticks = 0; //Count time 
@@ -20,6 +24,9 @@ FireSpray::~FireSpray(){
     // al_destroy_sample(music03);
 }
 
+FireSpray::~FireSpray() {
+    al_destroy_bitmap(sprite);
+}
 int FireSpray::get_damage() {
     return damage;
 }
@@ -39,9 +46,11 @@ void FireSpray::draw(int camera_x, int camera_y) {
     // must_init(al_install_audio(), "Audio addon");
     // must_init(al_init_acodec_addon(), "Audio codecs addon");
     // must_init(al_reserve_samples(16), "reserve samples");
+    //ALLEGRO_SAMPLE* music03 = al_load_sample("resources/fire_spray.wav");
+    //al_play_sample(music03, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
     // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");
     // al_draw_text(font, al_map_rgb(255, 255, 255), 300, 200, ALLEGRO_ALIGN_CENTRE, "Dzooooone");
-    
+    //al_destroy_sample(music03);
 }
 
 void FireSpray::on_collision(MapObject &other) {

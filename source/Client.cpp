@@ -63,7 +63,7 @@ void Client::listen(){
     try {
         // listening loop
         for (;;){
-            boost::array<char, 1024> recv_buf;
+            boost::array<char, 4096> recv_buf;
             boost::system::error_code error;
             size_t size = socket_.receive_from(boost::asio::buffer(recv_buf), sender_endpoint_);
             this->onResponse(std::string(recv_buf.c_array(), size));
@@ -76,20 +76,31 @@ void Client::listen(){
 
 void Client::onResponse(std::string message){
     std::cout << "The servers response is: " << message << std::endl;
-    if (!ready && message=="go2"){
+    if (!ready && message.find("go2") != std::string::npos){
         ready=true;
         client_number=2;
     }
-    if (!ready && message=="go3"){
+    if (!ready && message.find("go3") != std::string::npos){
         ready=true;
         client_number=3;
     }
-    if (!ready && message=="go4"){
+    if (!ready && message.find("go4") != std::string::npos){
         ready=true;
         client_number=4;
     }
-    if (message.find("thisisplayer") != std::string::npos){
-        (this->map)->decode_players(message, client_number);
+    std::vector<std::string> mes;
+    for(int a=0; a==10; a++){
+        message.erase(0, 1);
+    }
+    boost::split(mes, message, boost::is_any_of("|"));
+    for(unsigned int j=0; j<mes.size(); j++){
+        if (mes[j].find("thisisplayer") != std::string::npos){
+            (this->map)->decode_players(mes[j], client_number);
+        }
+        if (mes[j].find("thisisspell") != std::string::npos){
+            (this->map)->decode_spells(mes[j]);
+        }
+
     }
     // modify the game depending on message
     //char identifier = message.front();

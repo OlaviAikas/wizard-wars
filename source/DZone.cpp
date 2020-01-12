@@ -10,11 +10,28 @@ DamageZ::DamageZ(int start_x, int start_y)
     damage = 1;
     sprite = al_load_bitmap("resources/waterzone.bmp");
     time = 0;
+    element="0";
     music01 = al_load_sample("resources/dzone.wav");
     al_play_sample(music01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
-DamageZ::~DamageZ(){
+DamageZ::DamageZ(int start_x, int start_y, int ID, bool transmitted[5]) 
+            : Zone::Zone(start_x, start_y, 200, 200, true) {
+    damage = 1;
+    sprite = al_load_bitmap("resources/waterzone.bmp");
+    time = 0;
+    element="0";
+    id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
+    music01 = al_load_sample("resources/dzone.wav");
+    al_play_sample(music01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+}
+
+
+DamageZ::~DamageZ() {
+    al_destroy_bitmap(sprite);
     al_destroy_sample(music01);
 }
 
@@ -39,9 +56,11 @@ void DamageZ::draw(int camera_x, int camera_y) {
     // must_init(al_install_audio(), "Audio addon");
     // must_init(al_init_acodec_addon(), "Audio codecs addon");
     // must_init(al_reserve_samples(16), "reserve samples");
+    //ALLEGRO_SAMPLE* music01 = al_load_sample("resources/dzone.wav");
+    //al_play_sample(music01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
     // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");
     // al_draw_text(font, al_map_rgb(255, 255, 255), 300, 200, ALLEGRO_ALIGN_CENTRE, "Dzooooone");
-    
+    //al_destroy_sample(music01);
    
 }
 

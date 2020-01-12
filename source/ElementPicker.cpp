@@ -13,6 +13,15 @@ ElementPicker::ElementPicker(int x, int y, int sx, int sy, int* element) : HUDob
     sprite6 = al_load_bitmap("resources/elementRock.bmp");
 }
 
+ElementPicker::~ElementPicker() {
+    al_destroy_bitmap(sprite1);
+    al_destroy_bitmap(sprite2);
+    al_destroy_bitmap(sprite3);
+    al_destroy_bitmap(sprite4);
+    al_destroy_bitmap(sprite5);
+    al_destroy_bitmap(sprite6);
+}
+
 void ElementPicker::draw() {
     if (*element == 1) {
         al_draw_scaled_bitmap(this->sprite1,0,0,32,32, x,y,64,64,0);

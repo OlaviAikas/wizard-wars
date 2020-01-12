@@ -6,11 +6,15 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
-
+#include <list>
+#include "Player.hpp"
+#include "Map.hpp"
 class WaterSpray: public Spray {
     public:
-        WaterSpray(int start_x, int start_y, float dir_x, float dir_y);
+
+        WaterSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map);
         ~WaterSpray();
+
 
         int get_damage();
 

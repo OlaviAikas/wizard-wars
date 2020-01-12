@@ -10,6 +10,22 @@ HealZ::HealZ(int start_x, int start_y)
     damage = -1;
     sprite = al_load_bitmap("resources/healingzone.bmp");
     time = 0;
+    element="3";
+}
+HealZ::HealZ(int start_x, int start_y, int ID, bool transmitted[5]) 
+            : Zone::Zone(start_x, start_y, 200, 200, true) {
+    damage = -1;
+    sprite = al_load_bitmap("resources/healingzone.bmp");
+    time = 0;
+    element="3";
+    id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
+}
+
+HealZ::~HealZ() {
+    al_destroy_bitmap(sprite);
 }
 
 int HealZ::get_damage() {

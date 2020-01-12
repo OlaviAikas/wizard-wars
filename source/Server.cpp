@@ -31,7 +31,7 @@ void Server::listen(){
 
         // listening loop
         for (;;){
-            boost::array<char, 1024> recv_buf;
+            boost::array<char, 4096> recv_buf;
             boost::system::error_code error;
             size_t size = socket_.receive_from(boost::asio::buffer(recv_buf), sender_endpoint_);
             std::cout << std::string(recv_buf.c_array(), size) << std::endl;
@@ -57,22 +57,36 @@ std::string Server::generateResponse(std::string message){
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
     // std::cout<<message<<std::endl;
-    if((!ready) && message=="ready"){
+    if((!ready) && message.find("ready") != std::string::npos){
         players_connected++;
         std::cout<<"go"<<std::endl;
-        std::string answer = "go"+std::to_string(players_connected);
+        std::string answer = "aaaaaaaaaaago"+std::to_string(players_connected);
         std::cout<<answer<<std::endl;
         ready=true;
         return answer;
     }
     if(message.find("thisisplayer") != std::string::npos){
-        (this->map)->decode_players(message, client_number);
-        std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:";
+        bool spell=false;
+        int sender=(this->map)->decode_players(message, client_number);
+        std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:";
         for(std::list<Player*>::iterator i = (this->map)->players.begin(); i != (this->map)->players.end(); i++){
             s=s+((*i)->encode_player())+":";
         }
         s.pop_back();
+        s=s+"|";
+        for (std::list<Spell*>::iterator i = (this->map)->spells.begin(); i != (this->map)->spells.end(); i++){
+            if(!(*i)->transmitted[sender]){
+                spell=true;
+                (*i)->transmitted[sender]=true;
+                s=s+(*i)->encode_spell()+":";
+            }
+        }
+        s.pop_back();
         return s;
+    }
+
+    if(message.find("thisisspell") != std::string::npos){
+        (this->map)->decode_spells(message);
     }
     //return "ok Boomer";
     /*if(std::stoi(mes[0])==1){
@@ -106,6 +120,7 @@ std::string Server::generateResponse(std::string message){
         //break;
     //}
     //return ss.str();
+    return "";
 }
 
 void Server::send_string(std::string s){

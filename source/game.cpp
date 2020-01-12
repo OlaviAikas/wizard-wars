@@ -320,9 +320,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             map -> spells.push_back(new HealFireZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
                             }
                             break;
-                        case 25: // 5*5 J+J Water+Water = WaterSpray
-                            map -> spells.push_back(new WaterSpray(pit, &dxp, &dyp, &left_mouse_down, map));
-                            break;
+                        // case 25: // 5*5 J+J Water+Water = WaterSpray
+                        //     map -> spells.push_back(new WaterSpray(pit, &dxp, &dyp, &left_mouse_down, map));
+                        //     break;
                             // ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav");
     // // must_init(music, "music");
     // al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
@@ -356,10 +356,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                         case 4: // 2*2 I+I Shield + Shield = Main shield
                             map -> spells.push_back(new MainShield((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy,false));
                             break;
-                        case 9: // 3*3 O + O Fire + Fire = Fire Spray
-                            map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
-
-                            break;
+                        // case 9: // 3*3 O + O Fire + Fire = Fire Spray
+                        //     map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
+                        //     break;
+                        case 11:
+                            (*pit)->hit(-10);
+                        
                         default:
 
                        // } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {

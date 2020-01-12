@@ -7,14 +7,9 @@
 #include "../headers/Interface.hpp"
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
-Map::Map() {
-    // this->map = al_load_bitmap(name);
-    this->spawns[0] = 1;
-    this->spawns[1] = 0;
-    this->spawns[2] = 0;
-    this->spawns[3] = 2;
-}
 
 Map::Map(const char* name) {
     this->map = al_load_bitmap(name);
@@ -80,11 +75,35 @@ void Map::check_dead(){
         spawnblue = true;
         spawnred = true;
     }
+    srand(time(NULL));
     for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
         if (((*i)->get_hit_points()<=0)&&((*i)->get_noclip()==false)){
-            int* spawn;
+            int spawn1 = 0;
+            int spawn2 = 0;
+            int k = rand()%4;
+            std::cout << k << std::endl;
             if ((*i)->get_team()==1){
-                spawn = spawnpoint1;//Randomize the spawns
+                //spawn = spawnpoint1;//Randomize the spawns
+                if (k == 0 && spawns[0] == 1){
+                    spawn1 = spawnpoint1[1];
+                    spawn2 = spawnpoint1[2];
+                }
+                else if (k == 1 && spawns[1] == 1){
+                        spawn1 = spawnpoint2[1];
+                        spawn2 = spawnpoint2[2];
+                }
+                else if (k == 2 && spawns[2] == 1){
+                    spawn1 = spawnpoint3[1];
+                    spawn2 = spawnpoint3[2];
+                }
+                else if (k == 3 && spawns[3] == 1){
+                    spawn1 = spawnpoint4[1];
+                    spawn2 = spawnpoint4[2];
+                }
+                else{
+                    spawn1 = spawnpoint1[1];
+                    spawn2 = spawnpoint1[2];
+                }
                 if (not spawnred){
                     (*i)->change_spawnable(false); //Tells the player class that it cant spawn anymore
                 }
@@ -93,7 +112,27 @@ void Map::check_dead(){
                 }
             }
             else{
-                spawn = spawnpoint2;
+                
+                if (k == 0 && spawns[0] == 2){
+                    spawn1 = spawnpoint1[1];
+                    spawn2 = spawnpoint1[2];
+                }
+                else if (k == 1 && spawns[1] == 2){
+                    spawn1 = spawnpoint2[1];
+                    spawn2 = spawnpoint2[2];
+                }
+                else if (k == 2 && spawns[2] == 2){
+                    spawn1 = spawnpoint3[1];
+                    spawn2 = spawnpoint3[2];
+                }
+                else if (k == 3 && spawns[3] == 2){
+                    spawn1 = spawnpoint4[1];
+                    spawn2 = spawnpoint4[2];
+                }
+                else{
+                    spawn1 = spawnpoint1[1];
+                    spawn2 = spawnpoint1[2];
+                }
                 if (not spawnblue){
                     (*i)->change_spawnable(false); //Tells the player class that it cant spawn anymore
                 }
@@ -102,7 +141,7 @@ void Map::check_dead(){
                 }
                 
             }
-            (*i)->change_curspawn(spawn[1],spawn[2]);
+            (*i)->change_curspawn(spawn1,spawn2);
             (*i)->die();
         }
     }

@@ -43,7 +43,7 @@
 #include "../headers/MainShield.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
-//#include "../headers/FireSpray.hpp"
+#include "../headers/FireSpray.hpp"
 #include "../headers/Server.hpp"
 #include "../headers/Client.hpp"
 #include "../headers/Interface.hpp"
@@ -66,6 +66,9 @@ void settings_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
 
 void ip_input_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
+
+void np_input_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
 
 void red_game_end_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
@@ -104,7 +107,7 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
                 break;
 
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-                create_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 4);
+                create_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 9);
                 join_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 8);
                 settings->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 3);
                 end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
@@ -568,9 +571,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                                 cooldowns[4] = 15;
                             }
                             break;
-                        // case 9: // 3*3 O + O Fire + Fire = Fire Spray
-                        //     map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
-                        //     break;
+                        case 9: // 3*3 O + O Fire + Fire = Fire Spray
+                            map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
+                             break;
                         case 11:
                             (*pit)->hit(-10);
                             break;
@@ -857,6 +860,106 @@ void change_state(short & state, short new_state) {
     state = new_state;
 }
 
+void np_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
+                    const float &windowWidth, const float &windowHeight, const float &scaleX,
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
+
+    ALLEGRO_FONT *DejaVuSans = al_load_font("resources/DejaVuSans.ttf",52,0);
+    std::string input = "";
+
+    while(game_status->game_state == 9) {
+    al_wait_for_event(queue, &event);
+    switch(event.type)
+        {
+            case ALLEGRO_EVENT_TIMER:
+                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
+                    key[i] &= KEY_SEEN;
+                redraw = true;
+                break;
+
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                break;
+
+            case ALLEGRO_EVENT_KEY_DOWN:
+                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
+                if (event.keyboard.keycode == ALLEGRO_KEY_0) {
+                    input.append("0");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_1) {
+                    input.append("1");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_2) {
+                    input.append("2");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_3) {
+                    input.append("3");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_4) {
+                    input.append("4");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_5) {
+                    input.append("5");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_6) {
+                    input.append("6");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_7) {
+                    input.append("7");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_8) {
+                    input.append("8");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_9) {
+                    input.append("9");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && input.size() > 0) {
+                    input.pop_back();
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
+                    //Gift for Paul, the number of players is in the string "input"
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+                    game_status->game_state = 1;
+                }
+
+
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                key[event.keyboard.keycode] &= KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                game_status->game_state = 0;
+                break;
+
+            default:
+                break;
+        }
+            if(redraw && al_is_event_queue_empty(queue))
+        {
+            al_set_target_bitmap(buffer);
+            int bw = al_get_bitmap_width(buffer);
+            int bh = al_get_bitmap_height(buffer);
+
+            al_clear_to_color(al_map_rgb(234, 231, 28));
+            al_draw_text(DejaVuSans, al_map_rgb(0,0,0), bw / 2, bh / 2 - 2 * 52 - 16, 1, "Please enter the number of players to host:");
+            al_draw_filled_rectangle(bw * 0.46, bh / 2 - 52, bw * 0.54, bh / 2 + 16, al_map_rgb(0,0,0));
+            al_draw_filled_rectangle(bw * 0.46 + 5, bh / 2 - 47, bw * 0.54 - 5, bh / 2 + 11, al_map_rgb(234, 231, 28));
+            al_draw_text(DejaVuSans, al_map_rgb(0,0,0), bw / 2, bh / 2 - 46, 1, input.c_str());
+            al_draw_text(DejaVuSans, al_map_rgb(0,0,0), bw / 2, bh / 2 + 32, 1, "Press 'ENTER' to continue");
+
+            al_set_target_backbuffer(disp);
+            al_clear_to_color(al_map_rgb(0,0,0));
+            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            al_flip_display();
+
+            redraw = false;
+        }
+    }
+    //delete what you loaded
+    al_destroy_font(DejaVuSans);
+}
+
 void ip_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
@@ -1041,40 +1144,104 @@ int main(int argc, char **argv)
 
     al_start_timer(timer);
 
-    ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav"); //Play the background music
-    // must_init(music, "music");
-    al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id), 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+    
 
     while (game_status.game_state != 0) {
         if (game_status.game_state == 1) {
+            //main menu
+            ALLEGRO_SAMPLE* music = al_load_sample("resources/menu.wav"); //Play the background music
+            al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+
             main_menu_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+            al_destroy_sample(music);
         }
         if (game_status.game_state == 2) {
+            //game loop
+            ALLEGRO_SAMPLE* music = al_load_sample("resources/main_game.wav"); //Play the background music
+            al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+
             game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
                     scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
+            al_destroy_sample(music);
         }
         if (game_status.game_state == 3) {
+            //settings
+            ALLEGRO_SAMPLE* music = al_load_sample("resources/settings.wav"); //Play the background music
+            al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+
             settings_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+            al_destroy_sample(music);
         }
         if (game_status.game_state == 4){
+            //create game ("server")
+            ALLEGRO_SAMPLE* music = al_load_sample("resources/main_game.wav"); //Play the background music
+            al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
             server_loop(&game_status, interface, isServer);
+            al_destroy_sample(music);
         }
         if (game_status.game_state == 5){
+            //join game ("client")
+            ALLEGRO_SAMPLE* music = al_load_sample("resources/main_game.wav"); //Play the background music
+            al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
             client_loop(&game_status, interface, isServer, client_number);
+            al_destroy_sample(music);
         }
         if (game_status.game_state == 6) {
+            //game end
+            int i = 0;
+            ALLEGRO_SAMPLE* victory01 = al_load_sample("resources/victory01.wav"); //Play the background music
+            al_play_sample(victory01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+            if (victory01) i += 1;
+            if (i == 1){
+                al_destroy_sample(victory01);
+                i += 1;
+            }
+            if (i == 2) {
+                ALLEGRO_SAMPLE* victory02 = al_load_sample("resources/victory02.wav"); //Play the background music
+                al_play_sample(victory02, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+                if (victory02) i += 1;
+                if (i == 3){
+                al_destroy_sample(victory01);
+                i += 1;
+            }
+            }
+            
+            
             red_game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
         if (game_status.game_state == 7) {
+                        //game end
+            int i = 0;
+            ALLEGRO_SAMPLE* victory01 = al_load_sample("resources/victory01.wav"); //Play the background music
+            al_play_sample(victory01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+            if (victory01) i += 1;
+            if (i == 1){
+                al_destroy_sample(victory01);
+                i += 1;
+            }
+            if (i == 2) {
+                ALLEGRO_SAMPLE* victory02 = al_load_sample("resources/victory02.wav"); //Play the background music
+                al_play_sample(victory02, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+                if (victory02) i += 1;
+                if (i == 3){
+                al_destroy_sample(victory01);
+                i += 1;
+            }
+            }
             blue_game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
         if (game_status.game_state == 8) {
             ip_input_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
+                    screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
+        }
+        if (game_status.game_state == 9) {
+            np_input_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
                     scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
         }
@@ -1085,7 +1252,7 @@ int main(int argc, char **argv)
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-    al_destroy_sample(music);
+    
 
     return 0;
 }
@@ -1095,3 +1262,39 @@ int direction(int click_x, int click_y, int loc_x, int loc_y){
     return (click_y - loc_y)/(click_x - loc_x);
 }
 
+void game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+        
+        int i = 0;
+        ALLEGRO_SAMPLE* victory01 = al_load_sample("resources/victory01.wav"); //Play the background music
+        al_play_sample(victory01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+        if (victory01) i += 1;
+        if (i == 1){
+            al_destroy_sample(victory01);
+            i += 1;
+        }
+        if (i == 2) {
+            ALLEGRO_SAMPLE* victory02 = al_load_sample("resources/victory02.wav"); //Play the background music
+            al_play_sample(victory02, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+            if (victory02) i += 1;
+            if (i == 3){
+            al_destroy_sample(victory01);
+            i += 1;
+        }
+        }
+
+        if(redraw && al_is_event_queue_empty(queue))
+        {
+            al_set_target_bitmap(buffer);
+
+
+
+            al_set_target_backbuffer(disp);
+            al_clear_to_color(al_map_rgb(0,0,0));
+            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            al_flip_display();
+
+            redraw = false;
+        }
+}

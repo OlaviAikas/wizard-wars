@@ -12,7 +12,7 @@ DamageZ::DamageZ(int start_x, int start_y)
     time = 0;
     element="0";
     music01 = al_load_sample("resources/dzone.wav");
-    al_play_sample(music01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+    al_play_sample(music01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
 DamageZ::DamageZ(int start_x, int start_y, int ID, bool transmitted[5]) 
@@ -26,7 +26,7 @@ DamageZ::DamageZ(int start_x, int start_y, int ID, bool transmitted[5])
         this->transmitted[i]=transmitted[i];
     }
     music01 = al_load_sample("resources/dzone.wav");
-    al_play_sample(music01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+    al_play_sample(music01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
 

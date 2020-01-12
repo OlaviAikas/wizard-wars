@@ -35,7 +35,9 @@ void MainShield::draw(int camera_x, int camera_y) {
         this->garbage_collect = true;
     }
     float angle = atan2(dir_y,dir_x);
-    al_draw_scaled_rotated_bitmap(this->sprite,50,5, x - camera_x, y - camera_y,2,2, angle,0);
+    float bitmapw = al_get_bitmap_width(sprite);
+    float bitmaph = al_get_bitmap_height(sprite);
+    al_draw_scaled_rotated_bitmap(this->sprite,0,bitmaph/2, x - camera_x, y - camera_y,2,2, angle,0);
 }
 
 void MainShield::on_collision(MapObject &other) {

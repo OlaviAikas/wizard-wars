@@ -15,7 +15,7 @@ OBJS := $(patsubst source/%.cpp,objects/%.o,$(SRCS))
 # Compiler and flags
 CXX := g++
 CFLAGS := --std=c++11
-PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread -lpthread -lboost_fiber `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_audio-5 allegro_acodec-5 allegro_primitives-5 --libs --cflags`
+PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread -lpthread -lboost_fiber `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_ttf-5 allegro_image-5 allegro_audio-5 allegro_acodec-5 allegro_primitives-5 --libs --cflags`
 
 # -include $(DEP)   # include all dep files in the makefile
 # # rule to generate a dep file by using the C preprocessor
@@ -26,7 +26,7 @@ PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread -lpthread -lboost_fiber 
 # Rules
 all: game
 
-mac: PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread-mt -lpthread -lboost_fiber-mt `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_audio-5 allegro_acodec-5 allegro_primitives-5 --libs --cflags`
+mac: PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread-mt -lpthread -lboost_fiber-mt `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_ttf-5 allegro_image-5 allegro_audio-5 allegro_acodec-5 allegro_primitives-5 --libs --cflags`
 mac: game
 
 debug: CFLAGS := --std=c++11 -g

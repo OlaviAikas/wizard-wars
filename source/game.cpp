@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_audio.h>
@@ -63,12 +67,13 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
     //Load what you need to before the loop:
+    ALLEGRO_BITMAP *menu_background = al_load_bitmap("resources/background.bmp");
     void (*changeptr)(short &, short new_state);
     changeptr = change_state;
-    Button<short &, short>* create_game = new Button<short &, short>(840, 500, "resources/create_game.bmp", changeptr);
+    Button<short &, short>* create_game = new Button<short &, short>(840, 500, "resources/start.bmp", changeptr);
     Button<short &, short>* join_game = new Button<short &, short>(840, 600, "resources/join_game.bmp", changeptr);
-    Button<short &, short>* end_game = new Button<short &, short>(840, 700, "resources/quit.bmp", changeptr);
-    Button<short &, short>* settings = new Button<short &, short>(840, 800, "resources/quit.bmp", changeptr);
+    Button<short &, short>* settings = new Button<short &, short>(840, 800, "resources/settings.bmp", changeptr);
+    Button<short &, short>* end_game = new Button<short &, short>(840, 700, "resources/exit.bmp", changeptr);
 
     while(game_status->game_state == 1) {
     al_wait_for_event(queue, &event);
@@ -90,8 +95,8 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 create_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 4);
                 join_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 5);
-                end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
                 settings->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 3);
+                end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
                 break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
@@ -112,12 +117,12 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
             al_set_target_bitmap(buffer);
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
+
+            al_draw_scaled_bitmap(menu_background, 0, 0, al_get_bitmap_width(menu_background), al_get_bitmap_height(menu_background), 0, 0, 1920, 1080, 0);
             create_game->draw();
             join_game->draw();
-            end_game->draw();
             settings->draw();
-
-
+            end_game->draw();
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
             al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
@@ -129,8 +134,8 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
     //delete what you loaded
     delete create_game;
     delete join_game;
-    delete end_game;
     delete settings;
+    delete end_game;
 }
 
 
@@ -499,10 +504,86 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
         game_status->game_state=1;
     }*/
 }
+
 void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+    ALLEGRO_BITMAP *settings_background = al_load_bitmap("resources/background.bmp");
+    ALLEGRO_FONT *main_menu_font = al_load_font("resources/DejaVuSans.ttf",75,0);
+    void (*changeptr)(short &, short new_state);
+    changeptr = change_state;
+    Button<short &, short>* return_main_menu= new Button<short &, short>(130, 140, "resources/main_menu.bmp", changeptr);
+    Button<short &, short>* quit= new Button<short &, short>(1550, 950, "resources/exit.bmp", changeptr);
+    Button<short &, short>* resolution_1= new Button<short &, short>(530, 410, "resources/res_1.bmp", changeptr);
+    Button<short &, short>* resolution_2= new Button<short &, short>(830, 410, "resources/res_2.bmp", changeptr);
+    Button<short &, short>* resolution_3= new Button<short &, short>(1130, 410, "resources/res_3.bmp", changeptr);
+    Button<short &, short>* resolution_4= new Button<short &, short>(1430, 410, "resources/res_4.bmp", changeptr);
+    while(game_status->game_state == 3) {
+        al_wait_for_event(queue, &event);
+        switch(event.type)
+        {
+            case ALLEGRO_EVENT_TIMER:
+                if (key[ALLEGRO_KEY_ESCAPE]) {
+                    game_status->game_state = 0;
+                }
 
+                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
+                    key[i] &= KEY_SEEN;
+                redraw = true;
+                break;
+
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                return_main_menu->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 1);
+                quit->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
+                resolution_1->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
+                resolution_2->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 4);
+                resolution_3->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 2);
+                resolution_4->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 5);
+                break;
+            case ALLEGRO_EVENT_KEY_DOWN:
+                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                key[event.keyboard.keycode] &= KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                game_status->game_state = 0;
+                break;
+
+            default:
+                break;
+        }
+        if(redraw && al_is_event_queue_empty(queue))
+        {
+            al_set_target_bitmap(buffer);
+
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            
+            al_draw_scaled_bitmap(settings_background, 0, 0, al_get_bitmap_width(settings_background), al_get_bitmap_height(settings_background), 0, 0, 1920, 1080, 0);
+            return_main_menu->draw();
+            quit->draw();
+            resolution_1->draw();
+            resolution_2->draw();
+            resolution_3->draw();
+            resolution_4->draw();
+
+            al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,400,0,"Resolution");
+            al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,500,0,"IP Box");
+
+            al_set_target_backbuffer(disp);
+            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            al_flip_display();
+            al_wait_for_event(queue, &event);
+
+            redraw = false;   
+                }
+    }
+  delete return_main_menu;   
+  delete resolution_1;
+  delete resolution_2; 
+  delete resolution_3; 
+  delete resolution_4;  
+  delete quit;  
     
 }
 
@@ -535,6 +616,7 @@ int main(int argc, char **argv)
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+    
     ALLEGRO_DISPLAY* disp = al_create_display(1920, 1080); //Change this resolution to change window size
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
@@ -560,7 +642,8 @@ int main(int argc, char **argv)
     must_init(al_install_audio(), "Audio addon");
     must_init(al_init_acodec_addon(), "Audio codecs addon");
     must_init(al_reserve_samples(16), "reserve samples");
-
+    must_init(al_init_font_addon(), "Font addon");
+    must_init(al_init_ttf_addon(), "ttf addon");
 
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));

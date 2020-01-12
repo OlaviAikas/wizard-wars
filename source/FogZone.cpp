@@ -10,6 +10,18 @@ FogZ::FogZ(int start_x, int start_y)
     damage = 0;
     sprite = al_load_bitmap("resources/fogZone.bmp");
     time = 0;
+    element="1";
+}
+FogZ::FogZ(int start_x, int start_y, int ID, bool transmitted[5]) 
+            : Zone::Zone(start_x, start_y, 400, 400, true) {
+    damage = 0;
+    sprite = al_load_bitmap("resources/fogZone.bmp");
+    time = 0;
+    element="1";
+    id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
 }
 
 FogZ::~FogZ() {

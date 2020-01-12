@@ -6,6 +6,7 @@
 class FogZ: public Zone {
     public:
         FogZ(int start_x, int start_y);
+        FogZ(int start_x, int start_y, int ID, bool transmitted[5]);
         ~FogZ();
         int get_damage();
 

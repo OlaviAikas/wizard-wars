@@ -17,7 +17,7 @@ HealB::HealB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mo
 }
 HealB::~HealB() { 
     al_destroy_bitmap(sprite);
-};
+}
 
 int HealB::get_damage() {
     return damage;

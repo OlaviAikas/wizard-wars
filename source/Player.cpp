@@ -147,7 +147,7 @@ bool Player::check_dead(){
 void Player::change_curspawn(int spawn1, int spawn2){
     this->curspawn1 = spawn1;
     this->curspawn2 = spawn2;
-};
+}
 
 
 void Player::move() {

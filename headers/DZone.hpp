@@ -6,6 +6,7 @@
 class DamageZ: public Zone {
     public:
         DamageZ(int start_x, int start_y);
+        DamageZ(int start_x, int start_y, int ID, bool transmitted[5]);
         ~DamageZ();
 
         int get_damage();

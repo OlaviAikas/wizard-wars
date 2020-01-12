@@ -12,7 +12,7 @@ Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool
     this->id=(x+y+int(rand())*1000)%5943;
     this->transmitted;
 }
-Spell::~Spell() { };
+Spell::~Spell() { }
 
 void Spell::draw(int camera_x, int camera_y) { std::cout << "(!) WARN: Generic Spell::draw() called for Spell at " << this << std::endl; }
 void Spell::move() { std::cout << "(!) WARN: Generic Spell::move() called for spell at " << this << std::endl; }

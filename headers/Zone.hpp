@@ -8,6 +8,7 @@ class Zone: public Spell {
         virtual ~Zone();
         virtual void draw(int camera_x, int camera_y);
         virtual void move();
+        std::string encode_spell();
     protected:
         int time;
         bool hit_animation;

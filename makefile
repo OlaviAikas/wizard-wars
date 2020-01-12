@@ -29,15 +29,17 @@ all: game
 mac: PKGCONFIG := -L /usr/lib/ -lboost_system -lboost_thread-mt -lpthread -lboost_fiber-mt `pkg-config allegro-5 allegro_main-5 allegro_font-5 allegro_image-5 allegro_audio-5 allegro_acodec-5 allegro_primitives-5 --libs --cflags`
 mac: game
 
-debug-flags: CFLAGS := --std=c++11 -g
+debug: CFLAGS := --std=c++11 -g
+debug: clean game
 
-debug: clean debug-flags game
+debug-mac: CFLAGS := --std=c++11 -g
+debug-mac: clean mac
 
-debug-mac: clean debug-flags mac
+debug-no-clean: CFLAGS := --std=c++11 -g
+debug-no-clean: game
 
-debug-no-clean: debug-flags game
-
-debug-no-clean-mac: debug-flags mac
+debug-no-clean-mac: CFLAGS := --std=c++11 -g
+debug-no-clean-mac: mac
 	
 verbose: CFLAGS := -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy \
 				   -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs \

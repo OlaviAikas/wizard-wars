@@ -249,7 +249,7 @@ void Map::decode_spells(std::string mes_get){
             if ((*i)->get_id()==std::stoi(mes2[1])){
                 found=true;
                 std::cout<<"Found"<<std::endl;
-                if(std::stoi(mes2[6])==0){
+                if(std::stoi(mes2[2])==0){
                     (*i)->set_x(std::stoi(mes2[8]));
                     (*i)->set_y(std::stoi(mes2[9]));
                     std::cout<<"Found projectile"<<std::endl;
@@ -260,7 +260,7 @@ void Map::decode_spells(std::string mes_get){
             std::cout<<"Not found"<<std::endl;
             if(std::stoi(mes2[2])==0){
                 std::cout<<"Creating projectile"<<std::endl;
-                bool a[5]={false, stoi(mes2[2])==0, stoi(mes2[3])==0, stoi(mes2[4])==0, stoi(mes2[5])==0};
+                bool a[5]={false, stoi(mes2[3])==0, stoi(mes2[4])==0, stoi(mes2[5])==0, stoi(mes2[6])==0};
                 if(std::stoi(mes2[7])==0){
                     spells.push_back(new Rock(stoi(mes2[8]), stoi(mes2[9]), stof(mes2[10]),stof(mes2[11]), stoi(mes2[1]), a));
                 }

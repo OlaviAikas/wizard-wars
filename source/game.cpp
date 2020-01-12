@@ -801,6 +801,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     }
                     for(std::list<MapObject*>::iterator i = map->statics.begin(); i != map->statics.end(); i++){
                         if(!(*i)->transmitted[1]){
+                            std::cout<<"Found shield"<<std::endl;
                             (*i)->transmitted[1]=true;
                             (*i)->transmitted[client_number]=true;
                             (*interface).send_string((*i)->encode_spell());

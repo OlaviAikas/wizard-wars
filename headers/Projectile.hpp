@@ -10,6 +10,7 @@ class Projectile: public Spell {
         int get_speed();
         int get_next_x();
         int get_next_y();
+        std::string encode_spell();
 
     protected:
         int speed;

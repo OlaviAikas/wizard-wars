@@ -5,6 +5,15 @@ HealP::HealP(int start_x, int start_y, float dir_x, float dir_y)
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 12, 12, false, 20) {
     damage = -10;
     sprite = al_load_bitmap("resources/healProjectile.bmp");
+    element = "3";
+}
+
+HealP::HealP(int start_x, int start_y, float dir_x, float dir_y, int ID) 
+            : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 12, 12, false, 20) {
+    damage = -10;
+    sprite = al_load_bitmap("resources/healProjectile.bmp");
+    element = "3";
+    id=ID;
 }
 
 int HealP::get_damage() {

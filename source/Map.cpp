@@ -230,6 +230,10 @@ void Map::decode_players(std::string mes_get, short client_number){
 void Map::decode_spells(std::string mes_get){
     std::vector<std::string> mes1;
     boost::split(mes1, mes_get, boost::is_any_of(":"));
+    if(mes1.size()==1){
+        mes1.resize(2);
+        mes1[1]=mes1[0];
+    }
     for(int j=1; j<mes1.size(); j++){
         bool found=false;
         std::vector<std::string> mes2;

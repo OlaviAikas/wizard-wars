@@ -71,6 +71,14 @@
         "mutex": "cpp",
         "queue": "cpp",
         "ratio": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "csignal": "cpp",
+        "codecvt": "cpp",
+        "condition_variable": "cpp",
+        "set": "cpp",
+        "future": "cpp",
+        "iomanip": "cpp",
+        "thread": "cpp",
+        "typeindex": "cpp"
     }
 }

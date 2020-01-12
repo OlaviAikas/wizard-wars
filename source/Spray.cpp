@@ -57,4 +57,4 @@ void Spray::move() {
     }
 }
 
-
+void Spray::draw(int camera_x, int camera_y){ }

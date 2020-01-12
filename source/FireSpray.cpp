@@ -16,6 +16,8 @@ FireSpray::FireSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, 
     damage = 20;
     sprite = al_load_bitmap("resources/firespray.bmp");
     ticks = 0; //Count time 
+    // music03 = al_load_sample("resources/fire_spray.wav");
+    // if (music03) al_play_sample(music03, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
 FireSpray::~FireSpray() {

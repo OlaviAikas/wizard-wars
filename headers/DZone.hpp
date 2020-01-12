@@ -2,6 +2,8 @@
 #include "MapObject.hpp"
 #include "Spells.hpp"
 #include "Zone.hpp"
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 class DamageZ: public Zone {
     public:
@@ -17,4 +19,5 @@ class DamageZ: public Zone {
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
+    ALLEGRO_SAMPLE* music01;
 };

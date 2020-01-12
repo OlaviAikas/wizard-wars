@@ -3,11 +3,14 @@
 #include "Spells.hpp"
 #include "Shield.hpp"
 #include "Spells.hpp"
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <list>
 
 class MainShield: public Shield {
     public:
         MainShield(int start_x, int start_y, float dir_x, float dir_y, bool subshield);
+        ~MainShield();
 
         int get_damage();
 
@@ -19,4 +22,5 @@ class MainShield: public Shield {
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
+    ALLEGRO_SAMPLE* music11;
 };

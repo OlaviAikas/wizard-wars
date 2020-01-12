@@ -10,17 +10,28 @@ FireP::FireP(int start_x, int start_y, float dir_x, float dir_y)
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 20, 20, false, 20) {
     damage = 20;
     sprite = al_load_bitmap("resources/fireProjectile.bmp");
-    element = "1";
-}
 
-FireP::FireP(int start_x, int start_y, float dir_x, float dir_y, int ID) 
+    music02 = al_load_sample("resources/fire_pellet.wav");
+    al_play_sample(music02, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+    element = "1";
+            }
+
+FireP::FireP(int start_x, int start_y, float dir_x, float dir_y, int ID, bool transmitted[5]) 
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 20, 20, false, 20) {
     damage = 20;
     sprite = al_load_bitmap("resources/fireProjectile.bmp");
     element = "1";
     id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
+    music02 = al_load_sample("resources/fire_pellet.wav");
+    al_play_sample(music02, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
-
+FireP::~FireP() {
+    al_destroy_bitmap(sprite);
+    al_destroy_sample(music02);
+}
 int FireP::get_damage() {
     return damage;
 }

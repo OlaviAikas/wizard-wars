@@ -15,7 +15,9 @@ HealB::HealB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mo
     //ticks = 0;
 
 }
-HealB::~HealB() { };
+HealB::~HealB() { 
+    al_destroy_bitmap(sprite);
+}
 
 int HealB::get_damage() {
     return damage;
@@ -45,7 +47,7 @@ void HealB::draw(int camera_x, int camera_y) {
     //     this->garbage_collect = true;
     // };
 
-    al_draw_line(origin_x - camera_x, origin_y - camera_y, x - camera_x, y - camera_y, al_map_rgb(0, 255, 0), 4);
+    al_draw_line(origin_x - camera_x, origin_y - camera_y, x - camera_x, y - camera_y, al_map_rgb(0, 255, 0), 8);
     // ALLEGRO_SAMPLE* music06 = al_load_sample("resources/music06.wav");
     // al_play_sample(music06, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
     // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");

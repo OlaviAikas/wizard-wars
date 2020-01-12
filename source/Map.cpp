@@ -11,14 +11,11 @@
 #include "../headers/Interface.hpp"
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
-
-Map::Map() {
-    // this->map = al_load_bitmap(name);
-    this->spawns[0] = 1;
-    this->spawns[1] = 0;
-    this->spawns[2] = 0;
-    this->spawns[3] = 2;
-}
+#include "../headers/DZone.hpp"
+#include "../headers/FogZone.hpp"
+#include "../headers/HealFireZone.hpp"
+#include "../headers/HealZone.hpp"
+#include "../headers/FreezeZone.hpp"
 
 Map::Map(const char* name) {
     this->map = al_load_bitmap(name);
@@ -59,11 +56,15 @@ void Map::set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3,int x4, 
 
 void Map::modif_lives(int team , bool change){
     if (team == 1){
-        spawnred == change;
+        spawnred = change;
     }
     if (team == 2){
-        spawnblue == change;
+        spawnblue = change;
     }
+}
+
+int Map::get_winner(){
+    return this->winner;
 }
 
 void Map::check_dead(){
@@ -73,10 +74,11 @@ void Map::check_dead(){
         k +=1;
     }
     if (spawns[0] == spawns[1] && spawns[0] == spawns[2] && spawns[0] == spawns[3]){//Here we check if one teams controls all the points
+        std::cout<<spawns[1]<<std::endl;
         if (spawns[0] == 1){
             spawnblue = false; //red team controls all the points
         }
-        if (spawns[0] == 2){
+        else if (spawns[0] == 2){
             spawnred = false; //blue team controls all the points
         }
     }
@@ -96,7 +98,7 @@ void Map::check_dead(){
                     (*i)->change_spawnable(true);
                 }
             }
-            else{
+            else if((*i)->get_team()==2){
                 spawn = spawnpoint2;
                 if (not spawnblue){
                     (*i)->change_spawnable(false); //Tells the player class that it cant spawn anymore
@@ -124,6 +126,7 @@ bool Map::game_ended(){
             }
         }
         if (k == 1){
+            this-> winner = 2;
             return true; //This means that all the players are dead 
         }
     }
@@ -138,7 +141,8 @@ bool Map::game_ended(){
             }
         }
         if (g == 1){//this value will depend on the amount of players
-            return true; //This means that all the players are dead 
+            this-> winner = 1;
+            return true; //This means that all the players are dead and the red team wins
         }
     }
     return false;
@@ -202,15 +206,19 @@ std::list<Player*>::iterator Map::fetch_pit(short n) {
     return it;
 }
 
-void Map::decode_players(std::string mes_get, short client_number){
+int Map::decode_players(std::string mes_get, short client_number){
+    int a=0;
     std::vector<std::string> mes1;
     boost::split(mes1, mes_get, boost::is_any_of(":"));
-    for(int j=1; j<mes1.size(); j++){
+    for(unsigned int j=1; j<mes1.size(); j++){
         for(int a=0; a==10; a++){
             mes1[j].erase(0, 1);
         }
         std::vector<std::string> mes2;
         boost::split(mes2, mes1[j], boost::is_any_of("."));
+        if(mes1.size()==2){
+            a=stoi(mes2[2]);
+        }
         for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
             if ((*i)->get_number()!=client_number&&(*i)->get_number()==std::stoi(mes2[2])){
                 (*i)->change_x(std::stoi(mes2[3]));
@@ -226,6 +234,7 @@ void Map::decode_players(std::string mes_get, short client_number){
             }
         }
     }
+    return a;
 }
 
 void Map::decode_spells(std::string mes_get){
@@ -236,7 +245,7 @@ void Map::decode_spells(std::string mes_get){
         mes1.resize(2);
         mes1[1]=mes1[0];
     }
-    for(int j=1; j<mes1.size(); j++){
+    for(unsigned int j=1; j<mes1.size(); j++){
         bool found=false;
         std::vector<std::string> mes2;
         boost::split(mes2, mes1[j], boost::is_any_of(";"));
@@ -245,9 +254,14 @@ void Map::decode_spells(std::string mes_get){
                 found=true;
                 std::cout<<"Found"<<std::endl;
                 if(std::stoi(mes2[2])==0){
-                    (*i)->set_x(std::stoi(mes2[4]));
-                    (*i)->set_y(std::stoi(mes2[5]));
+                    (*i)->set_x(std::stoi(mes2[8]));
+                    (*i)->set_y(std::stoi(mes2[9]));
                     std::cout<<"Found projectile"<<std::endl;
+                }
+                if(std::stoi(mes2[2])==1){
+                    (*i)->set_x(std::stoi(mes2[8]));
+                    (*i)->set_y(std::stoi(mes2[9]));
+                    std::cout<<"Found zone"<<std::endl;
                 }
             }
         }
@@ -255,17 +269,37 @@ void Map::decode_spells(std::string mes_get){
             std::cout<<"Not found"<<std::endl;
             if(std::stoi(mes2[2])==0){
                 std::cout<<"Creating projectile"<<std::endl;
-                if(std::stoi(mes2[3])==0){
-                    spells.push_back(new Rock(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
+                bool a[5]={false, stoi(mes2[3])==1, stoi(mes2[4])==1, stoi(mes2[5])==1, stoi(mes2[6])==1};
+                if(std::stoi(mes2[7])==0){
+                    spells.push_back(new Rock(stoi(mes2[8]), stoi(mes2[9]), stof(mes2[10]),stof(mes2[11]), stoi(mes2[1]), a));
                 }
-                if(std::stoi(mes2[3])==1){
-                    spells.push_back(new FireP(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
+                if(std::stoi(mes2[7])==1){
+                    spells.push_back(new FireP(stoi(mes2[8]), stoi(mes2[9]), stof(mes2[10]),stof(mes2[11]), stoi(mes2[1]), a));
                 }
-                if(std::stoi(mes2[3])==2){
-                    spells.push_back(new Ice(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
+                if(std::stoi(mes2[7])==2){
+                    spells.push_back(new Ice(stoi(mes2[8]), stoi(mes2[9]), stof(mes2[10]),stof(mes2[11]), stoi(mes2[1]), a));
                 }
-                if(std::stoi(mes2[3])==3){
-                    spells.push_back(new HealP(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
+                if(std::stoi(mes2[7])==3){
+                    spells.push_back(new HealP(stoi(mes2[8]), stoi(mes2[9]), stof(mes2[10]),stof(mes2[11]), stoi(mes2[1]), a));
+                }
+            }
+            if(std::stoi(mes2[2])==1){
+                std::cout<<"Creating Zone"<<std::endl;
+                bool a[5]={false, stoi(mes2[3])==1, stoi(mes2[4])==1, stoi(mes2[5])==1, stoi(mes2[6])==1};
+                if(std::stoi(mes2[7])==0){
+                    spells.push_back(new DamageZ(stoi(mes2[8]),stoi(mes2[9]), stoi(mes2[1]), a));
+                }
+                if(std::stoi(mes2[7])==1){
+                    spells.push_back(new FogZ(stoi(mes2[8]),stoi(mes2[9]), stoi(mes2[1]), a));
+                }
+                if(std::stoi(mes2[7])==2){
+                    spells.push_back(new FreezeZ(stoi(mes2[8]),stoi(mes2[9]), stoi(mes2[1]), a));
+                }
+                if(std::stoi(mes2[7])==3){
+                    spells.push_back(new HealZ(stoi(mes2[8]),stoi(mes2[9]), stoi(mes2[1]), a));
+                }
+                if(std::stoi(mes2[7])==4){
+                    spells.push_back(new HealFireZ(stoi(mes2[8]),stoi(mes2[9]), stoi(mes2[1]), a));
                 }
             }
         }

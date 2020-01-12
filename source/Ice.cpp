@@ -10,18 +10,28 @@ Ice::Ice(int start_x, int start_y, float dir_x, float dir_y)
     damage = 5;
     sprite = al_load_bitmap("resources/iceProjectiles.bmp");
     element = "2";
+    music10 = al_load_sample("resources/ice.wav");
+    al_play_sample(music10, 5.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
-Ice::Ice(int start_x, int start_y, float dir_x, float dir_y, int ID) 
+
+
+Ice::Ice(int start_x, int start_y, float dir_x, float dir_y, int ID, bool transmitted[5]) 
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 12, 12, false, 40) {
     damage = 5;
     sprite = al_load_bitmap("resources/iceProjectiles.bmp");
     element = "2";
     id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
+    music10 = al_load_sample("resources/ice.wav");
+    al_play_sample(music10, 5.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
 Ice::~Ice() {
     al_destroy_bitmap(sprite);
+    al_destroy_sample(music10);
 }
 
 int Ice::get_damage() {

@@ -37,6 +37,8 @@ game
 
 # Visual Studio Code
 # .vscode -> see https://github.com/OlaviAikas/wizard-wars/wiki/Compiling-with-VS-Code
+# This mext one is frankly useless
+/.vscode/settings.json
 
 # Mac .DS_Store
 .DS_Store 

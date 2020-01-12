@@ -31,7 +31,7 @@ short Controlpoint::get_number() {
     return this->number;
 }
 
-bool Controlpoint::get_owner() {
+int Controlpoint::get_owner() {
     return this->owner;
 }
 

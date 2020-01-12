@@ -2,11 +2,14 @@
 #include "MapObject.hpp"
 #include "Spells.hpp"
 #include "Projectile.hpp"
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
+
 class FireP: public Projectile {
     public:
         FireP(int start_x, int start_y, float dir_x, float dir_y);
-        FireP(int start_x, int start_y, float dir_x, float dir_y, int IP);
-
+        FireP(int start_x, int start_y, float dir_x, float dir_y, int IP, bool transmitted[5]);
+        ~FireP();
         int get_damage();
 
         virtual void on_collision(MapObject &other);
@@ -16,4 +19,5 @@ class FireP: public Projectile {
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
+    ALLEGRO_SAMPLE* music02;
 };

@@ -183,8 +183,8 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
     //define a pointer to the player
     std::list<Player*>::iterator pit = map->fetch_pit(client_number);
-    int e1 = 0;
-    int e2 = 0;
+    int e1 = 11; // default spell is rock
+    int e2 = 11; // default spell is rock
     ElementPicker* e1p = new ElementPicker(screenWidth * 0.9, screenHeight*0.76, screenWidth * 0.06, screenWidth * 0.06, &e1);
     ElementPicker* e2p = new ElementPicker(screenWidth * 0.85, screenHeight*0.85, screenWidth * 0.06, screenWidth * 0.06, &e2);
     unsigned int cooldowns[122];

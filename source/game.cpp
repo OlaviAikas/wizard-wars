@@ -743,7 +743,8 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     std::cout<<"..."<<std::endl;
     int counter0=al_get_time();
     int counter=0;
-    while(counter<counter0+1){
+    while(counter<counter0+2){
+        counter++;
     }
     game_status->game_state=2;
 }
@@ -770,6 +771,11 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
         while(!interface->ready && counter<counter0+3){
             counter=al_get_time();
         }
+    }
+    int counter0=al_get_time();
+    int counter=0;
+    while(counter<counter0+1){
+        counter++;
     }
     client_number=interface->get_client();
     game_status->game_state=2;

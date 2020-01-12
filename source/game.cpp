@@ -368,15 +368,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                                 cooldowns[3] = 45;
                             }
                             break;
-                        // case 25: // 5*5 J+J Water+Water = WaterSpray
-                        //     map -> spells.push_back(new WaterSpray(pit, &dxp, &dyp, &left_mouse_down, map));
-                        //     break;
-                            // ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav");
-    // // must_init(music, "music");
-    // al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);FreezeZ::~FreezeZ(){
-    al_destroy_sample(music05);
-    element="2";
-}
+
                         case 5: // 5*1 J+U Water+Life
                             if(cooldowns[5] == 0) {
                                 if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
@@ -392,10 +384,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             if (cooldowns[15] == 0) {
                                 if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
                                 map -> spells.push_back(new FogZ((*pit)->get_x() - (*pit)->get_width()/2+4*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+4*dy*(*pit)->get_height()));
-                                }FreezeZ::~FreezeZ(){
-    al_destroy_sample(music05);
-    element="2";
-}
+                                }
                                 else {
                                 map -> spells.push_back(new FogZ(event.mouse.x / sx + camera.get_x() - 3*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 3*(*pit)->get_height()));
                                 }

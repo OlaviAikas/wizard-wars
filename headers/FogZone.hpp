@@ -6,7 +6,7 @@
 class FogZ: public Zone {
     public:
         FogZ(int start_x, int start_y);
-
+        ~FogZ();
         int get_damage();
 
         virtual void on_collision(MapObject &other);

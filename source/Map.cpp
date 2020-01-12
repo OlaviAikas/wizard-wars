@@ -66,6 +66,10 @@ void Map::modif_lives(int team , bool change){
     }
 }
 
+int Map::get_winner(){
+    return this->winner;
+}
+
 void Map::check_dead(){
     int k = 0;
     for (std::list<Controlpoint*>::iterator i = cp.begin(); i != cp.end(); i++){
@@ -124,6 +128,7 @@ bool Map::game_ended(){
             }
         }
         if (k == 1){
+            this-> winner = 2;
             return true; //This means that all the players are dead 
         }
     }
@@ -138,7 +143,8 @@ bool Map::game_ended(){
             }
         }
         if (g == 1){//this value will depend on the amount of players
-            return true; //This means that all the players are dead 
+            this-> winner = 1;
+            return true; //This means that all the players are dead and the red team wins
         }
     }
     return false;

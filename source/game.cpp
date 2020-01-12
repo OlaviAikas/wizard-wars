@@ -65,7 +65,10 @@ void game_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, AL
 void settings_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
 
-void game_end_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+void red_game_end_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
+
+void blue_game_end_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
 void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
@@ -143,7 +146,133 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
     delete end_game;
 }
 
+void red_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+    ALLEGRO_BITMAP *endgame_background = al_load_bitmap("resources/background.bmp");
+    void (*changeptr)(short &, short new_state);
+    changeptr = change_state;
+    Button<short &, short>* main_menu = new Button<short &, short>(840, 500, "resources/start.bmp", changeptr);
 
+    while(game_status->game_state == 6) {
+    al_wait_for_event(queue, &event);
+    switch(event.type)
+        {
+            case ALLEGRO_EVENT_TIMER:
+                if (key[ALLEGRO_KEY_ESCAPE]) {
+                    game_status->game_state = 0;
+                }
+                if (key[ALLEGRO_KEY_ENTER]) {
+                    game_status->game_state = 1;
+                }
+
+                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
+                    key[i] &= KEY_SEEN;
+                redraw = true;
+                break;
+            
+            case ALLEGRO_EVENT_KEY_DOWN:
+                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                key[event.keyboard.keycode] &= KEY_RELEASED;
+                break;
+            
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                main_menu->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 1);
+                break;
+
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                game_status->game_state = 0;
+                break;
+
+            default:
+                break;
+
+        }
+            if(redraw && al_is_event_queue_empty(queue))
+        {
+            al_set_target_bitmap(buffer);
+
+            al_clear_to_color(al_map_rgb(255, 0, 0));
+
+            //al_draw_scaled_bitmap(endgame_background, 0, 0, al_get_bitmap_width(endgame_background), al_get_bitmap_height(endgame_background), 0, 0, 1920, 1080, 0);
+            main_menu->draw();
+            al_set_target_backbuffer(disp);
+            al_clear_to_color(al_map_rgb(0,0,0));
+            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            al_flip_display();
+
+            redraw = false;
+        }
+    }
+    //delete what you loaded
+    delete main_menu;
+}
+
+void blue_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+    ALLEGRO_BITMAP *endgame_background = al_load_bitmap("resources/background.bmp");
+    void (*changeptr)(short &, short new_state);
+    changeptr = change_state;
+    Button<short &, short>* main_menu = new Button<short &, short>(840, 500, "resources/start.bmp", changeptr);
+
+    while(game_status->game_state == 7) {
+    al_wait_for_event(queue, &event);
+    switch(event.type)
+        {
+            case ALLEGRO_EVENT_TIMER:
+                if (key[ALLEGRO_KEY_ESCAPE]) {
+                    game_status->game_state = 0;
+                }
+                if (key[ALLEGRO_KEY_ENTER]) {
+                    game_status->game_state = 1;
+                }
+
+                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
+                    key[i] &= KEY_SEEN;
+                redraw = true;
+                break;
+            
+            case ALLEGRO_EVENT_KEY_DOWN:
+                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                key[event.keyboard.keycode] &= KEY_RELEASED;
+                break;
+            
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                main_menu->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 1);
+                break;
+
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                game_status->game_state = 0;
+                break;
+
+            default:
+                break;
+
+        }
+            if(redraw && al_is_event_queue_empty(queue))
+        {
+            al_set_target_bitmap(buffer);
+
+            al_clear_to_color(al_map_rgb(0, 0, 255));
+
+            //al_draw_scaled_bitmap(endgame_background, 0, 0, al_get_bitmap_width(endgame_background), al_get_bitmap_height(endgame_background), 0, 0, 1920, 1080, 0);
+            main_menu->draw();
+            al_set_target_backbuffer(disp);
+            al_clear_to_color(al_map_rgb(0,0,0));
+            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            al_flip_display();
+
+            redraw = false;
+        }
+    }
+    //delete what you loaded
+    delete main_menu;
+}
 
 void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
@@ -204,7 +333,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     
     while (game_status->game_state==2) {
         if (map->game_ended()){
-            game_status->game_state=0;
+            if (map->get_winner() == 1){
+                game_status->game_state=6;
+            }
+            else{
+                game_status->game_state=7;
+            }
         }
         al_wait_for_event(queue, &event);
 
@@ -795,7 +929,11 @@ int main(int argc, char **argv)
             client_loop(&game_status, interface, isServer, client_number);
         }
         if (game_status.game_state == 6) {
-            game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
+            red_game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
+                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+        }
+        if (game_status.game_state == 7) {
+            blue_game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
     }
@@ -815,19 +953,3 @@ int direction(int click_x, int click_y, int loc_x, int loc_y){
     return (click_y - loc_y)/(click_x - loc_x);
 }
 
-void game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
-                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
-        if(redraw && al_is_event_queue_empty(queue))
-        {
-            al_set_target_bitmap(buffer);
-
-            al_clear_to_color(al_map_rgb(0, 0, 255));
-            al_set_target_backbuffer(disp);
-            al_clear_to_color(al_map_rgb(0,0,0));
-            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
-            al_flip_display();
-
-            redraw = false;
-        }
-}

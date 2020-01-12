@@ -739,9 +739,12 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     boost::asio::io_service io_service;
     interface = new Server(io_service, 13, &*game_status, number_player);
     while(!interface->ready){
-        std::cout<<"Not yet"<<std::endl;
     }
     std::cout<<"..."<<std::endl;
+    int counter0=al_get_time();
+    int counter=0;
+    while(counter<counter0+1){
+    }
     game_status->game_state=2;
 }
 
@@ -764,7 +767,7 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     while(!interface->ready){
         interface->send_string("aaaaastillthere");
         std::cout<<"Sent !"<<std::endl;
-        while(!interface->ready && counter<counter0+2){
+        while(!interface->ready && counter<counter0+3){
             counter=al_get_time();
         }
     }

@@ -77,15 +77,21 @@ void Client::listen(){
 
 void Client::onResponse(std::string message){
     std::cout << "The servers response is: " << message << std::endl;
-    if (!ready && message.find("go2") != std::string::npos){
+    if (!connected && message.find("ready2") != std::string::npos){
+        client_number=2;
+    }
+    if (!connected && message.find("ready3") != std::string::npos){
+        client_number=3;
+    }
+    if (!connected && message.find("go2") != std::string::npos){
         ready=true;
         client_number=2;
     }
-    if (!ready && message.find("go3") != std::string::npos){
+    if (!connected && message.find("go3") != std::string::npos){
         ready=true;
         client_number=3;
     }
-    if (!ready && message.find("go4") != std::string::npos){
+    if (!connected && message.find("go4") != std::string::npos){
         ready=true;
         client_number=4;
     }
@@ -100,6 +106,9 @@ void Client::onResponse(std::string message){
     if (message.find("weare4") != std::string::npos){
         connected=true;
         player_number=4;
+    }
+    if (!ready && message.find("go")){
+        ready=true;
     }
     std::vector<std::string> mes;
     for(int a=0; a==10; a++){

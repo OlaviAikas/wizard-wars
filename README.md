@@ -51,9 +51,14 @@ link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqP
 ## How to compile the game:
 The game uses the libraries Allegro5 and Boost. To install on ubuntu (CSE201 VM), follow these instructions:
 # Ubuntu
-* Install allegro5:
+* Install Allegro5:
 ```Bash
-sudo apt install liballegro5-dev
+$ sudo apt install liballegro5-dev
+```
+* To install Boost we use aptitude:
+```Bash
+$ sudo apt install aptitude
+$ sudo aptitude install libboost-all-dev
 ```
   - From homebrew for mac users (type ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)) on the terminal)
 * Install boost for the server: 

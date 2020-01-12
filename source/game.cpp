@@ -26,6 +26,8 @@
 #include "../headers/Zone.hpp"
 #include "../headers/HealZone.hpp"
 #include "../headers/HealB.hpp"
+#include "../headers/DealingB.hpp"
+#include "../headers/WaterB.hpp"
 #include "../headers/Beam.hpp"
 #include "../headers/DZone.hpp"
 #include "../headers/FogZone.hpp"
@@ -352,6 +354,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam
                             map -> spells.push_back(new HealB(pit, &dxp, &dyp, &left_mouse_down, map));
+                            break;
+                        case 21: // 3*7 Ice + Fire = Dealing Beam
+                            map -> spells.push_back(new DealingB(pit, &dxp, &dyp, &left_mouse_down, map));
+                            break;
+                        case 55: // 5*11 Rock + Water = Water Beam
+                            map -> spells.push_back(new WaterB(pit, &dxp, &dyp, &left_mouse_down, map));
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
                             map -> spells.push_back(new MainShield((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy,false));

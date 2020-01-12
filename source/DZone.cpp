@@ -11,6 +11,8 @@ DamageZ::DamageZ(int start_x, int start_y)
     sprite = al_load_bitmap("resources/waterzone.bmp");
     time = 0;
     element="0";
+    music01 = al_load_sample("resources/dzone.wav");
+    al_play_sample(music01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
 DamageZ::DamageZ(int start_x, int start_y, int ID, bool transmitted[5]) 
@@ -23,11 +25,14 @@ DamageZ::DamageZ(int start_x, int start_y, int ID, bool transmitted[5])
     for(int i=0; i<5; i++){        
         this->transmitted[i]=transmitted[i];
     }
+    music01 = al_load_sample("resources/dzone.wav");
+    al_play_sample(music01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
 
 DamageZ::~DamageZ() {
     al_destroy_bitmap(sprite);
+    al_destroy_sample(music01);
 }
 
 int DamageZ::get_damage() {

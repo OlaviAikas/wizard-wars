@@ -95,10 +95,10 @@ void Client::onResponse(std::string message){
     boost::split(mes, message, boost::is_any_of("|"));
     for(int j=0; j<mes.size(); j++){
         if (mes[j].find("thisisplayer") != std::string::npos){
-            (this->map)->decode_players(message, client_number);
+            (this->map)->decode_players(mes[j], client_number);
         }
         if (mes[j].find("thisisspell") != std::string::npos){
-            (this->map)->decode_spells(message);
+            (this->map)->decode_spells(mes[j]);
         }
 
     }

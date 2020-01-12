@@ -57,19 +57,19 @@ std::string Server::generateResponse(std::string message){
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
     // std::cout<<message<<std::endl;
-    if((!ready) && message=="ready"){
+    if((!ready) && message.find("ready") != std::string::npos){
         players_connected++;
         std::cout<<"go"<<std::endl;
-        std::string answer = "go"+std::to_string(players_connected);
+        std::string answer = "aaaaaaaaaaago"+std::to_string(players_connected);
         std::cout<<answer<<std::endl;
         ready=true;
         return answer;
     }
     if(message.find("thisisplayer") != std::string::npos){
         (this->map)->decode_players(message, client_number);
-        std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer::::";
+        std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:";
         for(std::list<Player*>::iterator i = (this->map)->players.begin(); i != (this->map)->players.end(); i++){
-            s=s+((*i)->encode_player())+"::::";
+            s=s+((*i)->encode_player())+":";
         }
         s.pop_back();
         return s;

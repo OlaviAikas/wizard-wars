@@ -76,15 +76,15 @@ void Client::listen(){
 
 void Client::onResponse(std::string message){
     std::cout << "The servers response is: " << message << std::endl;
-    if (!ready && message=="go2"){
+    if (!ready && message.find("go2") != std::string::npos){
         ready=true;
         client_number=2;
     }
-    if (!ready && message=="go3"){
+    if (!ready && message.find("go3") != std::string::npos){
         ready=true;
         client_number=3;
     }
-    if (!ready && message=="go4"){
+    if (!ready && message.find("go4") != std::string::npos){
         ready=true;
         client_number=4;
     }

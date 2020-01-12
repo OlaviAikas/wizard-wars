@@ -12,7 +12,7 @@
 
 WaterSpray::WaterSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map) 
             : Spray::Spray(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
-    damage = 1;
+    damage = 3;
     sprite = al_load_bitmap("resources/waveSpray.bmp");
 }
 
@@ -31,6 +31,7 @@ void WaterSpray::draw(int camera_x, int camera_y) {
 void WaterSpray::on_collision(MapObject &other) {
     if (!this->get_garbage_collect() && !other.get_noclip()) {
         other.hit(this->get_damage());
+        other.knockback(300*dir_x,300*dir_y);
         this->noclip = true;
     }
 }

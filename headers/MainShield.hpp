@@ -9,7 +9,7 @@
 
 class MainShield: public Shield {
     public:
-        MainShield(int start_x, int start_y, float dir_x, float dir_y, bool subshield);
+        MainShield(int start_x, int start_y, float dir_x, float dir_y);
         ~MainShield();
 
         int get_damage();

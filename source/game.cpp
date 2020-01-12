@@ -474,11 +474,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                 counter++;
                 counter=counter%10;
                 if (counter==1){
-                    (*interface).send_string("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:"+(*pit)->encode_player());
+                    (*interface).send_string("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:"+(*pit)->encode_player());
                 }
                 if (spell_created){
                     spell_created=false;
                     for(std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++){
+                        std::cout<<"to launch"<<std::endl;
                         if((*i)->just_created){
                             (*interface).send_string((*i)->encode_spell());
                         }

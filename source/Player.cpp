@@ -97,7 +97,9 @@ void Player::die() {
 }
 
 void Player::on_collision(MapObject &other) {
-    std::cout << "collision" << std::endl;
+#ifdef DEBUG_MODE
+    std::cout << "DEBUG: player collision" << std::endl;
+#endif
     if (not other.get_noclip()) {
         dest_x=lastgoodposx;
         dest_y=lastgoodposy;

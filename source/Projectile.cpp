@@ -45,4 +45,5 @@ std::string Projectile::encode_spell(){
     s=s+element+";";
     s=s+std::to_string(x)+";"+std::to_string(y)+";";
     s=s+std::to_string(dir_x)+";"+std::to_string(dir_y);
+    return s;
 }

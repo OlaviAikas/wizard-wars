@@ -2,13 +2,15 @@
 #include <math.h>
 #include <allegro5/allegro_primitives.h>
 #include <iostream>
+#include <random>
 
 
 Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool noclip) : MapObject::MapObject(x, y, width, height, noclip) {
     this->dir_x = dir_x;
     this->dir_y = dir_y;
     this->havechanged = false;
-    this->id=(x+y+int(al_get_time()*1000))%5943;
+    this->id=(x+y+int(rand())*1000)%5943;
+    this->just_created=true;
 }
 Spell::~Spell() { };
 

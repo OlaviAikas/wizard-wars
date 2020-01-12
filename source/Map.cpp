@@ -1,6 +1,10 @@
 #include "../headers/Map.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Spells.hpp"
+#include "../headers/Rock.hpp"
+#include "../headers/FirePellet.hpp"
+#include "../headers/Ice.hpp"
+#include "../headers/HealP.hpp"
 #include <list>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -155,7 +159,7 @@ void Map::check_collisions() {
             }
         }
         for (std::list<MapObject*>::iterator j = statics.begin(); j != statics.end(); j++) {
-            if (*i == *j) {
+            if (**i == **j) {
                 (*i)->on_collision(**j);
                 (*j)->on_collision(**i);
             }
@@ -169,7 +173,7 @@ void Map::check_collisions() {
     }
     for (std::list<Spell*>::iterator i = spells.begin(); i != spells.end(); i++) {
         for (std::list<Spell*>::iterator j = std::next(i,1); j != spells.end(); j++) {
-            if (*i == *j) {
+            if (**i == **j) {
                 (*i)->on_collision(**j);
                 (*j)->on_collision(**i);
             }
@@ -198,23 +202,75 @@ std::list<Player*>::iterator Map::fetch_pit(short n) {
     return it;
 }
 
-void Map::decode_players(std::string mes_get){
-    std::vector<std::string> mes;
-    boost::split(mes, mes_get, boost::is_any_of("."));
-    for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
-        if ((*i)->get_number()==std::stoi(mes[1])){
-            (*i)->change_x(std::stoi(mes[2]));
-            (*i)->change_y(std::stoi(mes[3]));
-            (*i)->change_destx(std::stoi(mes[4]));
-            (*i)->change_desty(std::stoi(mes[5]));
-            (*i)->set_hitpoints(std::stoi(mes[6]));
-            (*i)->set_count(std::stoi(mes[7]));
-            (*i)->set_timer(std::stoi(mes[8]));
-            (*i)->set_frozen(std::stoi(mes[9]));
-            (*i)->set_prevent(mes[10]=="True");
-            (*i)->reset_havechanged();
+void Map::decode_players(std::string mes_get, short client_number){
+    std::vector<std::string> mes1;
+    boost::split(mes1, mes_get, boost::is_any_of(":"));
+    for(int j=1; j<mes1.size(); j++){
+        for(int a=0; a==10; a++){
+            mes1[j].erase(0, 1);
+        }
+        std::vector<std::string> mes2;
+        boost::split(mes2, mes1[j], boost::is_any_of("."));
+        for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
+            if ((*i)->get_number()!=client_number&&(*i)->get_number()==std::stoi(mes2[2])){
+                (*i)->change_x(std::stoi(mes2[3]));
+                (*i)->change_y(std::stoi(mes2[4]));
+                (*i)->change_destx(std::stoi(mes2[5]));
+                (*i)->change_desty(std::stoi(mes2[6]));
+                (*i)->set_hitpoints(std::stoi(mes2[7]));
+                (*i)->set_count(std::stoi(mes2[8]));
+                (*i)->set_timer(std::stoi(mes2[9]));
+                (*i)->set_frozen(std::stoi(mes2[10]));
+                (*i)->set_prevent(mes2[11]=="1");
+                (*i)->reset_havechanged();
+            }
         }
     }
+}
+
+void Map::decode_spells(std::string mes_get){
+    std::vector<std::string> mes1;
+    boost::split(mes1, mes_get, boost::is_any_of(":"));
+    if(mes1.size()==1){
+        std::cout<<"Resized"<<std::endl;
+        mes1.resize(2);
+        mes1[1]=mes1[0];
+    }
+    for(int j=1; j<mes1.size(); j++){
+        bool found=false;
+        std::vector<std::string> mes2;
+        boost::split(mes2, mes1[j], boost::is_any_of(";"));
+        for (std::list<Spell*>::iterator i = spells.begin(); i != spells.end(); i++) {
+            if ((*i)->get_id()==std::stoi(mes2[1])){
+                found=true;
+                std::cout<<"Found"<<std::endl;
+                if(std::stoi(mes2[2])==0){
+                    (*i)->set_x(std::stoi(mes2[4]));
+                    (*i)->set_y(std::stoi(mes2[5]));
+                    std::cout<<"Found projectile"<<std::endl;
+                }
+            }
+        }
+        if(!found){
+            std::cout<<"Not found"<<std::endl;
+            if(std::stoi(mes2[2])==0){
+                std::cout<<"Creating projectile"<<std::endl;
+                if(std::stoi(mes2[3])==0){
+                    spells.push_back(new Rock(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
+                }
+                if(std::stoi(mes2[3])==1){
+                    spells.push_back(new FireP(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
+                }
+                if(std::stoi(mes2[3])==2){
+                    spells.push_back(new Ice(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
+                }
+                if(std::stoi(mes2[3])==3){
+                    spells.push_back(new HealP(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
+                }
+            }
+        }
+    }
+    std::cout<<"Done"<<std::endl;
 }
 
 // std::string Map::encode_player(Player &i){

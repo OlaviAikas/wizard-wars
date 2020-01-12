@@ -5,6 +5,8 @@
 class Ice: public Projectile {
     public:
         Ice(int start_x, int start_y, float dir_x, float dir_y);
+        Ice(int start_x, int start_y, float dir_x, float dir_y, int IP);
+        ~Ice();
 
         int get_damage();
 

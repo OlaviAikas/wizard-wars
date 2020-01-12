@@ -158,7 +158,7 @@ void Map::check_collisions() {
             }
         }
         for (std::list<MapObject*>::iterator j = statics.begin(); j != statics.end(); j++) {
-            if (*i == *j) {
+            if (**i == **j) {
                 (*i)->on_collision(**j);
                 (*j)->on_collision(**i);
             }
@@ -172,7 +172,7 @@ void Map::check_collisions() {
     }
     for (std::list<Spell*>::iterator i = spells.begin(); i != spells.end(); i++) {
         for (std::list<Spell*>::iterator j = std::next(i,1); j != spells.end(); j++) {
-            if (*i == *j) {
+            if (**i == **j) {
                 (*i)->on_collision(**j);
                 (*j)->on_collision(**i);
             }

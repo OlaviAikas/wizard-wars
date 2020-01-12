@@ -23,5 +23,4 @@ class Beam: public Spell {
         float* dyp;
         bool* mouse_down;
         Map* map;
-        //bool hitted;
 };

@@ -361,6 +361,7 @@ void Map::decode_spells(std::string mes_get){
                     spells.push_back(new MainShield(stoi(mes2[8]),stoi(mes2[9]), stof(mes2[10]), stof(mes2[11]), stoi(mes2[12])==1, stoi(mes2[1]), a));
                 }
             }
+        }
     //         if(std::stoi(mes2[2])==2){
     //             std::cout<<"Creating Beam"<<std::endl;
     //             bool a[5]={false, stoi(mes2[3])==1, stoi(mes2[4])==1, stoi(mes2[5])==1, stoi(mes2[6])==1};

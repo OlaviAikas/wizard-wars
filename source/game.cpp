@@ -208,6 +208,7 @@ void red_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUE
     }
     //delete what you loaded
     delete main_menu;
+    al_destroy_bitmap(endgame_background);
 }
 
 void blue_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
@@ -272,6 +273,7 @@ void blue_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QU
     }
     //delete what you loaded
     delete main_menu;
+    al_destroy_bitmap(endgame_background);
 }
 
 void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 

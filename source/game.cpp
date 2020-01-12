@@ -545,6 +545,17 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             al_flip_display();
 
             redraw = false;
+            if(isServer){
+                for(std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++){
+                    (*i)->counter++;
+                    if(counter>30){
+                        counter=0;
+                        for(int j=1; j<5; j++){
+                            (*i)->transmitted[j]=false;
+                        }
+                    }
+                }
+            }
         }
 
         if(!isServer){

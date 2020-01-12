@@ -9,6 +9,7 @@ class Spell : public MapObject {
         virtual void draw(int camera_x, int camera_y);
         virtual void move();
         bool transmitted [5]={false, false, false, false, false};
+        int counter;
 
     float get_dir_x();
     float get_dir_y();

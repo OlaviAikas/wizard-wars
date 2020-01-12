@@ -90,12 +90,15 @@ void Client::onResponse(std::string message){
         client_number=4;
     }
     if (message.find("weare2") != std::string::npos){
+        connected=true;
         player_number=2;
     }
     if (message.find("weare3") != std::string::npos){
+        connected=true;
         player_number=3;
     }
     if (message.find("weare4") != std::string::npos){
+        connected=true;
         player_number=4;
     }
     std::vector<std::string> mes;

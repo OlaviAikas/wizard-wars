@@ -22,6 +22,9 @@ bool Spell::get_havechanged(){
     return this->havechanged;
 }
 
+void Spell::set_mouse_down(bool &iamnot){
+}
+
 void Spell::reset_havechanged(){
     this->havechanged=false;
 }

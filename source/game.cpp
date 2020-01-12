@@ -762,7 +762,7 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
         }
     }
     while(!interface->ready){
-        interface->send_string("ready");
+        interface->send_string("aaaaastillthere");
         std::cout<<"Sent !"<<std::endl;
         while(!interface->ready && counter<counter0+2){
             counter=al_get_time();

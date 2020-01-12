@@ -48,9 +48,13 @@ link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqP
 * Uranchimeg
 
 
-## How to play the game:
-* Install allegro5 to run the game:
-  - Link describing how to get it:https://wiki.allegro.cc/index.php?title=Install_Allegro5_From_Git/Linux/Debian#Install_Allegro_5_from_Git_on_Debian
+## How to compile the game:
+The game uses the libraries Allegro5 and Boost. To install on ubuntu (CSE201 VM), follow these instructions:
+# Ubuntu
+* Install allegro5:
+```Bash
+sudo apt install liballegro5-dev
+```
   - From homebrew for mac users (type ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)) on the terminal)
 * Install boost for the server: 
   - Link describing how to get it:https://www.boost.org/doc/libs/1_61_0/more/getting_started/unix-variants.html

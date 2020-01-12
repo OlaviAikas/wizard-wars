@@ -173,6 +173,10 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     int e2 = 0;
     ElementPicker* e1p = new ElementPicker(screenWidth * 0.9, screenHeight*0.76, screenWidth * 0.06, screenWidth * 0.06, &e1);
     ElementPicker* e2p = new ElementPicker(screenWidth * 0.85, screenHeight*0.85, screenWidth * 0.06, screenWidth * 0.06, &e2);
+    unsigned int cooldowns[122];
+    for (int i = 0; i < 122; i++) {
+        cooldowns[i] = 0;
+    }
     bool spell_created;
 
 
@@ -236,6 +240,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     // al_use_transform(camera);
                 }
 
+                for (int i = 0; i < 122; i++) {
+                    if (cooldowns[i] != 0) {
+                        cooldowns[i]--;
+                    }
+                }
                 map->check_collisions();
                 map->move_list(map->players);
                 map->move_list(map->spells);
@@ -293,10 +302,16 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     // std::cout << e1*e2;
                     switch(e1*e2) {
                         case 121: // 11*11 L+L Rock+Rock
-                            map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                            if (cooldowns[121] == 0) {
+                                map -> spells.push_back(new Rock((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                                cooldowns[121] = 15;
+                            }
                             break;
                         case 49: // 7*7 K+K Ice+Ice
-                            map -> spells.push_back(new Ice((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                            if (cooldowns[49] == 0) {
+                                map -> spells.push_back(new Ice((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                                cooldowns[49] = 10;
+                            }
                             break;
                         case 7: // 7*1 K+U Ice+Life
                             map -> spells.push_back(new HealP((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));

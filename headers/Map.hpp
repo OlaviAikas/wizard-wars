@@ -26,7 +26,7 @@ class Map {
         void garbage_collect();
         void modif_lives(int team , bool change);
         void check_dead();
-        void set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3,int x4, int y4);
+        void set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3);
         bool game_ended();
         int get_winner();
 
@@ -82,9 +82,8 @@ class Map {
         int spawnpoint1[2];
         int spawnpoint2[2];
         int spawnpoint3[2];
-        int spawnpoint4[2];
         bool spawnred = true;
         bool spawnblue = true;
-        int spawns[4];
+        int spawns[3];
         int winner = 0;
 };

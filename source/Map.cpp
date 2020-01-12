@@ -50,15 +50,13 @@ void Map::draw_map(int camera_x, int camera_y) {
 }
 
 
-void Map::set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3,int x4, int y4){
+void Map::set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3){
     spawnpoint1[0] = x1;
     spawnpoint1[1] = y1;
     spawnpoint2[0] = x2;
     spawnpoint2[1] = y2;
     spawnpoint3[0] = x3;
     spawnpoint3[1] = y3;
-    spawnpoint4[0] = x4;
-    spawnpoint4[1] = y4;
 }
 
 void Map::modif_lives(int team , bool change){
@@ -80,7 +78,7 @@ void Map::check_dead(){
         this->spawns[k] = (*i)->get_owner();//this iterates over the control points to update what belongs to who
         k +=1;
     }
-    if (spawns[0] == spawns[1] && spawns[0] == spawns[2] && spawns[0] == spawns[3]){//Here we check if one teams controls all the points
+    if (spawns[0] == spawns[1] && spawns[0] == spawns[2]){//Here we check if one teams controls all the points
         if (spawns[0] == 1){
             spawnblue = false; //red team controls all the points
         }
@@ -97,7 +95,7 @@ void Map::check_dead(){
         if (((*i)->get_hit_points()<=0)&&((*i)->get_noclip()==false)){
             int spawn1 = 0;
             int spawn2 = 0;
-            int k = rand()%4;
+            int k = rand()%3;
             int R = rand()%150;
             double theta = rand()%360;
             double ang = cos(theta);
@@ -115,10 +113,6 @@ void Map::check_dead(){
                 else if (k == 2 && spawns[2] == 1){
                     spawn1 = spawnpoint3[0] + R*ang;
                     spawn2 = spawnpoint3[1] + R*ang;
-                }
-                else if (k == 3 && spawns[3] == 1){
-                    spawn1 = spawnpoint4[0] + R*ang;
-                    spawn2 = spawnpoint4[1] + R*ang;
                 }
                 else{
                     spawn1 = spawnpoint1[0] + R*ang;
@@ -145,13 +139,9 @@ void Map::check_dead(){
                     spawn1 = spawnpoint3[0] + R*ang;
                     spawn2 = spawnpoint3[1] + R*ang;
                 }
-                else if (k == 3 && spawns[3] == 2){
-                    spawn1 = spawnpoint4[0] + R*ang;
-                    spawn2 = spawnpoint4[1] + R*ang;
-                }
                 else{
-                    spawn1 = spawnpoint4[0] + R*ang;
-                    spawn2 = spawnpoint4[1] + R*ang;
+                    spawn1 = spawnpoint3[0] + R*ang;
+                    spawn2 = spawnpoint3[1] + R*ang;
                 }
                 if (not spawnblue){
                     (*i)->change_spawnable(false); //Tells the player class that it cant spawn anymore

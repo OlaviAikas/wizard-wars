@@ -321,9 +321,7 @@ void Map::decode_spells(std::string mes_get){
                     float dx=stof(mes2[10]);
                     float* dxp=&dx; 
                     float dy=stof(mes2[11]);
-                    float* dyp=&dy; 
-                    bool mouse_down=(stoi(mes2[13])==1);
-                    bool* mousedown=&mouse_down; 
+                    float* dyp=&dy;
                     spells.push_back(new DealingB(pit,dxp,dyp,&iam,this,stoi(mes2[1]), a));
                 }
                 if(std::stoi(mes2[7])==1){
@@ -332,8 +330,6 @@ void Map::decode_spells(std::string mes_get){
                     float* dxp=&dx; 
                     float dy=stof(mes2[11]);
                     float* dyp=&dy; 
-                    bool mouse_down=(stoi(mes2[13])==1);
-                    bool* mousedown=&mouse_down;
                     spells.push_back(new HealB(pit,dxp,dyp,&iam,this,stoi(mes2[1]), a));
                 }
                 if(std::stoi(mes2[7])==2){
@@ -341,9 +337,7 @@ void Map::decode_spells(std::string mes_get){
                     float dx=stof(mes2[10]);
                     float* dxp=&dx; 
                     float dy=stof(mes2[11]);
-                    float* dyp=&dy; 
-                    bool mouse_down=(stoi(mes2[13])==1);
-                    bool* mousedown=&mouse_down;
+                    float* dyp=&dy;
                     spells.push_back(new WaterB(pit,dxp,dyp,&iam,this,stoi(mes2[1]), a));
                 }
             }

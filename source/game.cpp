@@ -391,7 +391,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                                 else {
                                 map -> spells.push_back(new FogZ(event.mouse.x / sx + camera.get_x() - 3*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 3*(*pit)->get_height()));
                                 }
-                                cooldowns[15] == 45;
+                                cooldowns[15] = 45;
                             }
 
                             break;
@@ -420,7 +420,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
                             if (cooldowns[4] == 0) {
-                                map -> spells.push_back(new MainShield((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy,false));
+                                if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                                    map -> spells.push_back(new MainShield((*pit)->get_x() + (*pit)->get_width()/2+4*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2+4*dy*(*pit)->get_height(),dx,dy,false));
+                                }
+                                else {
+                                    map -> spells.push_back(new MainShield(event.mouse.x / sx + camera.get_x() + (*pit)->get_width()/2, event.mouse.y / sy + camera.get_y() +(*pit)->get_height()/2,dx,dy,false));
+                                }
                                 cooldowns[4] = 15;
                             }
                             break;
@@ -715,7 +720,7 @@ int main(int argc, char **argv)
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
     
-    ALLEGRO_DISPLAY* disp = al_create_display(1920, 1080); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(1280, 720); //Change this resolution to change window size
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 

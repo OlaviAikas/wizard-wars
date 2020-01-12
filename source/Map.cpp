@@ -64,10 +64,10 @@ void Map::set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3,int x4, 
 
 void Map::modif_lives(int team , bool change){
     if (team == 1){
-        spawnred == change;
+        spawnred = change;
     }
     if (team == 2){
-        spawnblue == change;
+        spawnblue = change;
     }
 }
 

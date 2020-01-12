@@ -463,7 +463,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                 counter++;
                 counter=counter%10;
                 if (counter==1){
-                    (*interface).send_string("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:"+(*pit)->encode_player());
+                    (*interface).send_string("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer::::"+(*pit)->encode_player());
                 }
                 if (spell_created){
                     spell_created=false;

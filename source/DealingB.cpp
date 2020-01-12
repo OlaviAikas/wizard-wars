@@ -11,6 +11,7 @@ DealingB::DealingB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bo
             : Beam::Beam(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
     damage = 2;
     //sprite = al_load_bitmap("resources/HealB_Collision.bmp");
+    element="0";
 
 }
 

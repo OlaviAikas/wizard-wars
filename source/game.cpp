@@ -13,6 +13,9 @@
 #include <algorithm>
 #include <list>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include "../headers/Map.hpp"
 #include "../headers/Camera.hpp"
 #include "../headers/MapObject.hpp"
@@ -54,6 +57,9 @@
 
 void must_init(bool, const char);
 void change_state(short &, short new_state);
+void Settings_write(int res_1, int res_2);
+int* Settings_read();
+void change_resolution(short &, short new_state);
 void main_menu_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
@@ -541,6 +547,51 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     }*/
 }
 
+
+void change_resolution(int res_1, int res_2) {
+    Settings_write(res_1, res_2);
+}
+
+void Settings_write(int res_1, int res_2){
+    using namespace std;
+    ofstream outf("Settings.txt");
+    if (!outf){
+        cerr << "Unable to open Settings.txt" <<endl;
+        exit(1);
+    }
+    outf << res_1 << endl;
+    outf << res_2 << endl;
+    // outf << "Resolution" << endl;
+    // outf << "Buffer" << endl;
+    // outf << "VSYNC" << endl;
+}
+
+int* Settings_read() {
+	using namespace std;
+	ifstream myfile("Settings.txt"); 
+	if (myfile.is_open()) 
+	{
+        std::string line;
+        std::vector<std::string> vt;
+        vt.reserve(2);
+		while (getline(myfile, line)) {
+            vt.push_back(std::move(line));
+		
+	    }
+        myfile.close(); 
+        std::cout << vt[0] <<std::endl;
+        std::cout << vt[1] <<std::endl;
+    } else { 
+        cerr << "Unable to open Settings.txt" <<endl;
+        exit(1);
+    } 
+	// for(l_2=0;l_2<=l;l_2++){ 
+	// 	cout<<array[l_2]<<endl;    
+    // }
+    return 0;
+    
+    }
+
 void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
@@ -550,10 +601,12 @@ void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
     changeptr = change_state;
     Button<short &, short>* return_main_menu= new Button<short &, short>(130, 140, "resources/main_menu.bmp", changeptr);
     Button<short &, short>* quit= new Button<short &, short>(1550, 950, "resources/exit.bmp", changeptr);
-    Button<short &, short>* resolution_1= new Button<short &, short>(530, 410, "resources/res_1.bmp", changeptr);
-    Button<short &, short>* resolution_2= new Button<short &, short>(830, 410, "resources/res_2.bmp", changeptr);
-    Button<short &, short>* resolution_3= new Button<short &, short>(1130, 410, "resources/res_3.bmp", changeptr);
-    Button<short &, short>* resolution_4= new Button<short &, short>(1430, 410, "resources/res_4.bmp", changeptr);
+    void (*res_ptr)(int, int);
+    res_ptr = change_resolution;
+    Button<int, int>* resolution_1= new Button<int, int>(530, 410, "resources/res_1.bmp", res_ptr);
+    Button<int, int>* resolution_2= new Button<int, int>(830, 410, "resources/res_2.bmp", res_ptr);
+    Button<int, int>* resolution_3= new Button<int, int>(1130, 410, "resources/res_3.bmp", res_ptr);
+    Button<int, int>* resolution_4= new Button<int, int>(1430, 410, "resources/res_4.bmp", res_ptr);
     while(game_status->game_state == 3) {
         al_wait_for_event(queue, &event);
         switch(event.type)
@@ -571,10 +624,10 @@ void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 return_main_menu->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 1);
                 quit->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
-                resolution_1->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
-                resolution_2->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 4);
-                resolution_3->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 2);
-                resolution_4->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 5);
+                resolution_1->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 1024, 576);
+                resolution_2->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 1280, 720);
+                resolution_3->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 2560, 1440);
+                resolution_4->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 1664, 936);
                 break;
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
@@ -605,6 +658,8 @@ void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
 
             al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,400,0,"Resolution");
             al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,500,0,"IP Box");
+            al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,600,0,"Buffer");
+            al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,700,0,"VSYNC");
 
             al_set_target_backbuffer(disp);
             al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
@@ -652,8 +707,10 @@ int main(int argc, char **argv)
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+
+    int* values = Settings_read();
     
-    ALLEGRO_DISPLAY* disp = al_create_display(1920, 1080); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(values[0], values[1]); //Change this resolution to change window size
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 

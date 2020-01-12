@@ -11,4 +11,5 @@ class Shield: public Spell {
     protected:
         bool hit_animation;
         bool subshield;
+        int time1;
 };

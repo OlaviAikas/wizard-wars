@@ -17,14 +17,6 @@
 #include "../headers/HealZone.hpp"
 #include "../headers/FreezeZone.hpp"
 
-Map::Map() {
-    // this->map = al_load_bitmap(name);
-    this->spawns[0] = 1;
-    this->spawns[1] = 0;
-    this->spawns[2] = 0;
-    this->spawns[3] = 2;
-}
-
 Map::Map(const char* name) {
     this->map = al_load_bitmap(name);
     this->spawns[0] = 1;
@@ -64,11 +56,15 @@ void Map::set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3,int x4, 
 
 void Map::modif_lives(int team , bool change){
     if (team == 1){
-        spawnred == change;
+        spawnred = change;
     }
     if (team == 2){
-        spawnblue == change;
+        spawnblue = change;
     }
+}
+
+int Map::get_winner(){
+    return this->winner;
 }
 
 void Map::check_dead(){
@@ -78,10 +74,11 @@ void Map::check_dead(){
         k +=1;
     }
     if (spawns[0] == spawns[1] && spawns[0] == spawns[2] && spawns[0] == spawns[3]){//Here we check if one teams controls all the points
+        std::cout<<spawns[1]<<std::endl;
         if (spawns[0] == 1){
             spawnblue = false; //red team controls all the points
         }
-        if (spawns[0] == 2){
+        else if (spawns[0] == 2){
             spawnred = false; //blue team controls all the points
         }
     }
@@ -101,7 +98,7 @@ void Map::check_dead(){
                     (*i)->change_spawnable(true);
                 }
             }
-            else{
+            else if((*i)->get_team()==2){
                 spawn = spawnpoint2;
                 if (not spawnblue){
                     (*i)->change_spawnable(false); //Tells the player class that it cant spawn anymore
@@ -129,6 +126,7 @@ bool Map::game_ended(){
             }
         }
         if (k == 1){
+            this-> winner = 2;
             return true; //This means that all the players are dead 
         }
     }
@@ -143,7 +141,8 @@ bool Map::game_ended(){
             }
         }
         if (g == 1){//this value will depend on the amount of players
-            return true; //This means that all the players are dead 
+            this-> winner = 1;
+            return true; //This means that all the players are dead and the red team wins
         }
     }
     return false;

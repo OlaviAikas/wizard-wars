@@ -772,8 +772,8 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
             counter=al_get_time();
         }
     }
-    int counter0=al_get_time();
-    int counter=0;
+    counter0=al_get_time();
+    counter=0;
     while(counter<counter0+1){
         counter++;
     }

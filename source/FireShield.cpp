@@ -1,4 +1,4 @@
-#include "../headers/MainShield.hpp"
+#include "../headers/FireShield.hpp"
 #include <iostream>
 #include <math.h>
 #include <allegro5/allegro_audio.h>
@@ -6,21 +6,21 @@
 #include <allegro5/allegro_primitives.h>
 #include <list>
 
-MainShield::MainShield(int start_x, int start_y, float dir_x, float dir_y,bool subshield) 
+FireShield::FireShield(int start_x, int start_y, float dir_x, float dir_y,bool subshield) 
             : Shield::Shield(start_x, start_y, dir_x, dir_y, 16, 16, false) {
-    damage = -1;
-    sprite = al_load_bitmap("resources/shield0.bmp");
+    damage = 0;
+    sprite = al_load_bitmap("resources/shield3.bmp");
     int time1 = 0;
     music11 = al_load_sample("resources/main_shield.wav");
     if (music11) al_play_sample(music11, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id);
 }
 
-MainShield::~MainShield(){
+FireShield::~FireShield(){
     al_destroy_sample(music11);
     al_destroy_bitmap(sprite);
 }
 
-int MainShield::get_damage() {
+int FireShield::get_damage() {
     return damage;
 }
 
@@ -29,7 +29,7 @@ int MainShield::get_damage() {
 
 
 
-void MainShield::draw(int camera_x, int camera_y) {
+void FireShield::draw(int camera_x, int camera_y) {
    // al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 255, 100));
     //time1=time1+1;
     //if (time1>30) {
@@ -49,7 +49,7 @@ void MainShield::draw(int camera_x, int camera_y) {
 }
 }
 
-void MainShield::on_collision(MapObject &other) {
+void FireShield::on_collision(MapObject &other) {
     if (!this->get_garbage_collect() && !other.get_noclip()) {
         this->hit_animation = true;
         this->noclip = true;
@@ -57,7 +57,7 @@ void MainShield::on_collision(MapObject &other) {
     }
 }
 
-std::list<std::list<int>> MainShield::generate_subshield_coordinates() {
+std::list<std::list<int>> FireShield::generate_subshield_coordinates() {
     float angle = atan2(dir_y,dir_x);
     //let x, y be the point representing the position of the rotated sprite which was set exactly in the middle of the sprite
     std::list<std::list<int>> result = std::list<std::list<int>>();

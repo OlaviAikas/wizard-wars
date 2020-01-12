@@ -44,6 +44,9 @@
 #include "../headers/WaterSpray.hpp"
 #include "../headers/Shield.hpp"
 #include "../headers/MainShield.hpp"
+#include "../headers/WaterShield.hpp"
+#include "../headers/FireShield.hpp"
+#include "../headers/RockShield.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
 #include "../headers/FireSpray.hpp"
@@ -587,6 +590,70 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                                 cooldowns[4] = 40;
                             }
                             break;
+
+                        case 10: // 2*5 I+J Shield + Water = Water shield
+                            if (cooldowns[4] == 0) {
+                                int pmx = (*pit)->get_x() + (*pit)->get_width()/2;
+                                int pmy = (*pit)->get_y() + (*pit)->get_height()/2;
+                                double rx = dy;
+                                double ry = -1*dx;
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width(),pmy + 1.5*dy*(*pit)->get_height(), dx, dy,true));
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width() + 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 5*ry*12, dx, dy,false));
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width() - 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 5*ry*12, dx, dy,false));
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width() + 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 4*ry*12, dx, dy,false));
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width() - 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 4*ry*12, dx, dy,false));
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width() + 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 3*ry*12, dx, dy,false));
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width() - 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 3*ry*12, dx, dy,false));
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width() + 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 2*ry*12, dx, dy,false));
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width() - 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 2*ry*12, dx, dy,false));
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width() + 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 1*ry*12, dx, dy,true));
+                                map->statics.push_back(new WaterShield(pmx + 1.5*dx*(*pit)->get_width() - 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 1*ry*12, dx, dy,true));
+                                cooldowns[4] = 40;
+                            }
+                            break;
+
+                        case 6: // 2*3 I+O Shield + fire = fire shield
+                            if (cooldowns[4] == 0) {
+                                int pmx = (*pit)->get_x() + (*pit)->get_width()/2;
+                                int pmy = (*pit)->get_y() + (*pit)->get_height()/2;
+                                double rx = dy;
+                                double ry = -1*dx;
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width(),pmy + 1.5*dy*(*pit)->get_height(), dx, dy,true));
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width() + 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 5*ry*12, dx, dy,false));
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width() - 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 5*ry*12, dx, dy,false));
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width() + 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 4*ry*12, dx, dy,false));
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width() - 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 4*ry*12, dx, dy,false));
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width() + 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 3*ry*12, dx, dy,false));
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width() - 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 3*ry*12, dx, dy,false));
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width() + 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 2*ry*12, dx, dy,false));
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width() - 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 2*ry*12, dx, dy,false));
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width() + 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 1*ry*12, dx, dy,true));
+                                map->statics.push_back(new FireShield(pmx + 1.5*dx*(*pit)->get_width() - 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 1*ry*12, dx, dy,true));
+                                cooldowns[4] = 40;
+                            }
+                            break;
+
+                        case 22: // 2*11 I+L Shield + rock = rock shield
+                            if (cooldowns[4] == 0) {
+                                int pmx = (*pit)->get_x() + (*pit)->get_width()/2;
+                                int pmy = (*pit)->get_y() + (*pit)->get_height()/2;
+                                double rx = dy;
+                                double ry = -1*dx;
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width(),pmy + 1.5*dy*(*pit)->get_height(), dx, dy,true));
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width() + 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 5*ry*12, dx, dy,false));
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width() - 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 5*ry*12, dx, dy,false));
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width() + 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 4*ry*12, dx, dy,false));
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width() - 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 4*ry*12, dx, dy,false));
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width() + 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 3*ry*12, dx, dy,false));
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width() - 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 3*ry*12, dx, dy,false));
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width() + 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 2*ry*12, dx, dy,false));
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width() - 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 2*ry*12, dx, dy,false));
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width() + 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 1*ry*12, dx, dy,true));
+                                map->statics.push_back(new RockShield(pmx + 1.5*dx*(*pit)->get_width() - 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 1*ry*12, dx, dy,true));
+                                cooldowns[4] = 40;
+                            }
+                            break;
+
                         case 9: // 3*3 O + O Fire + Fire = Fire Spray
                             map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
                             break;

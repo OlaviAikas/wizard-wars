@@ -18,7 +18,7 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 - Uranchimeg Zamidii, uranchimegz
 - Johannes Kunz, johannes-kunz
 - Wanqi Hong, Wanqi77
-- Yasamin Jalalian, yasamin.jln
+- Yasamin Jalalian, yasaminjln
 - Ruiyao Jiang, Xtraordinaire9911
 - Chloe Semaan, chloe-semaan
 - Joci Chen, jocichen

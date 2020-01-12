@@ -157,7 +157,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->set_spawnpoints(200, 300, 1500,  1800, 1500, 1500, 2000, 400);
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
-    map->statics.push_back(new MapObject(1000, 1000, 450, 200, true));
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
     map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
@@ -567,7 +566,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     delete map;
     delete minimap;
 }
- 
+
 void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
     delete interface;
     isServer = true;

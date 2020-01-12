@@ -22,7 +22,7 @@ MapObject::~MapObject(){ }
 void MapObject::move() { std::cout << "momove" << std::endl; havechanged=true;}
 
 std::string MapObject::encode_spell(){
-    
+    return "";
 }
 
 void MapObject::set_x(int x) {

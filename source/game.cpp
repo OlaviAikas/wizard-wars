@@ -13,6 +13,9 @@
 #include <algorithm>
 #include <list>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include "../headers/Map.hpp"
 #include "../headers/Camera.hpp"
 #include "../headers/MapObject.hpp"
@@ -56,6 +59,9 @@
 
 void must_init(bool, const char);
 void change_state(short &, short new_state);
+void Settings_write(int res_1, int res_2);
+int* Settings_read();
+void change_resolution(short &, short new_state);
 void main_menu_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
@@ -291,7 +297,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     Map* map=(interface->map);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     //map->decode_players("0.14868.815.713");
+<<<<<<< HEAD
     map->set_spawnpoints(400, 400, 1500, 1500, 2000, 400, 3000, 1700);
+=======
+    map->set_spawnpoints(200, 300, 1500,  1500, 2000, 400, 3000, 1700);
+>>>>>>> master
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
     map->cp.push_back(new Controlpoint(400, 400, 1, 128, 1));
@@ -562,18 +572,27 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
                             if (cooldowns[4] == 0) {
-                                if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
-                                    map -> spells.push_back(new MainShield((*pit)->get_x() + (*pit)->get_width()/2+4*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2+4*dy*(*pit)->get_height(),dx,dy,false));
-                                }
-                                else {
-                                    map -> spells.push_back(new MainShield(event.mouse.x / sx + camera.get_x() + (*pit)->get_width()/2, event.mouse.y / sy + camera.get_y() +(*pit)->get_height()/2,dx,dy,false));
-                                }
-                                cooldowns[4] = 15;
+                                int pmx = (*pit)->get_x() + (*pit)->get_width()/2;
+                                int pmy = (*pit)->get_y() + (*pit)->get_height()/2;
+                                double rx = dy;
+                                double ry = -1*dx;
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width(),pmy + 1.5*dy*(*pit)->get_height(), dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 5*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 5*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 4*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 4*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 3*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 3*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 2*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 2*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 1*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 1*ry*12, dx, dy));
+                                cooldowns[4] == 40;
                             }
                             break;
                         case 9: // 3*3 O + O Fire + Fire = Fire Spray
                             map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
-                             break;
+                            break;
                         case 11:
                             (*pit)->hit(-10);
                             break;
@@ -693,7 +712,13 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             if(isServer){
                 for(std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++){
                     (*i)->counter++;
-                    if((*i)->counter>30){
+                    if((*i)->isBorS && (*i)->counter>20){
+                        (*i)->counter=0;
+                        for(int j=1; j<5; j++){
+                            (*i)->transmitted[j]=false;
+                        }
+                    }
+                    if(!(*i)->isBorS && (*i)->counter>30){
                         (*i)->counter=0;
                         for(int j=1; j<5; j++){
                             (*i)->transmitted[j]=false;
@@ -731,7 +756,7 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     delete interface;
     isServer = true;
     boost::asio::io_service io_service;
-    interface = new Server(io_service, 13, &*game_status);
+    interface = new Server(io_service, 13, &*game_status, 2);
     while(!interface->ready){
         std::cout<<"Not yet"<<std::endl;
     }
@@ -739,17 +764,26 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     game_status->game_state=2;
 }
 
-void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number){
+void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number, std::string &ip){
     delete interface;
-    int counter0=al_get_time();
-    int counter=0;
     isServer = false;
     boost::asio::io_service io_service;
-    interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
-    while(!interface->ready){
-        interface->send_string("ready");
+    interface = new Client(io_service, ip, "13", &*game_status);
+    while(!interface->connected && !interface->ready){
+        int counter0=al_get_time();
+        int counter=0;
+        interface->send_string("aaaaaaaready");
         std::cout<<"Sent !"<<std::endl;
-        while(!interface->ready && counter<counter0+5){
+        while(!interface->connected && counter<counter0+2){
+            counter=al_get_time();
+        }
+    }
+    while(!interface->ready){
+        int counter0=al_get_time();
+        int counter=0;
+        interface->send_string("aaaaaaaaastillthere");
+        std::cout<<"Sent !"<<std::endl;
+        while(!interface->ready && counter<counter0+2){
             counter=al_get_time();
         }
     }
@@ -767,6 +801,59 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
     }*/
 }
 
+
+void change_resolution(int res_1, int res_2) {
+    Settings_write(res_1, res_2);
+    std::cout << res_1 << " " << res_2 << std::endl;
+}
+
+void Settings_write(int res_1, int res_2){
+    using namespace std;
+    ofstream outf("Settings.txt");
+    if (!outf){
+        cerr << "Unable to open Settings.txt" <<endl;
+        exit(1);
+    }
+    outf << res_1 << endl;
+    outf << res_2 << endl;
+    // outf << "Resolution" << endl;
+    // outf << "Buffer" << endl;
+    // outf << "VSYNC" << endl;
+}
+
+int* Settings_read() {
+	using namespace std;
+	ifstream myfile("Settings.txt"); 
+    std::vector<std::string> vt;
+	if (myfile.is_open()) 
+	{
+        std::string line;
+        
+        vt.reserve(2);
+		while (getline(myfile, line)) {
+            vt.push_back(std::move(line));
+		
+	    }
+        myfile.close(); 
+        std::cout << vt[0] <<std::endl;
+        std::cout << vt[1] <<std::endl;
+    } else { 
+        cerr << "Unable to open Settings.txt" <<endl;
+        exit(1);
+    } 
+	// for(l_2=0;l_2<=l;l_2++){ 
+	// 	cout<<array[l_2]<<endl;    
+    // }
+    
+
+    int* res = new int[2];
+    res[0] = stoi(vt[0]); 
+    res[1] = stoi(vt[1]);
+    return res;
+
+    
+}
+
 void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
@@ -776,10 +863,12 @@ void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
     changeptr = change_state;
     Button<short &, short>* return_main_menu= new Button<short &, short>(130, 140, "resources/main_menu.bmp", changeptr);
     Button<short &, short>* quit= new Button<short &, short>(1550, 950, "resources/exit.bmp", changeptr);
-    Button<short &, short>* resolution_1= new Button<short &, short>(530, 410, "resources/res_1.bmp", changeptr);
-    Button<short &, short>* resolution_2= new Button<short &, short>(830, 410, "resources/res_2.bmp", changeptr);
-    Button<short &, short>* resolution_3= new Button<short &, short>(1130, 410, "resources/res_3.bmp", changeptr);
-    Button<short &, short>* resolution_4= new Button<short &, short>(1430, 410, "resources/res_4.bmp", changeptr);
+    void (*res_ptr)(int, int);
+    res_ptr = change_resolution;
+    Button<int, int>* resolution_1= new Button<int, int>(530, 410, "resources/res_1.bmp", res_ptr);
+    Button<int, int>* resolution_2= new Button<int, int>(830, 410, "resources/res_2.bmp", res_ptr);
+    Button<int, int>* resolution_3= new Button<int, int>(1130, 410, "resources/res_3.bmp", res_ptr);
+    Button<int, int>* resolution_4= new Button<int, int>(1430, 410, "resources/res_4.bmp", res_ptr);
     while(game_status->game_state == 3) {
         al_wait_for_event(queue, &event);
         switch(event.type)
@@ -797,10 +886,10 @@ void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 return_main_menu->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 1);
                 quit->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
-                resolution_1->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
-                resolution_2->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 4);
-                resolution_3->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 2);
-                resolution_4->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 5);
+                resolution_1->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 1024, 576);
+                resolution_2->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 1280, 720);
+                resolution_3->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 2560, 1440);
+                resolution_4->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 1664, 936);
                 break;
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
@@ -830,7 +919,9 @@ void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
             resolution_4->draw();
 
             al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,400,0,"Resolution");
-            al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,500,0,"IP Box");
+            al_draw_text(main_menu_font,al_map_rgb(120,0,0),175,860,0,"Please restart game to apply changes.");
+            al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,500,0,"Buffer");
+            al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,600,0,"VSYNC");
 
             al_set_target_backbuffer(disp);
             al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
@@ -863,7 +954,7 @@ void change_state(short & state, short new_state) {
 void np_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number, short &number_player) {
 
     ALLEGRO_FONT *DejaVuSans = al_load_font("resources/DejaVuSans.ttf",52,0);
     std::string input = "";
@@ -917,7 +1008,8 @@ void np_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &
                     input.pop_back();
                 }
                 if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                    //Gift for Paul, the number of players is in the string "input"
+                    game_status->game_state=4;
+                    number_player=std::stoi(input);
                 }
                 if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                     game_status->game_state = 1;
@@ -963,7 +1055,7 @@ void np_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &
 void ip_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short &client_number, std::string &ip) {
 
     ALLEGRO_FONT *DejaVuSans = al_load_font("resources/DejaVuSans.ttf",52,0);
     std::string input = "";
@@ -1020,9 +1112,9 @@ void ip_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &
                 }
                 if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && input.size() > 0) {
                     input.pop_back();
-                }
-                if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                    //Gift for Paul, the ip is in the string "input"
+                } if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
+                    game_status->game_state=5;
+                    ip=input;
                 }
                 if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                     game_status->game_state = 1;
@@ -1083,8 +1175,12 @@ int main(int argc, char **argv)
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+
+    int* values = Settings_read();
     
-    ALLEGRO_DISPLAY* disp = al_create_display(1280, 720); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(values[0], values[1]); //Change this resolution to change window size
+    //ALLEGRO_DISPLAY* disp = al_create_display(1280, 720); //Change this resolution to change window size
+
     must_init(disp, "display");
     ALLEGRO_BITMAP* buffer = al_create_bitmap(1920, 1080); //Do not touch
 
@@ -1122,6 +1218,8 @@ int main(int argc, char **argv)
     Interface* interface=new Interface();
     bool isServer=true;
     short client_number=1;
+    std::string ip;
+    short player_number;
     /*
     Game state states:
     0 => Exit game
@@ -1186,7 +1284,7 @@ int main(int argc, char **argv)
             //join game ("client")
             ALLEGRO_SAMPLE* music = al_load_sample("resources/main_game.wav"); //Play the background music
             al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
-            client_loop(&game_status, interface, isServer, client_number);
+            client_loop(&game_status, interface, isServer, client_number, ip);
             al_destroy_sample(music);
         }
         if (game_status.game_state == 6) {
@@ -1238,12 +1336,12 @@ int main(int argc, char **argv)
         if (game_status.game_state == 8) {
             ip_input_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number, ip);
         }
         if (game_status.game_state == 9) {
             np_input_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number, player_number);
         }
     }
 

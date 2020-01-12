@@ -13,6 +13,7 @@ class Beam: public Spell {
         void move();
 
         virtual void draw(int camera_x, int camera_y);
+        std::string encode_spell();
     
     protected:
         float range;

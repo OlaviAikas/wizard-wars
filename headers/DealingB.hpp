@@ -9,6 +9,7 @@
 class DealingB: public Beam {
     public:
         DealingB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map);
+        DealingB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map, int IP, bool transmitted[5]);
         ~DealingB();
 
         int get_damage();

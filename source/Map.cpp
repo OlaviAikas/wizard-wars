@@ -18,6 +18,9 @@
 #include "../headers/HealFireZone.hpp"
 #include "../headers/HealZone.hpp"
 #include "../headers/FreezeZone.hpp"
+#include "../headers/WaterB.hpp"
+#include "../headers/HealB.hpp"
+#include "../headers/DealingB.hpp"
 
 Map::Map(const char* name) {
     this->map = al_load_bitmap(name);
@@ -313,6 +316,11 @@ void Map::decode_spells(std::string mes_get){
                     (*i)->set_y(std::stoi(mes2[9]));
                     std::cout<<"Found zone"<<std::endl;
                 }
+                if(std::stoi(mes2[2])==2){
+                    (*i)->set_x(std::stoi(mes2[8]));
+                    (*i)->set_y(std::stoi(mes2[9]));
+                    std::cout<<"Found beam"<<std::endl;
+                }
             }
         }
         if(!found){
@@ -350,6 +358,40 @@ void Map::decode_spells(std::string mes_get){
                 }
                 if(std::stoi(mes2[7])==4){
                     spells.push_back(new HealFireZ(stoi(mes2[8]),stoi(mes2[9]), stoi(mes2[1]), a));
+                }
+            }
+            if(std::stoi(mes2[2])==2){
+                std::cout<<"Creating Beam"<<std::endl;
+                bool a[5]={false, stoi(mes2[3])==1, stoi(mes2[4])==1, stoi(mes2[5])==1, stoi(mes2[6])==1};
+                if(std::stoi(mes2[7])==0){ 
+                    std::list<Player*>::iterator pit=fetch_pit(stoi(mes2[12])); 
+                    float dx=stof(mes2[10]);
+                    float* dxp=&dx; 
+                    float dy=stof(mes2[11]);
+                    float* dyp=&dy; 
+                    bool mouse_down=(stoi(mes2[13])==1);
+                    bool* mousedown=&mouse_down; 
+                    spells.push_back(new DealingB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
+                }
+                if(std::stoi(mes2[7])==1){
+                    std::list<Player*>::iterator pit=fetch_pit(stoi(mes2[12])); 
+                    float dx=stof(mes2[10]);
+                    float* dxp=&dx; 
+                    float dy=stof(mes2[11]);
+                    float* dyp=&dy; 
+                    bool mouse_down=(stoi(mes2[13])==1);
+                    bool* mousedown=&mouse_down;
+                    spells.push_back(new HealB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
+                }
+                if(std::stoi(mes2[7])==2){
+                    std::list<Player*>::iterator pit=fetch_pit(stoi(mes2[12])); 
+                    float dx=stof(mes2[10]);
+                    float* dxp=&dx; 
+                    float dy=stof(mes2[11]);
+                    float* dyp=&dy; 
+                    bool mouse_down=(stoi(mes2[13])==1);
+                    bool* mousedown=&mouse_down;
+                    spells.push_back(new WaterB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
                 }
             }
         }

@@ -11,7 +11,7 @@ Rock::Rock(int start_x, int start_y, float dir_x, float dir_y)
     sprite = al_load_bitmap("resources/rock_projectile.bmp");
     element = "0";
     sound = al_load_sample("resources/rock.wav");
-    al_play_sample(sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+    al_play_sample(sound, 5.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
 Rock::Rock(int start_x, int start_y, float dir_x, float dir_y, int ID, bool transmitted[5]) 

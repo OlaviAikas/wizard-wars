@@ -26,6 +26,7 @@ class Map {
         void check_dead();
         void set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3,int x4, int y4);
         bool game_ended();
+        int get_winner();
 
         std::string encode_player(Player &i);
         std::string encode_controlpoint(Controlpoint &i);
@@ -81,4 +82,5 @@ class Map {
         bool spawnred = true;
         bool spawnblue = true;
         int spawns[4];
+        int winner = 0;
 };

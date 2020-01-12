@@ -45,6 +45,8 @@ Spray::Spray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int widt
             }
         }
     }
+    music20 = al_load_sample("resources/spray.wav");
+    al_play_sample(music20, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
 
@@ -77,8 +79,6 @@ Spray::Spray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int widt
 // };
 
 
-Spray::~Spray() { }
-
 void Spray::move() {
     if (!*mouse_down) {
         this->garbage_collect = true;
@@ -103,6 +103,10 @@ void Spray::move() {
         }
     if (hit) { break; }
     }
+}
+
+Spray::~Spray(){
+    al_destroy_sample(music20);
 }
 
 // void must_init(bool, const char);

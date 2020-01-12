@@ -2,6 +2,8 @@
 #include "MapObject.hpp"
 #include "Map.hpp"
 #include "Spells.hpp"
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <list>
 #include "Map.hpp"
 #include "Player.hpp"
@@ -17,6 +19,7 @@ class Spray: public Spell {
     protected:
         int ticks;
         bool hit_animation;
+        ALLEGRO_SAMPLE* music20;
         float range;
         std::list<Player*>::iterator pit;
         int origin_x;

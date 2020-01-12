@@ -917,9 +917,14 @@ void ip_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &
                 }
                 if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && input.size() > 0) {
                     input.pop_back();
-                } if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
                     //Gift for Paul, the ip is in the string "input"
                 }
+                if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+                    game_status->game_state = 1;
+                }
+
 
                 break;
             case ALLEGRO_EVENT_KEY_UP:

@@ -56,6 +56,10 @@ void main_menu_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT 
 void game_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
 
+
+void game_end_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
+
 void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
@@ -143,7 +147,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
     map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
-    map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 0));
     map->statics.push_back(new MapObject(0, 0, 250, 2160, false));
     map->statics.push_back(new MapObject(0, 0, 3840, 200, false));
     map->statics.push_back(new MapObject(0, 1910, 3840, 250, false));
@@ -153,7 +156,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->statics.push_back(new MapObject(3040, 0, 800, 350, false));
     map->statics.push_back(new MapObject(3240, 1550, 600, 600, false));
     map->statics.push_back(new MapObject(2002, 1020, 940, 590, false));
-    map->modif_lives(50, 50);
+    map->statics.push_back(new MapObject(200, 200, 120, 120, false));
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     game_status->map = map;
     Camera camera = Camera(0, 0);
@@ -228,12 +231,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     // al_use_transform(camera);
                 }
 
+                map->check_collisions();
                 map->move_list(map->players);
                 map->move_list(map->spells);
 #ifdef DEBUG_MODE
                 std::cout << "Players moved on frame " << frameNumber << std::endl;
 #endif
-                map->check_collisions();
 #ifdef DEBUG_MODE
                 std::cout << "Collisions checked, redrawing frame " << frameNumber << std::endl;
                 frameNumber++;
@@ -433,11 +436,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 
             map->draw_list(map->cp, camera.get_x(), camera.get_y());
 
+            map->draw_list(map->statics, camera.get_x(), camera.get_y());
+
+
             map->draw_list(map->players, camera.get_x(), camera.get_y());
 
             map->draw_list(map->spells, camera.get_x(), camera.get_y());
-
-            map->draw_list(map->statics, camera.get_x(), camera.get_y());
 
             e1p->draw();
             e2p->draw();
@@ -566,12 +570,13 @@ int main(int argc, char **argv)
     short client_number=1;
     /*
     Game state states:
-    0 => End game
+    0 => Exit game
     1 => main menu
     2 => game loop
     3 => settings?
     4 => Create game
     5 => Join game
+    6 => Game Ended
     */
     bool redraw = true;
     ALLEGRO_EVENT event;
@@ -601,6 +606,10 @@ int main(int argc, char **argv)
         if (game_status.game_state == 5){
             client_loop(&game_status, interface, isServer, client_number);
         }
+        if (game_status.game_state == 6) {
+            game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
+                    screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+        }
     }
 
     delete interface;
@@ -616,4 +625,21 @@ int main(int argc, char **argv)
 // define the vector when right-clicking
 int direction(int click_x, int click_y, int loc_x, int loc_y){
     return (click_y - loc_y)/(click_x - loc_x);
+}
+
+void game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+        if(redraw && al_is_event_queue_empty(queue))
+        {
+            al_set_target_bitmap(buffer);
+
+            al_clear_to_color(al_map_rgb(0, 0, 255));
+            al_set_target_backbuffer(disp);
+            al_clear_to_color(al_map_rgb(0,0,0));
+            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            al_flip_display();
+
+            redraw = false;
+        }
 }

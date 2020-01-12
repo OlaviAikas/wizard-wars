@@ -87,7 +87,7 @@ bool MapObject::operator==(MapObject &other) {
     return ((*this <= other) | (other <= *this));
 }
 
-bool MapObject::operator<=(MapObject &other)  {
+bool MapObject::operator<=(MapObject &other){
 #ifdef DEBUG_MODE
     std::cout << "Equality operator at " << this << " vs " << &other << std::endl;
 #endif
@@ -126,8 +126,8 @@ bool MapObject::operator<=(MapObject &other)  {
            		int dxx = round(x + (newpos_x - x)/k);
 				int dyy = round(y + (newpos_y - y)/k);
 				if (dxx >= othx && dxx <= othx + othwidth) {
-	        	if (dyy >= othy && dyy <= othy + othheight) {
-	        	    return true;
+	        		if (dyy >= othy && dyy <= othy + othheight) {
+	        	    	return true;
 	        		}
 	    		}
 	    		if (dxx + this->width >= othx && dxx + this->width <= othx + othwidth) {
@@ -155,5 +155,5 @@ bool MapObject::get_drawsprite() const{
 }
 
 void MapObject::draw(int camera_x, int camera_y) {
-    // al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
+    //al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
 }

@@ -37,7 +37,7 @@ void WaterSpray::draw(int camera_x, int camera_y) {
     //al_draw_scaled_rotated_bitmap(this->sprite,0,bitmaph/2, x -camera_x, y - camera_y,4,2, angle,0);
     //ticks += 3;
     //if (ticks>100) {
-    //    this->garbage_collect = true;
+      //  this->garbage_collect = true;
     //};
 
     // must_init(al_init_primitives_addon(), "primitives");
@@ -51,7 +51,7 @@ void WaterSpray::draw(int camera_x, int camera_y) {
     // al_draw_text(font, al_map_rgb(255, 255, 255), 300, 200, ALLEGRO_ALIGN_CENTRE, "Dzooooone");
     //al_destroy_sample(music21);
 
-    al_draw_line(origin_x - camera_x, origin_y - camera_y, x - camera_x, y - camera_y, al_map_rgb(0,0,255), 3);
+    //al_draw_line(origin_x - camera_x, origin_y - camera_y, x - camera_x, y - camera_y, al_map_rgb(0,0,255), 3);
 }
 
 void WaterSpray::on_collision(MapObject &other) {

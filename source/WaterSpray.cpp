@@ -19,9 +19,6 @@ WaterSpray::WaterSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp
     // if (music21) al_play_sample(music21, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
-WaterSpray::~WaterSpray(){
-    // al_destroy_sample(music21);
-}
 
 WaterSpray::~WaterSpray() {
     al_destroy_bitmap(sprite);

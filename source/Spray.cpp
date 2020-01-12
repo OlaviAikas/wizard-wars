@@ -79,8 +79,6 @@ Spray::Spray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int widt
 // };
 
 
-// Spray::~Spray() { }
-
 void Spray::move() {
     if (!*mouse_down) {
         this->garbage_collect = true;

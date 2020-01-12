@@ -10,6 +10,18 @@ FreezeZ::FreezeZ(int start_x, int start_y)
     damage = 2;
     sprite = al_load_bitmap("resources/freezezone.bmp");
     time = 0;
+    element="2";
+}
+FreezeZ::FreezeZ(int start_x, int start_y, int ID, bool transmitted[5]) 
+            : Zone::Zone(start_x, start_y, 200, 200, true) {
+    damage = 2;
+    sprite = al_load_bitmap("resources/freezezone.bmp");
+    time = 0;
+    element="2";
+    id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
 }
 FreezeZ::~FreezeZ() {
     al_destroy_bitmap(sprite);

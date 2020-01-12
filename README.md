@@ -50,7 +50,7 @@ link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqP
 
 ## How to compile the game:
 The game uses the libraries Allegro5 and Boost. To install on ubuntu (CSE201 VM), follow these instructions:
-# Ubuntu
+### Ubuntu
 * Install Allegro5:
 ```Bash
 $ sudo apt install liballegro5-dev
@@ -59,6 +59,16 @@ $ sudo apt install liballegro5-dev
 ```Bash
 $ sudo apt install aptitude
 $ sudo aptitude install libboost-all-dev
+```
+* Finally we are ready to clone the repository and make:
+```Bash
+$ git clone github.com/OlaviAikas/wizard-wars
+$ cd wizard-wars
+$ make
+```
+* Now you sit back and relax as make compiles the game, and when it's done, it can be executed with
+```Bash
+$ ./game
 ```
   - From homebrew for mac users (type ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)) on the terminal)
 * Install boost for the server: 

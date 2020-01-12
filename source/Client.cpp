@@ -76,17 +76,29 @@ void Client::listen(){
 
 void Client::onResponse(std::string message){
     std::cout << "The servers response is: " << message << std::endl;
-    if (!ready && message.find("go2") != std::string::npos){
-        ready=true;
+    if (!ready && message.find("readytoo2") != std::string::npos){
+        client_number=2;
+        connected=true;
+    }
+    if (!ready && message.find("readytoo3") != std::string::npos){
+        client_number=3;
+        connected=true;
+    }
+    if (!ready && message.find("readytoo4") != std::string::npos){
+        client_number=4;
+        connected=true;
+    }
+    if (!connected && message.find("go2") != std::string::npos){
         client_number=2;
     }
-    if (!ready && message.find("go3") != std::string::npos){
-        ready=true;
+    if (!connected && message.find("go3") != std::string::npos){
         client_number=3;
     }
-    if (!ready && message.find("go4") != std::string::npos){
-        ready=true;
+    if (!connected && message.find("go4") != std::string::npos){
         client_number=4;
+    }
+    if(!ready && message.find("go") != std::string::npos){
+        ready=true;
     }
     std::vector<std::string> mes;
     for(int a=0; a==10; a++){
@@ -94,13 +106,12 @@ void Client::onResponse(std::string message){
     }
     boost::split(mes, message, boost::is_any_of("|"));
     for(unsigned int j=0; j<mes.size(); j++){
-        if (mes[j].find("thisisplayer") != std::string::npos){
+        if (ready && mes[j].find("thisisplayer") != std::string::npos){
             (this->map)->decode_players(mes[j], client_number);
         }
-        if (mes[j].find("thisisspell") != std::string::npos){
+        if (ready && mes[j].find("thisisspell") != std::string::npos){
             (this->map)->decode_spells(mes[j]);
         }
-
     }
     // modify the game depending on message
     //char identifier = message.front();

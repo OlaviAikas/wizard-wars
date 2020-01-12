@@ -31,6 +31,7 @@ int MainShield::get_damage() {
 
 
 void MainShield::draw(int camera_x, int camera_y) {
+<<<<<<< HEAD
     al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 255, 100));
     //time1=time1+1;
     //if (time1>30) {
@@ -38,6 +39,16 @@ void MainShield::draw(int camera_x, int camera_y) {
     //}
     //float angle = atan2(dir_y,dir_x);
     //al_draw_scaled_rotated_bitmap(this->sprite,50,5, x - camera_x, y - camera_y,2,2, angle,0);
+=======
+    time1=time1+1;
+    if (time1>30) {
+        this->garbage_collect = true;
+    }
+    float angle = atan2(dir_y,dir_x);
+    float bitmapw = al_get_bitmap_width(sprite);
+    float bitmaph = al_get_bitmap_height(sprite);
+    al_draw_scaled_rotated_bitmap(this->sprite,0,bitmaph/2, x - camera_x, y - camera_y,2,2, angle,0);
+>>>>>>> c3d7d5646cfed7e82ad3379de1b184ad14849ffd
 }
 
 void MainShield::on_collision(MapObject &other) {

@@ -6,7 +6,7 @@
 #include <allegro5/allegro.h>
 class FireSpray: public Spray {
     public:
-        FireSpray(int start_x, int start_y, float dir_x, float dir_y, Map* &map);
+        FireSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map);
 
         int get_damage();
 

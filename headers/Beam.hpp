@@ -2,10 +2,12 @@
 #include "Map.hpp"
 #include "MapObject.hpp"
 #include "Spells.hpp"
+#include <list>
+#include "Player.hpp"
 
 class Beam: public Spell {
     public:
-        Beam(int start_x, int start_y, float dir_x, float dir_y, int width, int height, bool noclip, Map* &map);
+        Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width, int height, bool noclip, bool* mouse_down, Map* map);
         ~Beam();
 
         void move();
@@ -13,6 +15,13 @@ class Beam: public Spell {
         virtual void draw(int camera_x, int camera_y);
     
     protected:
-        int range;
-        int lifetime;
+        float range;
+        std::list<Player*>::iterator pit;
+        int origin_x;
+        int origin_y;
+        float* dxp;
+        float* dyp;
+        bool* mouse_down;
+        Map* map;
+        //bool hitted;
 };

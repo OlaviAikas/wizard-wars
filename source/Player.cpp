@@ -15,7 +15,7 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
     this->team = team;
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
-    if (team==0) { 
+    if (team==1) { 
         this->sprites0 = al_load_bitmap("resources/player1.bmp");
         this->sprites1 = al_load_bitmap("resources/player1walk.bmp");
         this->sprites2 = al_load_bitmap("resources/player2.bmp");
@@ -97,10 +97,12 @@ void Player::die() {
 }
 
 void Player::on_collision(MapObject &other) {
-    std::cout << "collision" << std::endl;
+#ifdef DEBUG_MODE
+    std::cout << "DEBUG: player collision" << std::endl;
+#endif
     if (not other.get_noclip()) {
-        dest_x=lastgoodposx;
-        dest_y=lastgoodposy;
+        x=lastgoodposx;
+        y=lastgoodposy;
     }
 }
 
@@ -317,7 +319,7 @@ void Player::reset_havechanged(){
 }
 
 std::string Player::encode_player(){
-    std::string encoded="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer.0."+std::to_string(number)+".";
+    std::string encoded="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer.0."+std::to_string(number)+".";
     encoded=encoded+std::to_string(x)+"."+std::to_string(y)+".";
     encoded=encoded+std::to_string(dest_x)+"."+std::to_string(dest_y)+".";
     encoded=encoded+std::to_string(hit_points)+".";

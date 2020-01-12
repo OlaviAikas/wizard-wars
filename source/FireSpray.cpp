@@ -35,10 +35,3 @@ void FireSpray::on_collision(MapObject &other) {
         this->noclip = true;
     }
 }
-
-void FireSpray::on_collision(MapObject &other) {
-    if (!this->get_garbage_collect() && !this->hit_animation && !other.get_noclip()) {
-        other.hit(this->get_damage());
-        this->hit_animation = true;
-        this->noclip = true;}
-}

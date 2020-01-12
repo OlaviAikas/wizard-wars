@@ -13,7 +13,7 @@
 
 FireSpray::FireSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map) 
             : Spray::Spray(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
-    damage = 1.5;
+    damage = 5;
     sprite = al_load_bitmap("resources/firespray.bmp");
 }
 
@@ -32,6 +32,7 @@ void FireSpray::draw(int camera_x, int camera_y) {
 void FireSpray::on_collision(MapObject &other) {
     if (!this->get_garbage_collect() && !other.get_noclip()) {
         other.hit(this->get_damage());
+        other.knockback(150*dir_x,150*dir_y);
         this->noclip = true;
     }
 }

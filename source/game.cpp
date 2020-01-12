@@ -158,6 +158,10 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     game_status->map = map;
     Camera camera = Camera(0, 0);
     bool left_mouse_down = false;
+    int mouse_x;
+    int mouse_y;
+    float dxp;
+    float dyp;
     int counter=0;
     // Animation indexes of the list: 0-2: Idle / 3-6: walking right animation / 7-10: walking left animation / 11: cast frame / 13 damaged ?/ 14-??: death animation
     //define a pointer to the player
@@ -186,7 +190,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
         switch(event.type)
         {
             case ALLEGRO_EVENT_TIMER:
-
                 if (key[ALLEGRO_KEY_ESCAPE]) {
                     game_status->game_state = 1;
                 }
@@ -230,7 +233,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     // al_use_transform(camera);
                 }
 
-                std::cout << (left_mouse_down) << std::endl;
                 map->move_list(map->players);
                 map->move_list(map->spells);
 #ifdef DEBUG_MODE
@@ -248,11 +250,20 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
 
             case ALLEGRO_EVENT_MOUSE_AXES:
                 {
+                    mouse_x = event.mouse.x;
+                    mouse_y = event.mouse.y;
                     float proportionOfScroll = 0.1;
                     mouse_west = event.mouse.x < proportionOfScroll*windowWidth;
                     mouse_east = event.mouse.x > (1-proportionOfScroll)*windowWidth;
                     mouse_north = event.mouse.y < proportionOfScroll*windowHeight;
                     mouse_south = event.mouse.y > (1-proportionOfScroll)*windowHeight;
+                    dxp = (event.mouse.x / sx + camera.get_x()) - ((*pit)->get_x() + ((*pit)->get_width()/2));
+                    dyp = (event.mouse.y / sy + camera.get_y()) - ((*pit)->get_y() + ((*pit)->get_height()/2));
+                    float n2 =  sqrt(dyp*dyp + dxp*dxp);
+                    dxp = dxp/n2;
+                    dyp = dyp/n2;
+                    std::cout << dxp << std::endl;
+
                     break;
                 }
 
@@ -269,8 +280,8 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                 }
                 if (event.mouse.button == 1) {
                     spell_created=true;
-                    double dy = (event.mouse.y / sy + camera.get_y()) - ((*pit)->get_y() + (*pit)->get_height()/2);
-                    double dx = (event.mouse.x / sx + camera.get_x()) - ((*pit)->get_x() + (*pit)->get_width()/2);
+                    double dy = (event.mouse.y / sy + camera.get_y()) - ((*pit)->get_y() + ((*pit)->get_height()/2));
+                    double dx = (event.mouse.x / sx + camera.get_x()) - ((*pit)->get_x() + ((*pit)->get_width()/2));
                     double norm = sqrt(dy*dy + dx*dx);
                     double dx1=dx;
                     double dy1=dy;
@@ -338,7 +349,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             }
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam
-                            map -> spells.push_back(new HealB((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy, map));
+                            map -> spells.push_back(new HealB(pit, &dxp, &dyp, left_mouse_down, map));
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
                             map -> spells.push_back(new MainShield((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy,false));

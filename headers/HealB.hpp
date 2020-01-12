@@ -8,7 +8,7 @@
 
 class HealB: public Beam {
     public:
-        HealB(int start_x, int start_y, float dir_x, float dir_y, Map* &map);
+        HealB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool &mouse_down, Map* map);
         ~HealB();
 
         int get_damage();

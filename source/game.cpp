@@ -174,10 +174,6 @@ void red_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUE
                 if (key[ALLEGRO_KEY_ESCAPE]) {
                     game_status->game_state = 0;
                 }
-                if (key[ALLEGRO_KEY_ENTER]) {
-                    game_status->game_state = 1;
-                }
-
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
                 redraw = true;
@@ -239,9 +235,6 @@ void blue_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QU
                 if (key[ALLEGRO_KEY_ESCAPE]) {
                     game_status->game_state = 0;
                 }
-                if (key[ALLEGRO_KEY_ENTER]) {
-                    game_status->game_state = 1;
-                }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
@@ -297,12 +290,8 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     Map* map=(interface->map);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     //map->decode_players("0.14868.815.713");
-<<<<<<< HEAD
-    map->set_spawnpoints(400, 400, 1500, 1500, 2000, 400, 3000, 1700);
-=======
-    map->set_spawnpoints(200, 300, 1500,  1500, 2000, 400, 3000, 1700);
->>>>>>> master
-    map->players.push_back(new Player(400, 400, 1,1));
+    map->set_spawnpoints(500, 500, 1500, 1500, 2000, 400, 3000, 1700);
+    map->players.push_back(new Player(500, 500, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
     map->cp.push_back(new Controlpoint(400, 400, 1, 128, 1));
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
@@ -1302,7 +1291,7 @@ int main(int argc, char **argv)
                 al_play_sample(victory02, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
                 if (victory02) i += 1;
                 if (i == 3){
-                al_destroy_sample(victory01);
+                al_destroy_sample(victory02);
                 i += 1;
             }
             }

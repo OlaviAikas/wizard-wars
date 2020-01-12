@@ -58,6 +58,7 @@ std::string Server::generateResponse(std::string message){
     //     return std::string("Hi Anonymous, this is Alice.");
     // }
     // std::cout<<message<<std::endl;
+    std::cout<<"received "+message<<std::endl;
     if((!ready) && message.find("ready") != std::string::npos){
         players_connected++;
         std::cout<<"readytoo"<<std::endl;

@@ -760,15 +760,13 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
         int counter0=al_get_time();
         int counter=0;
         interface->send_string("aaaaaaaready");
-        std::cout<<"Sent !"<<std::endl;
-        while(!interface->connected && counter<counter0+2){
+        while(!interface->connected && counter<counter0+5){
             counter=al_get_time();
         }
     }
     while(!interface->ready){
         interface->send_string("aaaaastillthere");
-        std::cout<<"Sent !"<<std::endl;
-        while(!interface->ready && counter<counter0+3){
+        while(!interface->ready && counter<counter0+5){
             counter=al_get_time();
         }
     }

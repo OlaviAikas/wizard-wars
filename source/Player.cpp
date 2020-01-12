@@ -9,7 +9,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 
-Player::Player(int start_x, int start_y, short number,int team) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, short number,int team) : MapObject(start_x, start_y, 48, 54, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->team = team;

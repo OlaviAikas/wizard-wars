@@ -93,7 +93,7 @@ void Map::check_dead(){
             int spawn1 = 0;
             int spawn2 = 0;
             int k = rand()%4;
-            int R = rand()%500;
+            int R = rand()%150;
             double theta = rand()%360;
             double ang = cos(theta);
             std::cout << k << std::endl;
@@ -145,8 +145,8 @@ void Map::check_dead(){
                     spawn2 = spawnpoint4[1] + R*ang;
                 }
                 else{
-                    spawn1 = spawnpoint1[0] + R*ang;
-                    spawn2 = spawnpoint1[1] + R*ang;
+                    spawn1 = spawnpoint4[0] + R*ang;
+                    spawn2 = spawnpoint4[1] + R*ang;
                 }
                 if (not spawnblue){
                     (*i)->change_spawnable(false); //Tells the player class that it cant spawn anymore

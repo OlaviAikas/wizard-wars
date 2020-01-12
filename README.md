@@ -39,7 +39,7 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 * Mihails
 * Yasamin
 * Seorim
-* Wanqi
+* Wanqi <br>
 link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqPbSf0No7_KN3GhcqFwKOEsrraRNXdxw/edit?usp=sharing
 
 ### Team 4: Networking:

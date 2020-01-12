@@ -7,7 +7,7 @@
 
 class Beam: public Spell {
     public:
-        Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width, int height, bool noclip, bool &mouse_down, Map* map);
+        Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width, int height, bool noclip, bool* mouse_down, Map* map);
         ~Beam();
 
         void move();
@@ -21,7 +21,7 @@ class Beam: public Spell {
         int origin_y;
         float* dxp;
         float* dyp;
-        bool mouse_down;
+        bool* mouse_down;
         Map* map;
         //bool hitted;
 };

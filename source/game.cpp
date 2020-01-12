@@ -262,7 +262,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     float n2 =  sqrt(dyp*dyp + dxp*dxp);
                     dxp = dxp/n2;
                     dyp = dyp/n2;
-                    std::cout << dxp << std::endl;
 
                     break;
                 }
@@ -349,7 +348,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             }
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam
-                            map -> spells.push_back(new HealB(pit, &dxp, &dyp, left_mouse_down, map));
+                            map -> spells.push_back(new HealB(pit, &dxp, &dyp, &left_mouse_down, map));
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
                             map -> spells.push_back(new MainShield((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy,false));

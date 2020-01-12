@@ -74,7 +74,6 @@ void Map::check_dead(){
         k +=1;
     }
     if (spawns[0] == spawns[1] && spawns[0] == spawns[2] && spawns[0] == spawns[3]){//Here we check if one teams controls all the points
-        std::cout<<spawns[1]<<std::endl;
         if (spawns[0] == 1){
             spawnblue = false; //red team controls all the points
         }
@@ -86,11 +85,35 @@ void Map::check_dead(){
         spawnblue = true;
         spawnred = true;
     }
+    srand(time(NULL));
     for (std::list<Player*>::iterator i = players.begin(); i != players.end(); i++) {
         if (((*i)->get_hit_points()<=0)&&((*i)->get_noclip()==false)){
-            int* spawn;
+            int spawn1 = 0;
+            int spawn2 = 0;
+            int k = rand()%4;
+            std::cout << k << std::endl;
             if ((*i)->get_team()==1){
-                spawn = spawnpoint1;//Randomize the spawns
+                //spawn = spawnpoint1;//Randomize the spawns
+                if (k == 0 && spawns[0] == 1){
+                    spawn1 = spawnpoint1[0];
+                    spawn2 = spawnpoint1[1];
+                }
+                else if (k == 1 && spawns[1] == 1){
+                        spawn1 = spawnpoint2[0];
+                        spawn2 = spawnpoint2[1];
+                }
+                else if (k == 2 && spawns[2] == 1){
+                    spawn1 = spawnpoint3[0];
+                    spawn2 = spawnpoint3[1];
+                }
+                else if (k == 3 && spawns[3] == 1){
+                    spawn1 = spawnpoint4[0];
+                    spawn2 = spawnpoint4[1];
+                }
+                else{
+                    spawn1 = spawnpoint1[0];
+                    spawn2 = spawnpoint1[1];
+                }
                 if (not spawnred){
                     (*i)->change_spawnable(false); //Tells the player class that it cant spawn anymore
                 }
@@ -98,8 +121,28 @@ void Map::check_dead(){
                     (*i)->change_spawnable(true);
                 }
             }
-            else if((*i)->get_team()==2){
-                spawn = spawnpoint2;
+            else{
+                
+                if (k == 0 && spawns[0] == 2){
+                    spawn1 = spawnpoint1[0];
+                    spawn2 = spawnpoint1[1];
+                }
+                else if (k == 1 && spawns[1] == 2){
+                    spawn1 = spawnpoint2[0];
+                    spawn2 = spawnpoint2[1];
+                }
+                else if (k == 2 && spawns[2] == 2){
+                    spawn1 = spawnpoint3[0];
+                    spawn2 = spawnpoint3[1];
+                }
+                else if (k == 3 && spawns[3] == 2){
+                    spawn1 = spawnpoint4[0];
+                    spawn2 = spawnpoint4[1];
+                }
+                else{
+                    spawn1 = spawnpoint1[0];
+                    spawn2 = spawnpoint1[1];
+                }
                 if (not spawnblue){
                     (*i)->change_spawnable(false); //Tells the player class that it cant spawn anymore
                 }
@@ -108,7 +151,9 @@ void Map::check_dead(){
                 }
                 
             }
-            (*i)->change_curspawn(spawn[1],spawn[2]);
+            std::cout<<spawn1<<std::endl;
+            std::cout<<spawn2<<std::endl;
+            (*i)->change_curspawn(spawn1,spawn2);
             (*i)->die();
         }
     }

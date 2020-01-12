@@ -28,7 +28,7 @@ class MapObject {
         bool get_drawsprite() const;
         int get_next_x();
         int get_next_y();
-        unsigned int get_speed();
+        int get_speed();
         
     protected:
         bool noclip;

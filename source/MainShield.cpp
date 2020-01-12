@@ -13,6 +13,10 @@ int MainShield::get_damage() {
     return damage;
 }
 
+MainShield::~MainShield() {
+    al_destroy_bitmap(sprite);
+};
+
 void MainShield::draw(int camera_x, int camera_y) {
     float angle = atan2(dir_y,dir_x) - ALLEGRO_PI/30;
     if (!hit_animation){

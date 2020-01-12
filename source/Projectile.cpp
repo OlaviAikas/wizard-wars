@@ -15,7 +15,7 @@ Projectile::Projectile(int start_x, int start_y, float dir_x, float dir_y, int w
 // short Projectile::get_number() {
 //     return this->number;
 // }
-
+Projectile::~Projectile() {};
 
 void Projectile::move() {
     if (!hit_animation) {

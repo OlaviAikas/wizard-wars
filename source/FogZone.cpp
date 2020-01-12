@@ -12,6 +12,9 @@ FogZ::FogZ(int start_x, int start_y)
     time = 0;
 }
 
+FogZ::~FogZ() {
+    al_destroy_bitmap(sprite);
+}
 int FogZ::get_damage() {
     return damage;
 }

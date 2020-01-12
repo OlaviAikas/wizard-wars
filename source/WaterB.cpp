@@ -12,8 +12,7 @@ WaterB::WaterB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* 
     damage = 1;
 
 }
-WaterB::~WaterB() { };
-
+WaterB::~WaterB() {}
 int WaterB::get_damage() {
     return damage;
 }

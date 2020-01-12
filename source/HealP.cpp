@@ -23,6 +23,10 @@ int HealP::get_damage() {
     return damage;
 }
 
+HealP::~HealP(){
+    al_destroy_bitmap(sprite);
+}
+
 void HealP::draw(int camera_x, int camera_y) {
     // Put this code under if (!hit_animation) if hit animation is required
     al_draw_bitmap(this->sprite, x - camera_x, y - camera_y, 0);

@@ -43,7 +43,7 @@
 #include "../headers/MainShield.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
-//#include "../headers/FireSpray.hpp"
+#include "../headers/FireSpray.hpp"
 #include "../headers/Server.hpp"
 #include "../headers/Client.hpp"
 #include "../headers/Interface.hpp"
@@ -565,9 +565,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                                 cooldowns[4] = 15;
                             }
                             break;
-                        // case 9: // 3*3 O + O Fire + Fire = Fire Spray
-                        //     map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
-                        //     break;
+                        case 9: // 3*3 O + O Fire + Fire = Fire Spray
+                            map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
+                             break;
                         case 11:
                             (*pit)->hit(-10);
                             break;

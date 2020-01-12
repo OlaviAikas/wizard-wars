@@ -43,7 +43,7 @@
 #include "../headers/MainShield.hpp"
 #include <cmath>
 #include "../headers/Controlpoint.hpp"
-#include "../headers/FireSpray.hpp"
+//#include "../headers/FireSpray.hpp"
 #include "../headers/Server.hpp"
 #include "../headers/Client.hpp"
 #include "../headers/Interface.hpp"
@@ -418,6 +418,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             break;
                         case 55: // 5*11 Rock + Water = Water Beam
                             map -> spells.push_back(new WaterB(pit, &dxp, &dyp, &left_mouse_down, map));
+                            break;
+                        case 25: //5*5 Water + Water = Water Spray
+                            map -> spells.push_back(new WaterSpray(pit, &dxp, &dyp, &left_mouse_down, map));
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
                             if (cooldowns[4] == 0) {

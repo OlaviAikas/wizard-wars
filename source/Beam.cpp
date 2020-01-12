@@ -1,4 +1,3 @@
-// use al_draw_soft_line?
 #include "../headers/Beam.hpp"
 #include "../headers/Spells.hpp"
 #include "../headers/Map.hpp"

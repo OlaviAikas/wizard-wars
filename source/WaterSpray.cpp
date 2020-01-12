@@ -12,22 +12,32 @@
 
 WaterSpray::WaterSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map) 
             : Spray::Spray(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
-    damage = 20;
+    damage = 1;
     sprite = al_load_bitmap("resources/waveSpray.bmp");
-    ticks = 0; //Count time 
 }
 
-WaterSpray::~WaterSpray() {
-    al_destroy_bitmap(sprite);
-}
-
+WaterSpray::~WaterSpray() {}
 int WaterSpray::get_damage() {
     return damage;
 }
 
+void WaterSpray::draw(int camera_x, int camera_y) {
+    float angle = atan2(origin_y - y, origin_x - x) + ALLEGRO_PI;
+    int bitmapw = al_get_bitmap_width(sprite);
+    int bitmaph = al_get_bitmap_height(sprite);
+    float scale = 5;//sqrt((x-origin_x)*(x-origin_x)+(y-origin_y)*(y-origin_y));
+    al_draw_scaled_rotated_bitmap(this->sprite,0,bitmaph/2, origin_x - camera_x, origin_y - camera_y,scale,1.5, angle,0);
+}
+void WaterSpray::on_collision(MapObject &other) {
+    if (!this->get_garbage_collect() && !other.get_noclip()) {
+        other.hit(this->get_damage());
+        this->noclip = true;
+    }
+}
+
 // void must_init(bool, const char);
 
-void WaterSpray::draw(int camera_x, int camera_y) {
+//void WaterSpray::draw(int camera_x, int camera_y) {
     //typedef struct ALLEGRO_MOUSE_STATE ALLEGRO_MOUSE_STATE;
     //ALLEGRO_MOUSE_STATE state;
     //al_get_mouse_state(&state);
@@ -52,14 +62,5 @@ void WaterSpray::draw(int camera_x, int camera_y) {
     //al_destroy_sample(music21);
 
     //al_draw_line(origin_x - camera_x, origin_y - camera_y, x - camera_x, y - camera_y, al_map_rgb(0,0,255), 3);
-}
+//}
 
-void WaterSpray::on_collision(MapObject &other) {
-    if (!this->get_garbage_collect() && !this->hit_animation && !other.get_noclip()) {
-        other.hit(this->get_damage());
-        other.knockback(300*dir_x,300*dir_y);
-        // Set garbage_collect to true iif other is not a Player?
-        this->hit_animation = true;
-        this->noclip = true;
-    }
-}

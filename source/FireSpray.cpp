@@ -10,6 +10,7 @@
 #include "../headers/Player.hpp"
 #include "../headers/Map.hpp"
 
+
 FireSpray::FireSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map) 
             : Spray::Spray(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
     damage = 20;

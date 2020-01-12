@@ -5,7 +5,7 @@
 class FireP: public Projectile {
     public:
         FireP(int start_x, int start_y, float dir_x, float dir_y);
-        FireP(int start_x, int start_y, float dir_x, float dir_y, int IP);
+        FireP(int start_x, int start_y, float dir_x, float dir_y, int IP, bool transmitted[5]);
 
         int get_damage();
 

@@ -8,12 +8,15 @@ HealP::HealP(int start_x, int start_y, float dir_x, float dir_y)
     element = "3";
 }
 
-HealP::HealP(int start_x, int start_y, float dir_x, float dir_y, int ID) 
+HealP::HealP(int start_x, int start_y, float dir_x, float dir_y, int ID, bool transmitted[5]) 
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 12, 12, false, 20) {
     damage = -10;
     sprite = al_load_bitmap("resources/healProjectile.bmp");
     element = "3";
     id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
 }
 
 int HealP::get_damage() {

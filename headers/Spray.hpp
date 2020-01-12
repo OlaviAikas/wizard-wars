@@ -1,5 +1,6 @@
 #pragma once
 #include "MapObject.hpp"
+#include "Map.hpp"
 #include "Spells.hpp"
 #include <list>
 #include "Map.hpp"

@@ -47,19 +47,49 @@ link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqP
 * Joci
 * Uranchimeg
 
-
-## How to play the game:
-* Install allegro5 to run the game:
-  - Link describing how to get it:https://wiki.allegro.cc/index.php?title=Install_Allegro5_From_Git/Linux/Debian#Install_Allegro_5_from_Git_on_Debian
-  - From homebrew for mac users (type ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)) on the terminal)
-* Install boost for the server: 
-  - Link describing how to get it:https://www.boost.org/doc/libs/1_61_0/more/getting_started/unix-variants.html
-  - From homebrew for mac users (type brew install boost)
-* Clone this git repository
-* On the terminal write:
-  - make for linux
-  - make mac for mac users
-* Then, write ./game to run the game
+## How to compile the game:
+ The game uses the libraries Allegro5 and Boost. To install on ubuntu (CSE201 VM), follow these instructions:
+ ### Ubuntu
+ * Install Allegro5:
+ ```Bash
+ $ sudo apt install liballegro5-dev
+ ```
+ * To install Boost we use aptitude:
+ ```Bash
+ $ sudo apt install aptitude
+ $ sudo aptitude install libboost-all-dev
+ ```
+ * Finally we are ready to clone the repository and make:
+ ```Bash
+ $ git clone github.com/OlaviAikas/wizard-wars
+ $ cd wizard-wars
+ $ make
+ ```
+ * Now you sit back and relax as make compiles the game, and when it's done, it can be executed with
+ ```Bash
+ $ ./game
+ ```
+ 
+ ### MacOS
+ * Install Allegro5:
+ First we have to install homebrew:
+ ```Bash
+ $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+ ```
+ Then we can get allegro5 from it :
+ ```Bash
+ $ brew install allegro 
+ ```
+ * Install boost: 
+ ```Bash
+ $ brew install boost 
+ ```
+ * Finally we are ready to clone the repository and make:
+ ```Bash
+ $ git clone github.com/OlaviAikas/wizard-wars
+ $ cd wizard-wars
+ $ make mac
+ ```
 * The connection to the server: 
   - Once the server is running on one computer, an another player can connect to the server by putting the ip after clicking on "join game".
   - the maximum number of player that can join a game is 2, due to the server capacity.

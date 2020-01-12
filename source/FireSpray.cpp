@@ -20,9 +20,9 @@ FireSpray::FireSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, 
     // if (music03) al_play_sample(music03, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 }
 
-FireSpray::~FireSpray(){
-    // al_destroy_sample(music03);
-}
+// FireSpray::~FireSpray(){
+//     // al_destroy_sample(music03);
+// }
 
 FireSpray::~FireSpray() {
     al_destroy_bitmap(sprite);

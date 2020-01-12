@@ -22,11 +22,16 @@ HealZ::HealZ(int start_x, int start_y, int ID, bool transmitted[5])
     for(int i=0; i<5; i++){        
         this->transmitted[i]=transmitted[i];
     }
+    music14 = al_load_sample("resources/heal_zone.wav");
+    if (music14) al_play_sample(music14, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id);
 }
 
-HealZ::~HealZ() {
+HealZ::~HealZ(){
     al_destroy_bitmap(sprite);
+    al_destroy_sample(music14);
 }
+
+
 
 int HealZ::get_damage() {
     return damage;

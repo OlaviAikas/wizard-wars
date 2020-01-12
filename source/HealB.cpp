@@ -13,6 +13,8 @@ HealB::HealB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mo
     sprite = al_load_bitmap("resources/HealB.bmp");
     //maxdraw = 0;
     //ticks = 0;
+    music15 = al_load_sample("resources/heal_beam.wav");
+    if (music15) al_play_sample(music15, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id);
     element="1";
 
 }
@@ -29,6 +31,7 @@ HealB::HealB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mo
 }
 HealB::~HealB() { 
     al_destroy_bitmap(sprite);
+    al_destroy_sample(music15);
 }
 
 int HealB::get_damage() {

@@ -21,15 +21,20 @@ HealP::HealP(int start_x, int start_y, float dir_x, float dir_y, int ID, bool tr
     for(int i=0; i<5; i++){        
         this->transmitted[i]=transmitted[i];
     }
+    music13 = al_load_sample("resources/heal_projectile.wav");
+    if (music13) al_play_sample(music13, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id);
+}
+
+HealP::~HealP(){
+    al_destroy_bitmap(sprite);
+    al_destroy_sample(music13);
 }
 
 int HealP::get_damage() {
     return damage;
 }
 
-HealP::~HealP(){
-    al_destroy_bitmap(sprite);
-}
+
 
 void HealP::draw(int camera_x, int camera_y) {
     // Put this code under if (!hit_animation) if hit animation is required

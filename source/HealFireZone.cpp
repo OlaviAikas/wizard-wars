@@ -24,15 +24,20 @@ HealFireZ::HealFireZ(int start_x, int start_y, int ID, bool transmitted[5])
     for(int i=0; i<5; i++){        
         this->transmitted[i]=transmitted[i];
     }
+    music12 = al_load_sample("resources/heal_fire_zone.wav");
+    al_play_sample(music12, 5.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+}
+
+HealFireZ::~HealFireZ(){
+    al_destroy_bitmap(sprite);
+    al_destroy_sample(music12);
 }
 
 int HealFireZ::get_damage() {
     return damage;
 }
 
-HealFireZ::~HealFireZ() {
-    al_destroy_bitmap(sprite);
-}
+
 
 void HealFireZ::draw(int camera_x, int camera_y) {
     al_draw_scaled_bitmap(this->sprite, 0,0,64,64,x - camera_x, y - camera_y,width,height, 0);

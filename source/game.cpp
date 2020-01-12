@@ -510,7 +510,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     spell_created=false;
                     for(std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++){
                         std::cout<<"to launch"<<std::endl;
-                        if((*i)->just_created){
+                        if(!(*i)->transmitted[1]){
+                            (*i)->transmitted[1]=true;
+                            (*i)->transmitted[client_number]=true;
                             (*interface).send_string((*i)->encode_spell());
                         }
                     }

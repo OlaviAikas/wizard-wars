@@ -59,6 +59,7 @@ link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqP
  $ sudo apt install aptitude
  $ sudo aptitude install libboost-all-dev
  ```
+ Boost requires an older version of Python, so refuse the first upgrade path (which does nothing) with `n` and accept the second upgrade path (which downgrades Python) with `y`.
  * Finally we are ready to clone the repository and make:
  ```Bash
  $ git clone github.com/OlaviAikas/wizard-wars

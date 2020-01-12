@@ -6,8 +6,8 @@
 
 
 
-WaterSpray::WaterSpray(int start_x, int start_y, float dir_x, float dir_y) 
-            : Spray::Spray(start_x, start_y, dir_x, dir_y, 100, 100, false) {
+WaterSpray::WaterSpray(int start_x, int start_y, float dir_x, float dir_y,Map* &map) 
+            : Spray::Spray(start_x, start_y, dir_x, dir_y, 100, 100, false, map) {
     damage = 20;
     sprite = al_load_bitmap("resources/waveSpray.bmp");
     ticks = 0; //Count time 

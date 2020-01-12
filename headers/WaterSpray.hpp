@@ -6,7 +6,7 @@
 #include <allegro5/allegro.h>
 class WaterSpray: public Spray {
     public:
-        WaterSpray(int start_x, int start_y, float dir_x, float dir_y);
+        WaterSpray(int start_x, int start_y, float dir_x, float dir_y, Map* &map);
 
         int get_damage();
 

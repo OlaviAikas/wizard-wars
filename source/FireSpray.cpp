@@ -18,6 +18,9 @@ FireSpray::FireSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, 
     ticks = 0; //Count time 
 }
 
+FireSpray::~FireSpray() {
+    al_destroy_bitmap(sprite);
+}
 int FireSpray::get_damage() {
     return damage;
 }

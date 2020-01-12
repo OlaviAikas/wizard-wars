@@ -6,7 +6,7 @@
 class HealFireZ: public Zone {
     public:
         HealFireZ(int start_x, int start_y);
-
+        ~HealFireZ();
         int get_damage();
 
         virtual void on_collision(MapObject &other);

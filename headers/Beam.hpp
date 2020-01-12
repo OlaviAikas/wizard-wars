@@ -8,7 +8,7 @@
 class Beam: public Spell {
     public:
         Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width, int height, bool noclip, bool* mouse_down, Map* map);
-        ~Beam();
+        virtual ~Beam();
 
         void move();
 

@@ -7,7 +7,7 @@
 class FireSpray: public Spray {
     public:
         FireSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map);
-
+        ~FireSpray();
         int get_damage();
 
         virtual void on_collision(MapObject &other);

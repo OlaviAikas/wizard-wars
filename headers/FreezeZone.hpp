@@ -3,10 +3,13 @@
 #include "Spells.hpp"
 #include "Zone.hpp"
 #include "Player.hpp"
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 class FreezeZ: public Zone {
     public:
         FreezeZ(int start_x, int start_y);
+        ~FreezeZ();
 
         int get_damage();
 
@@ -17,4 +20,5 @@ class FreezeZ: public Zone {
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
+    ALLEGRO_SAMPLE* music05;
 };

@@ -2,10 +2,13 @@
 #include "MapObject.hpp"
 #include "Spells.hpp"
 #include "Zone.hpp"
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 class FogZ: public Zone {
     public:
         FogZ(int start_x, int start_y);
+        ~FogZ();
 
         int get_damage();
 
@@ -15,4 +18,5 @@ class FogZ: public Zone {
     private:
         ALLEGRO_BITMAP* sprite;
         int damage;
+        ALLEGRO_SAMPLE* music04;
 };

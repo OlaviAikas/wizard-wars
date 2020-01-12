@@ -206,7 +206,7 @@ int Map::decode_players(std::string mes_get, short client_number){
     int a=0;
     std::vector<std::string> mes1;
     boost::split(mes1, mes_get, boost::is_any_of(":"));
-    for(int j=1; j<mes1.size(); j++){
+    for(unsigned int j=1; j<mes1.size(); j++){
         for(int a=0; a==10; a++){
             mes1[j].erase(0, 1);
         }
@@ -241,7 +241,7 @@ void Map::decode_spells(std::string mes_get){
         mes1.resize(2);
         mes1[1]=mes1[0];
     }
-    for(int j=1; j<mes1.size(); j++){
+    for(unsigned int j=1; j<mes1.size(); j++){
         bool found=false;
         std::vector<std::string> mes2;
         boost::split(mes2, mes1[j], boost::is_any_of(";"));

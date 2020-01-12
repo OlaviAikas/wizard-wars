@@ -51,7 +51,7 @@ int MapObject::get_next_y(){
 	return this->y;
 }
 
-int MapObject::get_speed(){
+unsigned int MapObject::get_speed(){
 	return 0;
 }
 
@@ -93,7 +93,7 @@ bool MapObject::operator<=(MapObject &other){
 #endif
     int newpos_x = this->get_next_x();
     int newpos_y = this->get_next_y();
-    int speed = this->get_speed();
+    unsigned int speed = this->get_speed();
     int othx = other.get_x();
     int othy = other.get_y();
     int othheight = other.get_height();
@@ -149,6 +149,7 @@ bool MapObject::operator<=(MapObject &other){
         }
 	    return false;
 	}
+    return false;
 }
 
 bool MapObject::get_drawsprite() const{

@@ -121,6 +121,7 @@ std::string Server::generateResponse(std::string message){
         //break;
     //}
     //return ss.str();
+    return "";
 }
 
 void Server::send_string(std::string s){

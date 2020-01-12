@@ -44,7 +44,7 @@ debug-no-clean-mac: mac
 verbose: CFLAGS := -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy \
 				   -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs \
 				   -Wnoexcept -Woverloaded-virtual -Wredundant-decls \
-				   -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=4 \
+				   -Wsign-conversion -Wstrict-null-sentinel -Wstrict-overflow=3 \
 				   -Wswitch-default -Wundef -Werror -Wno-unused
 verbose: clean game
 

@@ -9,6 +9,7 @@ class FreezeZ: public Zone {
         FreezeZ(int start_x, int start_y);
         ~FreezeZ();
         int get_damage();
+        using MapObject::on_collision;
         virtual void on_collision(Player &other);
         virtual void draw(int camera_x, int camera_y);
 

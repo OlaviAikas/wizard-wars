@@ -93,7 +93,7 @@ void Client::onResponse(std::string message){
         message.erase(0, 1);
     }
     boost::split(mes, message, boost::is_any_of("|"));
-    for(int j=0; j<mes.size(); j++){
+    for(unsigned int j=0; j<mes.size(); j++){
         if (mes[j].find("thisisplayer") != std::string::npos){
             (this->map)->decode_players(mes[j], client_number);
         }

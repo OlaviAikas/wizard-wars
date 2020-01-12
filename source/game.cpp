@@ -429,6 +429,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                         //     break;
                         case 11:
                             (*pit)->hit(-10);
+                            break;
 
                         default:
 
@@ -458,6 +459,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                 if (event.mouse.button == 1) {
                     left_mouse_down = false;
                 }
+                break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
                 if (event.keyboard.keycode == ALLEGRO_KEY_U) {//life
@@ -821,7 +823,8 @@ void game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
         {
             al_set_target_bitmap(buffer);
 
-            al_clear_to_color(al_map_rgb(0, 0, 255));
+
+
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
             al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);

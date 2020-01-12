@@ -319,9 +319,9 @@ void Map::decode_spells(std::string mes_get){
                     float* dxp=&dx; 
                     float dy=stof(mes2[11]);
                     float* dyp=&dy; 
-                    bool mouse_down=stoi(mes2[13]);
+                    bool mouse_down=(stoi(mes2[13])==1);
                     bool* mousedown=&mouse_down; 
-                    spells.push_back(new DealingB(pit,dxp,dyp,mousedown,this));
+                    spells.push_back(new DealingB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
                 }
                 if(std::stoi(mes2[7])==1){
                     std::list<Player*>::iterator pit=fetch_pit(stoi(mes2[12])); 
@@ -329,9 +329,9 @@ void Map::decode_spells(std::string mes_get){
                     float* dxp=&dx; 
                     float dy=stof(mes2[11]);
                     float* dyp=&dy; 
-                    bool mouse_down=stoi(mes2[13]);
+                    bool mouse_down=(stoi(mes2[13])==1);
                     bool* mousedown=&mouse_down;
-                    spells.push_back(new HealB(pit,dxp,dyp,mousedown,this));
+                    spells.push_back(new HealB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
                 }
                 if(std::stoi(mes2[7])==2){
                     std::list<Player*>::iterator pit=fetch_pit(stoi(mes2[12])); 
@@ -339,9 +339,9 @@ void Map::decode_spells(std::string mes_get){
                     float* dxp=&dx; 
                     float dy=stof(mes2[11]);
                     float* dyp=&dy; 
-                    bool mouse_down=stoi(mes2[13]);
+                    bool mouse_down=(stoi(mes2[13])==1);
                     bool* mousedown=&mouse_down;
-                    spells.push_back(new WaterB(pit,dxp,dyp,mousedown,this));
+                    spells.push_back(new WaterB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
                 }
             }
         }

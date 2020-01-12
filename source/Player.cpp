@@ -15,14 +15,26 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
     this->team = team;
     this->lastgoodposx=start_x;
     this->lastgoodposy=start_y;
-	this->sprites0 = al_load_bitmap("resources/player1.bmp");
-    this->sprites1 = al_load_bitmap("resources/player1walk.bmp");
-	this->sprites2 = al_load_bitmap("resources/player2.bmp");
-	this->sprites3 = al_load_bitmap("resources/player2walk.bmp");
-	this->sprites4 = al_load_bitmap("resources/player3.bmp");
-	this->sprites5 = al_load_bitmap("resources/player3walk.bmp");
-	this->sprites6 = al_load_bitmap("resources/player4.bmp");
-	this->sprites7 = al_load_bitmap("resources/player4walk.bmp");
+    if (team==1) { 
+        this->sprites0 = al_load_bitmap("resources/player1.bmp");
+        this->sprites1 = al_load_bitmap("resources/player1walk.bmp");
+        this->sprites2 = al_load_bitmap("resources/player2.bmp");
+        this->sprites3 = al_load_bitmap("resources/player2walk.bmp");
+        this->sprites4 = al_load_bitmap("resources/player3.bmp");
+        this->sprites5 = al_load_bitmap("resources/player3walk.bmp");
+        this->sprites6 = al_load_bitmap("resources/player4.bmp");
+        this->sprites7 = al_load_bitmap("resources/player4walk.bmp");
+    }
+    else {
+        this->sprites0 = al_load_bitmap("resources/player18.bmp");
+        this->sprites1 = al_load_bitmap("resources/player19.bmp");
+        this->sprites2 = al_load_bitmap("resources/player2.bmp");
+        this->sprites3 = al_load_bitmap("resources/player2walk.bmp");
+        this->sprites4 = al_load_bitmap("resources/player22.bmp");
+        this->sprites5 = al_load_bitmap("resources/player24.bmp");
+        this->sprites6 = al_load_bitmap("resources/player20.bmp");
+        this->sprites7 = al_load_bitmap("resources/player21.bmp");
+    }
     this->number = number; //The first which touch this, I'll find them, track them and gwdogwgjwio them
     this->speed = 10;
     this->count = 0; //keeps the frame count
@@ -73,22 +85,30 @@ void Player::hit(int amount) {
 
 void Player::die() {
     // potentially only if server
-    set_x(curspawn1);
-    set_y(curspawn2);
-    this->dest_x=this->x;
-    this->dest_y=this->y;
+    change_x(curspawn1);
+    change_y(curspawn2);
+    this->x = curspawn1;
+    this->y = curspawn2;
+    this->dest_x=curspawn1;
+    this->dest_y=curspawn2;
     this->old_x=this->x;
     this->old_y=this->y;
     this->respawn_timer=0;
     this->noclip=true;
     this->dead = true;
+    std::cout << dest_x << std::endl;
+    std::cout << dest_y << std::endl;
+    std::cout << curspawn1 << std::endl;
+    std::cout << curspawn2 << std::endl;
 }
 
 void Player::on_collision(MapObject &other) {
-    std::cout << "collision" << std::endl;
+#ifdef DEBUG_MODE
+    std::cout << "DEBUG: player collision" << std::endl;
+#endif
     if (not other.get_noclip()) {
-        dest_x=lastgoodposx;
-        dest_y=lastgoodposy;
+        x=lastgoodposx;
+        y=lastgoodposy;
     }
 }
 
@@ -133,7 +153,7 @@ bool Player::check_dead(){
 void Player::change_curspawn(int spawn1, int spawn2){
     this->curspawn1 = spawn1;
     this->curspawn2 = spawn2;
-};
+}
 
 
 void Player::move() {
@@ -305,7 +325,7 @@ void Player::reset_havechanged(){
 }
 
 std::string Player::encode_player(){
-    std::string encoded="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.0."+std::to_string(number)+".";
+    std::string encoded="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer.0."+std::to_string(number)+".";
     encoded=encoded+std::to_string(x)+"."+std::to_string(y)+".";
     encoded=encoded+std::to_string(dest_x)+"."+std::to_string(dest_y)+".";
     encoded=encoded+std::to_string(hit_points)+".";

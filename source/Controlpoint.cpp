@@ -14,6 +14,12 @@ Controlpoint::Controlpoint(int x, int y, int number, int side, int owner) : MapO
     this->havechanged = false;
 }
 
+Controlpoint::~Controlpoint() {
+	al_destroy_bitmap(control_blue);
+	al_destroy_bitmap(control_red);
+	al_destroy_bitmap(control_neutral);
+}
+
 bool Controlpoint::get_havechanged(){
     return this->havechanged;
 }
@@ -25,7 +31,7 @@ short Controlpoint::get_number() {
     return this->number;
 }
 
-bool Controlpoint::get_owner() {
+int Controlpoint::get_owner() {
     return this->owner;
 }
 

@@ -46,3 +46,17 @@ link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqP
 * Ashish
 * Joci
 * Uranchimeg
+
+
+## How to play the game:
+* Install allegro5 to run the game:
+  - Link describing how to get it:https://wiki.allegro.cc/index.php?title=Install_Allegro5_From_Git/Linux/Debian#Install_Allegro_5_from_Git_on_Debian
+  - From homebrew for mac users (type ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)) on the terminal)
+* Install boost for the server: 
+  - Link describing how to get it:https://www.boost.org/doc/libs/1_61_0/more/getting_started/unix-variants.html
+  - From homebrew for mac users (type brew install boost)
+* Clone this git repository
+* On the terminal write:
+  - make for linux
+  - make mac for mac users
+* Then, write ./game to run the game

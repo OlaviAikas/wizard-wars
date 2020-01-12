@@ -87,67 +87,69 @@ bool MapObject::operator==(MapObject &other) {
     return ((*this <= other) | (other <= *this));
 }
 
-bool MapObject::operator<=(MapObject &other)  {
+bool MapObject::operator<=(MapObject &other){
 #ifdef DEBUG_MODE
     std::cout << "Equality operator at " << this << " vs " << &other << std::endl;
 #endif
-        int newpos_x = this->get_next_x();
-		int newpos_y = this->get_next_y();
-		int speed = this->get_speed();
-		int othx = other.get_x();
-		int othy = other.get_y();
-		int othheight = other.get_height();
-		int othwidth = other.get_width();
-		if (speed == 0) { //check is static to avoid dividing by 0
-			if (this->x >= othx && this->x <= othx + othwidth	){
-        		if (this->y >= othy && this->y <= othy + othheight){
-            		return true;
-        		}
-    		}
-    		if (this->x + this->width >= othx && this->x + this->width <= othx + othwidth) {
-        		if (this->y >= othy && this->y <= othy + othheight) {
-            		return true;
-        		}
-    		}
-    		if (this->x >= othx && this->x <= othx + othwidth) {
-        		if (this->y + this->height >= othy && this->y + this->height <= othy + othheight) {
-            		return true;
-        		}
-    		}
-    		if (this->x + this->width >= othx && this->x + this->width <= othx + othwidth) {
-        		if (this->y + this->height >= othy && this->y + this->height <= othy + othheight) {
-            		return true;
-        		}
-    		}
+    int newpos_x = this->get_next_x();
+    int newpos_y = this->get_next_y();
+    int speed = this->get_speed();
+    int othx = other.get_x();
+    int othy = other.get_y();
+    int othheight = other.get_height();
+    int othwidth = other.get_width();
+    // std::cout << "speed of " << this << " equals " << speed << std::endl;
+    if (speed == 0) { //check is static to avoid dividing by 0
+        // std::cout << "static collision: " << this << " and " << &other << std::endl;
+        if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
+            if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
+                return true;
+            }
+        }
+        if (this->x + this->width >= other.get_x() && this->x + this->width <= other.get_x() + other.get_width()) {
+            if (this->y >= other.get_y() && this->y <= other.get_y() + other.get_height()) {
+                return true;
+            }
+        }
+        if (this->x >= other.get_x() && this->x <= other.get_x() + other.get_width()) {
+            if (this->y + this->height >= other.get_y() && this->y + this->height <= other.get_y() + other.get_height()) {
+                return true;
+            }
+        }
+        if (this->x + this->width >= other.get_x() && this->x + this->width <= other.get_x() + other.get_width()) {
+            if (this->y + this->height >= other.get_y() && this->y + this->height <= other.get_y() + other.get_height()) {
+                return true;
+            }
+        }
 		return false;
-		}
-		else{
-			for (size_t k = speed; k > 1; k--) {
-           		int dxx = round(x + (newpos_x - x)/k);
-				int dyy = round(y + (newpos_y - y)/k);
-				if (dxx >= othx && dxx <= othx + othwidth) {
-	        	if (dyy >= othy && dyy <= othy + othheight) {
-	        	    return true;
-	        		}
-	    		}
-	    		if (dxx + this->width >= othx && dxx + this->width <= othx + othwidth) {
-	        		if (dyy >= othy && dyy <= othy + othheight) {
-	        	    	return true;
-	        		}
-	    		}
-	    		if (dxx >= othx && dxx <= othx + othwidth) {
-	        		if (dyy + this->height >= othy && dyy + this->height <= othy + othheight) {
-	        	    	return true;
-	        		}
-	    		}
-	    		if (dxx + this->width >= othx && dxx + this->width <= othx + othwidth) {
-	        		if (dyy + this->height >= othy && dyy + this->height <= othy + othheight) {
-	        	    	return true;
-	        		}
-	    		}
-	    		return false;
-			}
-		}
+	}
+
+	for (int k = speed; k > 1; k--) {
+        int dxx = round(x + (newpos_x - x)/k);
+		int dyy = round(y + (newpos_y - y)/k);
+		if (dxx >= othx && dxx <= othx + othwidth) {
+            if (dyy >= othy && dyy <= othy + othheight) {
+                return true;
+            }
+        }
+        if (dxx + this->width >= othx && dxx + this->width <= othx + othwidth) {
+            if (dyy >= othy && dyy <= othy + othheight) {
+                return true;
+            }
+        }
+        if (dxx >= othx && dxx <= othx + othwidth) {
+            if (dyy + this->height >= othy && dyy + this->height <= othy + othheight) {
+                return true;
+            }
+        }
+        if (dxx + this->width >= othx && dxx + this->width <= othx + othwidth) {
+            if (dyy + this->height >= othy && dyy + this->height <= othy + othheight) {
+                return true;
+            }
+        }
+	    return false;
+	}
+    return false;
 }
 
 bool MapObject::get_drawsprite() const{
@@ -155,5 +157,5 @@ bool MapObject::get_drawsprite() const{
 }
 
 void MapObject::draw(int camera_x, int camera_y) {
-    // al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
+    //al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
 }

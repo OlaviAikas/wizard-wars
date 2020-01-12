@@ -231,6 +231,7 @@ void Map::decode_spells(std::string mes_get){
     std::vector<std::string> mes1;
     boost::split(mes1, mes_get, boost::is_any_of(":"));
     if(mes1.size()==1){
+        std::cout<<"Resized"<<std::endl;
         mes1.resize(2);
         mes1[1]=mes1[0];
     }
@@ -241,14 +242,18 @@ void Map::decode_spells(std::string mes_get){
         for (std::list<Spell*>::iterator i = spells.begin(); i != spells.end(); i++) {
             if ((*i)->get_id()==std::stoi(mes2[1])){
                 found=true;
+                std::cout<<"Found"<<std::endl;
                 if(std::stoi(mes2[2])==0){
                     (*i)->set_x(std::stoi(mes2[4]));
                     (*i)->set_y(std::stoi(mes2[5]));
+                    std::cout<<"Found projectile"<<std::endl;
                 }
             }
         }
         if(!found){
+            std::cout<<"Not found"<<std::endl;
             if(std::stoi(mes2[3])==0){
+                std::cout<<"Creating projectile"<<std::endl;
                 if(std::stoi(mes2[4])==0){
                     spells.push_back(new Rock(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7])));
                 }
@@ -261,6 +266,7 @@ void Map::decode_spells(std::string mes_get){
             }
         }
     }
+    std::cout<<"Done"<<std::endl;
 }
 
 // std::string Map::encode_player(Player &i){

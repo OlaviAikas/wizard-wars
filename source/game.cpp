@@ -294,6 +294,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->set_spawnpoints(200, 300, 1500,  1500, 2000, 4000, 3000, 1700);
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
+    if (interface->player_number>2){
+        map->players.push_back(new Player(500, 900, 3,1));    
+    }
+    if (interface->player_number>3){
+        map->players.push_back(new Player(900, 500, 4,2));    
+    }
     map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
@@ -727,11 +733,11 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     delete minimap;
 }
 
-void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer){
+void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &number_player){
     delete interface;
     isServer = true;
     boost::asio::io_service io_service;
-    interface = new Server(io_service, 13, &*game_status);
+    interface = new Server(io_service, 13, &*game_status, number_player);
     while(!interface->ready){
         std::cout<<"Not yet"<<std::endl;
     }
@@ -739,13 +745,22 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     game_status->game_state=2;
 }
 
-void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number){
+void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number, std::string &ip, short &player_number){
     delete interface;
     int counter0=al_get_time();
     int counter=0;
     isServer = false;
     boost::asio::io_service io_service;
-    interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
+    interface = new Client(io_service, ip, "13", &*game_status, player_number);
+    while(!interface->connected && !interface->ready){
+        int counter0=al_get_time();
+        int counter=0;
+        interface->send_string("aaaaaaaready");
+        std::cout<<"Sent !"<<std::endl;
+        while(!interface->connected && counter<counter0+5){
+            counter=al_get_time();
+        }
+    }
     while(!interface->ready){
         interface->send_string("ready");
         std::cout<<"Sent !"<<std::endl;
@@ -863,7 +878,7 @@ void change_state(short & state, short new_state) {
 void np_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short &client_number, short &player_number) {
 
     ALLEGRO_FONT *DejaVuSans = al_load_font("resources/DejaVuSans.ttf",52,0);
     std::string input = "";
@@ -917,7 +932,8 @@ void np_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &
                     input.pop_back();
                 }
                 if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                    //Gift for Paul, the number of players is in the string "input"
+                    player_number=std::stoi(input);
+                    game_status->game_state = 4;
                 }
                 if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                     game_status->game_state = 1;
@@ -1122,6 +1138,8 @@ int main(int argc, char **argv)
     Interface* interface=new Interface();
     bool isServer=true;
     short client_number=1;
+    std::string ip;
+    short player_number=2;
     /*
     Game state states:
     0 => Exit game
@@ -1163,10 +1181,10 @@ int main(int argc, char **argv)
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
         if (game_status.game_state == 4){
-            server_loop(&game_status, interface, isServer);
+            server_loop(&game_status, interface, isServer, player_number);
         }
         if (game_status.game_state == 5){
-            client_loop(&game_status, interface, isServer, client_number);
+            client_loop(&game_status, interface, isServer, client_number, ip, player_number);
         }
         if (game_status.game_state == 6) {
             red_game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
@@ -1184,7 +1202,7 @@ int main(int argc, char **argv)
         if (game_status.game_state == 9) {
             np_input_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number, player_number);
         }
     }
 

@@ -2,7 +2,7 @@
 using boost::asio::ip::udp;
 
 Client::Client(boost::asio::io_service& io_service, const std::string& host,
-  const std::string& port, Gamestatus * gs) 
+  const std::string& port, Gamestatus * gs, short player_number) 
 :io_service_(io_service), socket_(io_service, udp::endpoint (udp::v4(), 0)) { 
     udp::resolver resolver(io_service_); 
     udp::resolver::query query(udp::v4(), host, port); 
@@ -12,6 +12,7 @@ Client::Client(boost::asio::io_service& io_service, const std::string& host,
     ready=false;
     start_listening(); 
     start_senders();
+    this->player_number=player_number;
 }
 
 Client::~Client(){
@@ -87,6 +88,15 @@ void Client::onResponse(std::string message){
     if (!ready && message.find("go4") != std::string::npos){
         ready=true;
         client_number=4;
+    }
+    if (message.find("weare2") != std::string::npos){
+        player_number=2;
+    }
+    if (message.find("weare3") != std::string::npos){
+        player_number=3;
+    }
+    if (message.find("weare4") != std::string::npos){
+        player_number=4;
     }
     std::vector<std::string> mes;
     for(int a=0; a==10; a++){

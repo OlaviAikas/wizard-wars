@@ -4,6 +4,8 @@ Interface::Interface(){
     ready=false;
     client_number=1;
     map=new Map("resources/map.bmp");
+    connected=false;
+    player_number=2;
 }
 
 Interface::~Interface() { }

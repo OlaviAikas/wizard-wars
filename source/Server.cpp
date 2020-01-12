@@ -11,6 +11,7 @@ Server::Server(boost::asio::io_service &io_service, unsigned short port, Gamesta
     start_listening();
     game_status = gs;
     ready=false;
+    this->player_number=number_players;
 }
 Server::~Server(){
     terminate();
@@ -59,11 +60,20 @@ std::string Server::generateResponse(std::string message){
     // std::cout<<message<<std::endl;
     if((!ready) && message.find("ready") != std::string::npos){
         players_connected++;
-        std::cout<<"go"<<std::endl;
-        std::string answer = "aaaaaaaaaaago"+std::to_string(players_connected);
+        std::cout<<"readytoo"<<std::endl;
+        std::string answer = "aaaaaaaaaaaweare"+std::to_string(player_number)+"readytoo"+std::to_string(players_connected);
         std::cout<<answer<<std::endl;
-        ready=true;
+        if(players_connected==player_number){
+            ready=true;
+            answer="aaaaaaaaaaago";
+        }
         return answer;
+    }
+    if(message.find("stillthere") != std::string::npos){
+        if(ready){
+            return("aaaaaaaaaaweare"+std::to_string(player_number)+"go"+std::to_string(players_connected));
+        }
+        return("yup");
     }
     if(message.find("thisisplayer") != std::string::npos){
         bool spell=false;

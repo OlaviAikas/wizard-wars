@@ -28,7 +28,6 @@ class Server : public Interface{
     protected:
     
     private:
-    
     boost::asio::io_service& io_service_;
     udp::socket socket_;
     udp::endpoint sender_endpoint_;

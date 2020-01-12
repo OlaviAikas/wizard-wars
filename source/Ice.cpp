@@ -12,6 +12,14 @@ Ice::Ice(int start_x, int start_y, float dir_x, float dir_y)
     element = "2";
 }
 
+Ice::Ice(int start_x, int start_y, float dir_x, float dir_y, int ID) 
+            : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 12, 12, false, 40) {
+    damage = 5;
+    sprite = al_load_bitmap("resources/iceProjectiles.bmp");
+    element = "2";
+    id=ID;
+}
+
 Ice::~Ice() {
     al_destroy_bitmap(sprite);
 }

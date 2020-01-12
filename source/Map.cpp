@@ -256,16 +256,16 @@ void Map::decode_spells(std::string mes_get){
             if(std::stoi(mes2[2])==0){
                 std::cout<<"Creating projectile"<<std::endl;
                 if(std::stoi(mes2[3])==0){
-                    spells.push_back(new Rock(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7])));
+                    spells.push_back(new Rock(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
                 }
                 if(std::stoi(mes2[3])==1){
-                    spells.push_back(new FireP(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7])));
+                    spells.push_back(new FireP(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
                 }
                 if(std::stoi(mes2[3])==2){
-                    spells.push_back(new Ice(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7])));
+                    spells.push_back(new Ice(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
                 }
                 if(std::stoi(mes2[3])==3){
-                    spells.push_back(new HealP(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7])));
+                    spells.push_back(new HealP(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7]), stoi(mes2[1])));
                 }
             }
         }

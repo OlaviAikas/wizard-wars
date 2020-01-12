@@ -149,10 +149,10 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
 void red_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
-    ALLEGRO_BITMAP *endgame_background = al_load_bitmap("resources/background.bmp");
+    ALLEGRO_BITMAP *endgame_background = al_load_bitmap("resources/red_team_won.bmp");
     void (*changeptr)(short &, short new_state);
     changeptr = change_state;
-    Button<short &, short>* main_menu = new Button<short &, short>(840, 500, "resources/start.bmp", changeptr);
+    Button<short &, short>* main_menu = new Button<short &, short>(840, 900, "resources/main_menu.bmp", changeptr);
 
     while(game_status->game_state == 6) {
     al_wait_for_event(queue, &event);
@@ -196,7 +196,7 @@ void red_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUE
 
             al_clear_to_color(al_map_rgb(255, 0, 0));
 
-            //al_draw_scaled_bitmap(endgame_background, 0, 0, al_get_bitmap_width(endgame_background), al_get_bitmap_height(endgame_background), 0, 0, 1920, 1080, 0);
+            al_draw_scaled_bitmap(endgame_background, 0, 0, al_get_bitmap_width(endgame_background), al_get_bitmap_height(endgame_background), 0, 0, 1920, 1080, 0);
             main_menu->draw();
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -213,10 +213,10 @@ void red_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUE
 void blue_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
-    ALLEGRO_BITMAP *endgame_background = al_load_bitmap("resources/background.bmp");
-    void (*changeptr)(short &, short new_state);
+    ALLEGRO_BITMAP *endgame_background = al_load_bitmap("resources/blue_team_won.bmp");
+     void (*changeptr)(short &, short new_state);
     changeptr = change_state;
-    Button<short &, short>* main_menu = new Button<short &, short>(840, 500, "resources/start.bmp", changeptr);
+    Button<short &, short>* main_menu = new Button<short &, short>(840, 900, "resources/main_menu.bmp", changeptr);
 
     while(game_status->game_state == 7) {
     al_wait_for_event(queue, &event);
@@ -258,9 +258,9 @@ void blue_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QU
         {
             al_set_target_bitmap(buffer);
 
-            al_clear_to_color(al_map_rgb(0, 0, 255));
+            al_clear_to_color(al_map_rgb(255, 0, 0));
 
-            //al_draw_scaled_bitmap(endgame_background, 0, 0, al_get_bitmap_width(endgame_background), al_get_bitmap_height(endgame_background), 0, 0, 1920, 1080, 0);
+            al_draw_scaled_bitmap(endgame_background, 0, 0, al_get_bitmap_width(endgame_background), al_get_bitmap_height(endgame_background), 0, 0, 1920, 1080, 0);
             main_menu->draw();
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
@@ -283,12 +283,13 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     Map* map=(interface->map);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     //map->decode_players("0.14868.815.713");
-    map->set_spawnpoints(200, 300, 1500,  1800, 1500, 1500, 2000, 400);
+    map->set_spawnpoints(200, 300, 1500,  1500, 2000, 4000, 3000, 1700);
     map->players.push_back(new Player(400, 400, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
-    map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
     map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
+    map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
+    map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     map->statics.push_back(new MapObject(0, 0, 250, 2160, false));
     map->statics.push_back(new MapObject(0, 0, 3840, 200, false));
     map->statics.push_back(new MapObject(0, 1910, 3840, 250, false));
@@ -299,7 +300,6 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->statics.push_back(new MapObject(3240, 1550, 600, 600, false));
     map->statics.push_back(new MapObject(2002, 1020, 940, 590, false));
     map->statics.push_back(new MapObject(200, 200, 120, 120, false));
-    map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     game_status->map = map;
     Camera camera = Camera(0, 0);
     bool left_mouse_down = false;
@@ -895,7 +895,9 @@ int main(int argc, char **argv)
     3 => settings?
     4 => Create game
     5 => Join game
-    6 => Game Ended
+    6 => Game Ended Red
+    7 => Game Ended Blue
+
     */
     bool redraw = true;
     ALLEGRO_EVENT event;
@@ -954,23 +956,3 @@ int direction(int click_x, int click_y, int loc_x, int loc_y){
     return (click_y - loc_y)/(click_x - loc_x);
 }
 
-<<<<<<< HEAD
-=======
-void game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
-                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
-        if(redraw && al_is_event_queue_empty(queue))
-        {
-            al_set_target_bitmap(buffer);
-
-
-
-            al_set_target_backbuffer(disp);
-            al_clear_to_color(al_map_rgb(0,0,0));
-            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
-            al_flip_display();
-
-            redraw = false;
-        }
-}
->>>>>>> 22cc2f3241d307f3761697b57fc9d8b77f9431d3

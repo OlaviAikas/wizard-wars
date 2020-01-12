@@ -34,7 +34,6 @@ void WaterSpray::on_collision(MapObject &other) {
         this->noclip = true;
     }
 }
-
 // void must_init(bool, const char);
 
 //void WaterSpray::draw(int camera_x, int camera_y) {

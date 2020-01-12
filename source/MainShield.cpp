@@ -6,14 +6,13 @@
 #include <allegro5/allegro_primitives.h>
 #include <list>
 
-MainShield::MainShield(int start_x, int start_y, float dir_x, float dir_y) 
+MainShield::MainShield(int start_x, int start_y, float dir_x, float dir_y,bool subshield) 
             : Shield::Shield(start_x, start_y, dir_x, dir_y, 16, 16, false) {
     damage = 0;
     sprite = al_load_bitmap("resources/shield0.bmp");
     int time1 = 0;
     music11 = al_load_sample("resources/main_shield.wav");
     if (music11) al_play_sample(music11, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id);
-    
 }
 
 MainShield::~MainShield(){
@@ -31,21 +30,23 @@ int MainShield::get_damage() {
 
 
 void MainShield::draw(int camera_x, int camera_y) {
-    al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 255, 100));
+   // al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 255, 100));
     //time1=time1+1;
     //if (time1>30) {
     //    this->garbage_collect = true;
     //}
     //float angle = atan2(dir_y,dir_x);
     //al_draw_scaled_rotated_bitmap(this->sprite,50,5, x - camera_x, y - camera_y,2,2, angle,0);
-    time1=time1+1;
-    if (time1>300) {
-        this->garbage_collect = true;
-    }
-    float angle = atan2(dir_y,dir_x);
-    float bitmapw = al_get_bitmap_width(sprite);
-    float bitmaph = al_get_bitmap_height(sprite);
-    al_draw_scaled_rotated_bitmap(this->sprite,0,bitmaph/2, x - camera_x, y - camera_y,2,2, angle,0);
+    if (subshield==true){
+        time1=time1+1;
+        if (time1>300) {
+            this->garbage_collect = true;
+        }
+        float angle = atan2(dir_y,dir_x);
+        float bitmapw = al_get_bitmap_width(sprite);
+        float bitmaph = al_get_bitmap_height(sprite);
+        al_draw_scaled_rotated_bitmap(this->sprite,0,bitmaph/2, x - camera_x, y - camera_y,2,2, angle,0);
+}
 }
 
 void MainShield::on_collision(MapObject &other) {

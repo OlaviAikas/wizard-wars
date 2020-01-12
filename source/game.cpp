@@ -572,18 +572,18 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                                 int pmy = (*pit)->get_y() + (*pit)->get_height()/2;
                                 double rx = dy;
                                 double ry = -1*dx;
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width(),pmy + 1.5*dy*(*pit)->get_height(), dx, dy));
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 5*ry*12, dx, dy));
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 5*ry*12, dx, dy));
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 4*ry*12, dx, dy));
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 4*ry*12, dx, dy));
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 3*ry*12, dx, dy));
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 3*ry*12, dx, dy));
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 2*ry*12, dx, dy));
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 2*ry*12, dx, dy));
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 1*ry*12, dx, dy));
-                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 1*ry*12, dx, dy));
-                                cooldowns[4] == 40;
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width(),pmy + 1.5*dy*(*pit)->get_height(), dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 5*ry*12, dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 5*ry*12, dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 4*ry*12, dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 4*ry*12, dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 3*ry*12, dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 3*ry*12, dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 2*ry*12, dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 2*ry*12, dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 1*ry*12, dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 1*ry*12, dx, dy));
+                                cooldowns[4] = 40;
                             }
                             break;
                         case 9: // 3*3 O + O Fire + Fire = Fire Spray

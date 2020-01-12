@@ -65,6 +65,9 @@ void game_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, AL
 void settings_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
 
+void ip_input_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
+                    ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, Interface &interface, bool &isServer);
+
 void red_game_end_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
@@ -102,7 +105,7 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
 
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                 create_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 4);
-                join_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 5);
+                join_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 8);
                 settings->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 3);
                 end_game->mouse_input(event.mouse.x / sx, event.mouse.y / sy, game_status->game_state, 0);
                 break;
@@ -863,6 +866,106 @@ void change_state(short & state, short new_state) {
     state = new_state;
 }
 
+void ip_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
+                    unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
+                    const float &windowWidth, const float &windowHeight, const float &scaleX,
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
+
+    ALLEGRO_FONT *DejaVuSans = al_load_font("resources/DejaVuSans.ttf",52,0);
+    std::string input = "";
+    bool can_enter = true;
+    unsigned int counter = 0;
+
+    while(game_status->game_state == 8) {
+    al_wait_for_event(queue, &event);
+    switch(event.type)
+        {
+            case ALLEGRO_EVENT_TIMER:
+                for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
+                    key[i] &= KEY_SEEN;
+                redraw = true;
+                break;
+
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                break;
+
+            case ALLEGRO_EVENT_KEY_DOWN:
+                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
+                if (event.keyboard.keycode == ALLEGRO_KEY_0) {
+                    input.append("0");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_1) {
+                    input.append("1");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_2) {
+                    input.append("2");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_3) {
+                    input.append("3");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_4) {
+                    input.append("4");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_5) {
+                    input.append("5");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_6) {
+                    input.append("6");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_7) {
+                    input.append("7");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_8) {
+                    input.append("8");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_9) {
+                    input.append("9");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_FULLSTOP) {
+                    input.append(".");
+                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && input.size() > 0) {
+                    input.pop_back();
+                } if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
+                    //Gift for Paul, the ip is in the string "input"
+                }
+
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                key[event.keyboard.keycode] &= KEY_RELEASED;
+                break;
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                game_status->game_state = 0;
+                break;
+
+            default:
+                break;
+        }
+            if(redraw && al_is_event_queue_empty(queue))
+        {
+            al_set_target_bitmap(buffer);
+            int bw = al_get_bitmap_width(buffer);
+            int bh = al_get_bitmap_height(buffer);
+
+            al_clear_to_color(al_map_rgb(234, 231, 28));
+            al_draw_text(DejaVuSans, al_map_rgb(0,0,0), bw / 2, bh / 2 - 2 * 52 - 16, 1, "Please enter server IP address:");
+            al_draw_filled_rectangle(bw * 0.25, bh / 2 - 52, bw * 0.75, bh / 2 + 16, al_map_rgb(0,0,0));
+            al_draw_filled_rectangle(bw * 0.25 + 5, bh / 2 - 47, bw * 0.75 - 5, bh / 2 + 11, al_map_rgb(234, 231, 28));
+            al_draw_text(DejaVuSans, al_map_rgb(0,0,0), bw / 2, bh / 2 - 46, 1, input.c_str());
+            al_draw_text(DejaVuSans, al_map_rgb(0,0,0), bw / 2, bh / 2 + 32, 1, "Press 'ENTER' to continue");
+
+            al_set_target_backbuffer(disp);
+            al_clear_to_color(al_map_rgb(0,0,0));
+            al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+            al_flip_display();
+
+            redraw = false;
+        }
+    }
+    //delete what you loaded
+    al_destroy_font(DejaVuSans);
+}
+
 int main(int argc, char **argv)
 {
     must_init(al_init(), "allegro");
@@ -930,6 +1033,8 @@ int main(int argc, char **argv)
     5 => Join game
     6 => Game Ended Red
     7 => Game Ended Blue
+    8 => Enter ip window
+
 
     */
     bool redraw = true;
@@ -971,6 +1076,11 @@ int main(int argc, char **argv)
         if (game_status.game_state == 7) {
             blue_game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+        }
+        if (game_status.game_state == 8) {
+            ip_input_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
+                    screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
         }
     }
 

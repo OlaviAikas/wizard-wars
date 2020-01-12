@@ -30,6 +30,8 @@
 #include "../headers/Zone.hpp"
 #include "../headers/HealZone.hpp"
 #include "../headers/HealB.hpp"
+#include "../headers/DealingB.hpp"
+#include "../headers/WaterB.hpp"
 #include "../headers/Beam.hpp"
 #include "../headers/DZone.hpp"
 #include "../headers/FogZone.hpp"
@@ -326,65 +328,111 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             }
                             break;
                         case 7: // 7*1 K+U Ice+Life
-                            map -> spells.push_back(new HealP((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                            if (cooldowns[7] == 0) {
+                                map -> spells.push_back(new HealP((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                                cooldowns[7] = 15;
+                            }
                             break;
                         case 33: // 11*3 L+O Rock+Fire
-                            map -> spells.push_back(new FireP((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                            if (cooldowns[33] == 0) {
+                                map -> spells.push_back(new FireP((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy));
+                                cooldowns[33] = 20;
+                            }
                             break;
                         case 2: // 2*1 I+U Shield+Life
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
-                                map -> spells.push_back(new HealZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
-                            }
-                            else {
-                                map -> spells.push_back(new HealZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            if (cooldowns[2] == 0) {
+                                if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                                    map -> spells.push_back(new HealZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
+                                }
+                                else {
+                                    map -> spells.push_back(new HealZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                                }
+                                if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                                    map -> spells.push_back(new HealZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
+                                }
+                                else {
+                                    map -> spells.push_back(new HealZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                                }
+                                cooldowns[2] = 45;
                             }
                             break;
                         case 3: // 3*1 O+U Fire+Life
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
-                            map -> spells.push_back(new HealFireZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
-                            }
-                            else {
-                            map -> spells.push_back(new HealFireZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            if (cooldowns[3] == 0) {
+                                if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                                map -> spells.push_back(new HealFireZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
+                                }
+                                else {
+                                map -> spells.push_back(new HealFireZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                                }
+                                cooldowns[3] = 45;
                             }
                             break;
                         case 25: // 5*5 J+J Water+Water = WaterSpray
-                            map -> spells.push_back(new WaterSpray(pit, &dxp, &dyp, &left_mouse_down, map));
+                            if (cooldowns[25] == 0) {
+                                map -> spells.push_back(new WaterSpray(pit, &dxp, &dyp, &left_mouse_down, map));
+                                cooldowns[25] = 5;
+                            }
                             break;
                             // ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav");
     // // must_init(music, "music");
     // al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
                         case 5: // 5*1 J+U Water+Life
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
-                            map -> spells.push_back(new DamageZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
-                            }
-                            else {
-                            map -> spells.push_back(new DamageZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            if(cooldowns[5] == 0) {
+                                if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                                map -> spells.push_back(new DamageZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
+                                }
+                                else {
+                                map -> spells.push_back(new DamageZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                                }
+                                cooldowns[5] = 5;
                             }
                             break;
                         case 15: // 3*5 O+J Fire+Water
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
-                            map -> spells.push_back(new FogZ((*pit)->get_x() - (*pit)->get_width()/2+4*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+4*dy*(*pit)->get_height()));
+                            if (cooldowns[15] == 0) {
+                                if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                                map -> spells.push_back(new FogZ((*pit)->get_x() - (*pit)->get_width()/2+4*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+4*dy*(*pit)->get_height()));
+                                }
+                                else {
+                                map -> spells.push_back(new FogZ(event.mouse.x / sx + camera.get_x() - 3*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 3*(*pit)->get_height()));
+                                }
+                                cooldowns[15] == 45;
                             }
-                            else {
-                            map -> spells.push_back(new FogZ(event.mouse.x / sx + camera.get_x() - 3*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 3*(*pit)->get_height()));
-                            }
+
                             break;
                         case 77: // 7*11 K+L Ice+Rock
-                            if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
-                            map -> spells.push_back(new FreezeZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
-                            }
-                            else {
-                            map -> spells.push_back(new FreezeZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                            if (cooldowns[77] == 0) {
+                                if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
+                                map -> spells.push_back(new FreezeZ((*pit)->get_x() - (*pit)->get_width()/2+6*dx*(*pit)->get_width(),(*pit)->get_y() - (*pit)->get_height()/2+6*dy*(*pit)->get_height()));
+                                }
+                                else {
+                                map -> spells.push_back(new FreezeZ(event.mouse.x / sx + camera.get_x() - 1.5*(*pit)->get_width(), event.mouse.y / sy + camera.get_y() - 1.5*(*pit)->get_height()));
+                                }
+                                cooldowns[77] = 45;
                             }
                             break;
                         case 1: // 1*1 U+U Life + Life = Healing beam
-                            map -> spells.push_back(new HealB(pit, &dxp, &dyp, &left_mouse_down, map));
+                            if (cooldowns[1] == 0) {
+                                map -> spells.push_back(new HealB(pit, &dxp, &dyp, &left_mouse_down, map));
+                                cooldowns[1] = 5;
+                            }
+                            break;
+                        case 21: // 3*7 Ice + Fire = Dealing Beam
+                            map -> spells.push_back(new DealingB(pit, &dxp, &dyp, &left_mouse_down, map));
+                            break;
+                        case 55: // 5*11 Rock + Water = Water Beam
+                            map -> spells.push_back(new WaterB(pit, &dxp, &dyp, &left_mouse_down, map));
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
-                            map -> spells.push_back(new MainShield((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy,false));
+                            if (cooldowns[4] == 0) {
+                                map -> spells.push_back(new MainShield((*pit)->get_x() + (*pit)->get_width()/2 + 1*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 1*dy*(*pit)->get_height(),dx,dy,false));
+                                cooldowns[4] = 15;
+                            }
                             break;
                         case 9: // 3*3 O + O Fire + Fire = Fire Spray
-                            map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
+                            if (cooldowns[9] == 0) {
+                                map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
+                                cooldowns[9] = 5;
+                            }
 
                             break;
                         default:

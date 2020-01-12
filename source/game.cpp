@@ -979,7 +979,7 @@ void np_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &
 void ip_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number, std::string &ip) {
 
     ALLEGRO_FONT *DejaVuSans = al_load_font("resources/DejaVuSans.ttf",52,0);
     std::string input = "";
@@ -1038,7 +1038,8 @@ void ip_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &
                     input.pop_back();
                 }
                 if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                    //Gift for Paul, the ip is in the string "input"
+                    ip=input;
+                    game_status->game_state = 5;
                 }
                 if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                     game_status->game_state = 1;
@@ -1197,7 +1198,7 @@ int main(int argc, char **argv)
         if (game_status.game_state == 8) {
             ip_input_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number, ip);
         }
         if (game_status.game_state == 9) {
             np_input_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,

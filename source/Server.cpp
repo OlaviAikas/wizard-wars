@@ -60,7 +60,7 @@ std::string Server::generateResponse(std::string message){
     // std::cout<<message<<std::endl;
     if((!ready) && message.find("ready") != std::string::npos){
         players_connected++;
-        std::cout<<"go"<<std::endl;
+        std::cout<<"readytoo"<<std::endl;
         std::string answer = "aaaaaaaaaaareadytoo"+std::to_string(players_connected);
         std::cout<<answer<<std::endl;
         if(players_connected==number_players){
@@ -71,7 +71,7 @@ std::string Server::generateResponse(std::string message){
     }
     if(message.find("stillthere") != std::string::npos){
         if(ready){
-            return("aaaaaaaaaago");
+            return("aaaaaaaaaago"+std::to_string(players_connected));
         }
         return("yup");
     }

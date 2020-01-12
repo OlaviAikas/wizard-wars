@@ -91,6 +91,15 @@ void Client::onResponse(std::string message){
     if(!ready && message.find("go") != std::string::npos){
         ready=true;
     }
+    if (!connected && message.find("go2") != std::string::npos){
+        client_number=2;
+    }
+    if (!connected && message.find("go3") != std::string::npos){
+        client_number=3;
+    }
+    if (!connected && message.find("go4") != std::string::npos){
+        client_number=4;
+    }
     std::vector<std::string> mes;
     for(int a=0; a==10; a++){
         message.erase(0, 1);

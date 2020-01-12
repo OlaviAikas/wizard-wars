@@ -736,12 +736,12 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
     game_status->game_state=2;
 }
 
-void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number){
+void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number, std::string &ip){
     delete interface;
     isServer = false;
     boost::asio::io_service io_service;
-    interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
-    while(!interface->connected){
+    interface = new Client(io_service, ip, "13", &*game_status);
+    while(!interface->connected && !interface->ready){
         int counter0=al_get_time();
         int counter=0;
         interface->send_string("aaaaaaaready");
@@ -869,7 +869,7 @@ void change_state(short & state, short new_state) {
 void ip_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer, 
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight,
                     const float &windowWidth, const float &windowHeight, const float &scaleX,
-                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short client_number) {
+                    const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy, Interface* &interface, bool &isServer, short &client_number, std::string &ip) {
 
     ALLEGRO_FONT *DejaVuSans = al_load_font("resources/DejaVuSans.ttf",52,0);
     std::string input = "";
@@ -927,7 +927,8 @@ void ip_input_loop(Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &
                 if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && input.size() > 0) {
                     input.pop_back();
                 } if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                    //Gift for Paul, the ip is in the string "input"
+                    game_status->game_state=5;
+                    ip=input;
                 }
 
                 break;
@@ -1023,6 +1024,7 @@ int main(int argc, char **argv)
     Interface* interface=new Interface();
     bool isServer=true;
     short client_number=1;
+    std::string ip;
     /*
     Game state states:
     0 => Exit game
@@ -1067,7 +1069,7 @@ int main(int argc, char **argv)
             server_loop(&game_status, interface, isServer);
         }
         if (game_status.game_state == 5){
-            client_loop(&game_status, interface, isServer, client_number);
+            client_loop(&game_status, interface, isServer, client_number, ip);
         }
         if (game_status.game_state == 6) {
             red_game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
@@ -1080,7 +1082,7 @@ int main(int argc, char **argv)
         if (game_status.game_state == 8) {
             ip_input_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
-                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
+                    scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number, ip);
         }
     }
 

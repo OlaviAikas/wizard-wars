@@ -25,10 +25,17 @@ Beam::Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width,
     this->mouse_down = mouse_down;
     bool hit = false;
     for (float i = 1; i <= range; i = i + 0.05) {
+        this->x = round(x + (*dxp)*i*width);
+        this->y = round(y + (*dyp)*i*height); 
         // A loop that checks if it collides any player on the map
         for (std::list<Player*>::iterator j = map->players.begin(); j != map->players.end(); j++) {
-            this->x = round(x + (*dxp)*i*width);
-            this->y = round(y + (*dxp)*i*height);    
+            if (*this == **j) {
+                hit = true;
+                break;
+            }
+        }
+        if (hit) { break; }
+        for (std::list<MapObject*>::iterator j = map->statics.begin(); j != map->statics.end(); j++) {
             if (*this == **j) {
                 hit = true;
                 break;
@@ -41,11 +48,9 @@ Beam::Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width,
 Beam::~Beam() { }
 
 void Beam::move() {
-    std::cout << *mouse_down << std::endl;
     if (!*mouse_down) {
-        std::cout << "Button down" << std::endl;
+        noclip = true;
         this->garbage_collect = true;
-        std::cout << "killed beam" << std::endl;
     }
     float dx = *dxp;
     float dy = *dyp;
@@ -55,10 +60,17 @@ void Beam::move() {
     this->origin_y = y;
     bool hit = false;
     for (float i = 1; i <= range; i = i + 0.05) {
+        this->x = round(x + (dx)*i*width);
+        this->y = round(y + (dy)*i*height); 
         // A loop that checks if it collides any player on the map
-        for (std::list<Player*>::iterator j = map->players.begin(); j != map->players.end(); j++) {
-            this->x = round(x + (dx)*i*width);
-            this->y = round(y + (dy)*i*height);    
+        for (std::list<Player*>::iterator j = map->players.begin(); j != map->players.end(); j++) {   
+            if (*this == **j) {
+                hit = true;
+                break;
+            }
+        }
+        if (hit) { break; }
+        for (std::list<MapObject*>::iterator j = map->statics.begin(); j != map->statics.end(); j++) {
             if (*this == **j) {
                 hit = true;
                 break;

@@ -6,9 +6,12 @@
 #include <allegro5/allegro_acodec.h>
 #include <iostream>
 #include <math.h>
+#include <list>
+#include "../headers/Player.hpp"
+#include "../headers/Map.hpp"
 
-FireSpray::FireSpray(int start_x, int start_y, float dir_x, float dir_y) 
-            : Spray::Spray(start_x, start_y, dir_x, dir_y, 100, 100, true) {
+FireSpray::FireSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map) 
+            : Spray::Spray(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
     damage = 20;
     sprite = al_load_bitmap("resources/firespray.bmp");
     ticks = 0; //Count time 

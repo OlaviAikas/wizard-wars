@@ -15,7 +15,7 @@ class Beam: public Spell {
         virtual void draw(int camera_x, int camera_y);
     
     protected:
-        int range;
+        float range;
         std::list<Player*>::iterator pit;
         int origin_x;
         int origin_y;

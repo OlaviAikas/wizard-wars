@@ -1210,8 +1210,7 @@ int main(int argc, char **argv)
             }
             
             
-            
-            game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,red_game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
+            red_game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
         if (game_status.game_state == 7) {

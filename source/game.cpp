@@ -59,9 +59,10 @@
 
 void must_init(bool, const char);
 void change_state(short &, short new_state);
-void Settings_write(int res_1, int res_2);
+void Settings_write(int res_1, int res_2, int vsync);
 int* Settings_read();
-void change_resolution(short &, short new_state);
+void change_resolution(int res_1, int res_2);
+void change_vsync(int vsync);
 void main_menu_loop(Gamestatus *, bool &, ALLEGRO_EVENT_QUEUE* &, ALLEGRO_EVENT &, ALLEGRO_TIMER* &, unsigned char*, ALLEGRO_BITMAP* &,
                     ALLEGRO_DISPLAY* &, const float&, const float&, const float&, const float&, const float&, const float&, const float&, const float&);
 
@@ -807,11 +808,21 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
 
 
 void change_resolution(int res_1, int res_2) {
-    Settings_write(res_1, res_2);
+    int* values = Settings_read();
+    int vsync = values[2];
+    Settings_write(res_1, res_2, vsync);
     std::cout << res_1 << " " << res_2 << std::endl;
 }
 
-void Settings_write(int res_1, int res_2){
+void change_vsync(int vsync) {
+    int* values = Settings_read();
+    int res_1 = values[0];
+    int res_2 = values[1];
+    Settings_write(res_1, res_2, vsync);
+    std::cout << vsync << std::endl;
+}
+
+void Settings_write(int res_1, int res_2, int vsync){
     using namespace std;
     ofstream outf("Settings.txt");
     if (!outf){
@@ -820,6 +831,7 @@ void Settings_write(int res_1, int res_2){
     }
     outf << res_1 << endl;
     outf << res_2 << endl;
+    outf << vsync << endl;
     // outf << "Resolution" << endl;
     // outf << "Buffer" << endl;
     // outf << "VSYNC" << endl;
@@ -833,29 +845,40 @@ int* Settings_read() {
 	{
         std::string line;
         
-        vt.reserve(2);
+        vt.reserve(3);
 		while (getline(myfile, line)) {
             vt.push_back(std::move(line));
-		
+            
 	    }
         myfile.close(); 
-        std::cout << vt[0] <<std::endl;
-        std::cout << vt[1] <<std::endl;
+         std::cout << vt[0] <<std::endl;
+         std::cout << vt[1] <<std::endl;
+         std::cout << vt[2] <<std::endl;
     } else { 
         cerr << "Unable to open Settings.txt" <<endl;
-        exit(1);
+        int* res = new int[3];
+        res[0] = 1920; 
+        res[1] = 1080;
+        res[2] = 2;
+        return res;
     } 
 	// for(l_2=0;l_2<=l;l_2++){ 
 	// 	cout<<array[l_2]<<endl;    
     // }
     
-
-    int* res = new int[2];
-    res[0] = stoi(vt[0]); 
-    res[1] = stoi(vt[1]);
-    return res;
-
     
+    int* res = new int[3];
+    try {
+        res[0] = stoi(vt[0]); 
+        res[1] = stoi(vt[1]);
+        res[2] = stoi(vt[2]);
+    }
+    catch(...) {
+        res[0] = 1920; 
+        res[1] = 1080;
+        res[2] = 2;
+    }
+    return res;
 }
 
 void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
@@ -873,6 +896,10 @@ void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
     Button<int, int>* resolution_2= new Button<int, int>(830, 410, "resources/res_2.bmp", res_ptr);
     Button<int, int>* resolution_3= new Button<int, int>(1130, 410, "resources/res_3.bmp", res_ptr);
     Button<int, int>* resolution_4= new Button<int, int>(1430, 410, "resources/res_4.bmp", res_ptr);
+    void (*vsync_ptr)(int);
+    vsync_ptr = change_vsync;
+    Button<int>* vsync_on= new Button<int>(480, 610, "resources/ON_1.bmp", vsync_ptr);
+    Button<int>* vsync_off= new Button<int>(830, 610, "resources/OFF_1.bmp", vsync_ptr);
     while(game_status->game_state == 3) {
         al_wait_for_event(queue, &event);
         switch(event.type)
@@ -894,6 +921,8 @@ void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
                 resolution_2->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 1280, 720);
                 resolution_3->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 2560, 1440);
                 resolution_4->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 1664, 936);
+                vsync_on->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 1);
+                vsync_off->mouse_input(event.mouse.x / sx, event.mouse.y / sy, 2);
                 break;
             case ALLEGRO_EVENT_KEY_DOWN:
                 key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
@@ -921,10 +950,11 @@ void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
             resolution_2->draw();
             resolution_3->draw();
             resolution_4->draw();
+            vsync_on->draw();
+            vsync_off->draw();
 
             al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,400,0,"Resolution");
-            al_draw_text(main_menu_font,al_map_rgb(120,0,0),175,860,0,"Please restart game to apply changes.");
-            al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,500,0,"Buffer");
+            al_draw_text(main_menu_font,al_map_rgb(255,255,255),175,860,0,"Please restart game to apply changes.");
             al_draw_text(main_menu_font,al_map_rgb(10,0,0),100,600,0,"VSYNC");
 
             al_set_target_backbuffer(disp);
@@ -941,7 +971,8 @@ void settings_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* 
   delete resolution_3; 
   delete resolution_4;  
   delete quit;  
-    
+  delete vsync_on;
+  delete vsync_off;  
 }
 
 void must_init(bool test, const char *description) {
@@ -1173,16 +1204,19 @@ int main(int argc, char **argv)
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
     must_init(queue, "queue");
 
+    int* values = Settings_read();
+    int res_1 = values[0];
+    int res_2 = values[1];
+    int vsync = values[2];
+
     al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
     al_set_new_display_option(ALLEGRO_SAMPLES, 4, ALLEGRO_SUGGEST);
-    al_set_new_display_option(ALLEGRO_VSYNC, 2, ALLEGRO_SUGGEST);
+    al_set_new_display_option(ALLEGRO_VSYNC, vsync, ALLEGRO_SUGGEST);
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 
     //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-
-    int* values = Settings_read();
     
-    ALLEGRO_DISPLAY* disp = al_create_display(values[0], values[1]); //Change this resolution to change window size
+    ALLEGRO_DISPLAY* disp = al_create_display(res_1, res_2); //Change this resolution to change window size
     //ALLEGRO_DISPLAY* disp = al_create_display(1280, 720); //Change this resolution to change window size
 
     must_init(disp, "display");

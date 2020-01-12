@@ -5,7 +5,7 @@
 class HealP: public Projectile {
     public:
         HealP(int start_x, int start_y, float dir_x, float dir_y);
-        HealP(int start_x, int start_y, float dir_x, float dir_y, int IP);
+        HealP(int start_x, int start_y, float dir_x, float dir_y, int IP, bool transmitted[5]);
 
         int get_damage();
 

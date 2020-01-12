@@ -41,9 +41,10 @@ int Projectile::get_next_y(){
 }
 
 std::string Projectile::encode_spell(){
-    std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisspell;"+std::to_string(id)+";0;";
+    std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisspell;"+std::to_string(id)+";"+std::to_string(transmitted[1])+";"+std::to_string(transmitted[2])+";"+std::to_string(transmitted[3])+";"+std::to_string(transmitted[4])+";0;";
     s=s+element+";";
     s=s+std::to_string(x)+";"+std::to_string(y)+";";
     s=s+std::to_string(dir_x)+";"+std::to_string(dir_y);
     return s;
+    //id=1, from 2 to 5, transmitted, 6, type, 7, element, 8, x, 9, y, 10, dir_x, 11, dir_y
 }

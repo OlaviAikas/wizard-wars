@@ -42,6 +42,7 @@ Beam::Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width,
         }
     if (hit) { break; }
     }
+    isBorS=true;
 }
 
 Beam::~Beam() { }
@@ -78,6 +79,13 @@ void Beam::move() {
     if (hit) { break; }
     }
 }
+
+std::string Beam::encode_spell(){
+    std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisspell;"+std::to_string(id)+";2;"+std::to_string(transmitted[1])+";"+std::to_string(transmitted[2])+";"+std::to_string(transmitted[3])+";"+std::to_string(transmitted[4])+";";
+    s=s+element+";";
+    s=s+std::to_string(origin_x)+";"+std::to_string(origin_y)+";"+std::to_string(*dxp)+";"+std::to_string(*dyp)+";"+std::to_string((*pit)->get_id())+";"+std::to_string(*mouse_down);
+    return s;
+ }
 
 void Beam::draw(int camera_x, int camera_y) { 
     //ALLEGRO_SAMPLE* music00 = al_load_sample("music01.wav");

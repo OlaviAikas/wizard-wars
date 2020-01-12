@@ -168,7 +168,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     map->statics.push_back(new MapObject(0, 1710, 800, 450, false));
     map->statics.push_back(new MapObject(3040, 0, 800, 350, false));
     map->statics.push_back(new MapObject(3240, 1550, 600, 600, false));
-    map->statics.push_back(new MapObject(2002, 1020, 940, 590, false));
+    map->statics.push_back(new MapObject(2002, 1020, 840, 250, false));
+    map->statics.push_back(new MapObject(2102, 1270, 840, 200, false));
+    map->statics.push_back(new MapObject(2202, 1470, 840, 150, false));
     map->statics.push_back(new MapObject(200, 200, 120, 120, false));
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
     game_status->map = map;

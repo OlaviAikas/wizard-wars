@@ -3,10 +3,11 @@
 #include <math.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_primitives.h>
 #include <list>
 
-MainShield::MainShield(int start_x, int start_y, float dir_x, float dir_y, bool subshield) 
-            : Shield::Shield(start_x, start_y, dir_x, dir_y, 200, 200, false, subshield) {
+MainShield::MainShield(int start_x, int start_y, float dir_x, float dir_y) 
+            : Shield::Shield(start_x, start_y, dir_x, dir_y, 16, 16, false) {
     damage = 0;
     sprite = al_load_bitmap("resources/shield0.bmp");
     int time1 = 0;
@@ -30,12 +31,13 @@ int MainShield::get_damage() {
 
 
 void MainShield::draw(int camera_x, int camera_y) {
-    time1=time1+1;
-    if (time1>30) {
-        this->garbage_collect = true;
-    }
-    float angle = atan2(dir_y,dir_x);
-    al_draw_scaled_rotated_bitmap(this->sprite,50,5, x - camera_x, y - camera_y,2,2, angle,0);
+    al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 255, 100));
+    //time1=time1+1;
+    //if (time1>30) {
+    //    this->garbage_collect = true;
+    //}
+    //float angle = atan2(dir_y,dir_x);
+    //al_draw_scaled_rotated_bitmap(this->sprite,50,5, x - camera_x, y - camera_y,2,2, angle,0);
 }
 
 void MainShield::on_collision(MapObject &other) {

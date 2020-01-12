@@ -562,13 +562,22 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             break;
                         case 4: // 2*2 I+I Shield + Shield = Main shield
                             if (cooldowns[4] == 0) {
-                                if (sqrt((dx1)*(dx1)+(dy1)*(dy1))>400) {
-                                    map -> spells.push_back(new MainShield((*pit)->get_x() + (*pit)->get_width()/2+4*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2+4*dy*(*pit)->get_height(),dx,dy,false));
-                                }
-                                else {
-                                    map -> spells.push_back(new MainShield(event.mouse.x / sx + camera.get_x() + (*pit)->get_width()/2, event.mouse.y / sy + camera.get_y() +(*pit)->get_height()/2,dx,dy,false));
-                                }
-                                cooldowns[4] = 15;
+                                int pmx = (*pit)->get_x() + (*pit)->get_width()/2;
+                                int pmy = (*pit)->get_y() + (*pit)->get_height()/2;
+                                double rx = dy;
+                                double ry = -1*dx;
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width(),pmy + 1.5*dy*(*pit)->get_height(), dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 5*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 5*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 4*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 4*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 3*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 3*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 2*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 2*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 1*ry*12, dx, dy));
+                                map->spells.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 1*ry*12, dx, dy));
+                                cooldowns[4] == 40;
                             }
                             break;
                         // case 9: // 3*3 O + O Fire + Fire = Fire Spray

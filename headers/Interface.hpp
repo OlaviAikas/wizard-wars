@@ -14,5 +14,6 @@ class Interface {
         short get_client();
         // event handlers
         virtual void send_string(std::string);
+        bool connected;
 
 };

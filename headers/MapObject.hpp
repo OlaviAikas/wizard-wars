@@ -14,7 +14,7 @@ class MapObject {
         virtual void hit(const int amount);
         // I addded a knockback function for the special functions of spray
         virtual void knockback(float di_x, float di_y);
-        virtual void preventhit();
+        //virtual void preventhit();
 
         int get_x() const;
         int get_y() const;

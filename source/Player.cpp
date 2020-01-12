@@ -317,11 +317,11 @@ void Player::reset_havechanged(){
 }
 
 std::string Player::encode_player(){
-    std::string encoded="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer..0.."+std::to_string(number)+"..";
-    encoded=encoded+std::to_string(x)+".."+std::to_string(y)+"..";
-    encoded=encoded+std::to_string(dest_x)+".."+std::to_string(dest_y)+"..";
-    encoded=encoded+std::to_string(hit_points)+"..";
-    encoded=encoded+std::to_string(count)+".."+std::to_string(respawn_timer)+".."+std::to_string(status_effect_timeout_frozen)+".."+std::to_string(prevent_movement);
+    std::string encoded="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer.0."+std::to_string(number)+".";
+    encoded=encoded+std::to_string(x)+"."+std::to_string(y)+".";
+    encoded=encoded+std::to_string(dest_x)+"."+std::to_string(dest_y)+".";
+    encoded=encoded+std::to_string(hit_points)+".";
+    encoded=encoded+std::to_string(count)+"."+std::to_string(respawn_timer)+"."+std::to_string(status_effect_timeout_frozen)+"."+std::to_string(prevent_movement);
     std::cout<<encoded<<std::endl;
     return encoded;
 }

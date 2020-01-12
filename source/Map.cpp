@@ -263,6 +263,9 @@ void Map::decode_spells(std::string mes_get){
                 if(std::stoi(mes2[3])==2){
                     spells.push_back(new Ice(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7])));
                 }
+                if(std::stoi(mes2[3])==3){
+                    spells.push_back(new Ice(stoi(mes2[4]), stoi(mes2[5]), stof(mes2[6]),stof(mes2[7])));
+                }
             }
         }
     }

@@ -66,10 +66,20 @@ std::string Server::generateResponse(std::string message){
         return answer;
     }
     if(message.find("thisisplayer") != std::string::npos){
-        (this->map)->decode_players(message, client_number);
+        bool spell=false;
+        int sender=(this->map)->decode_players(message, client_number);
         std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:";
         for(std::list<Player*>::iterator i = (this->map)->players.begin(); i != (this->map)->players.end(); i++){
             s=s+((*i)->encode_player())+":";
+        }
+        s.pop_back();
+        s=s+"|";
+        for (std::list<Spell*>::iterator i = (this->map)->spells.begin(); i != (this->map)->spells.end(); i++){
+            if(!(*i)->transmitted[sender]){
+                spell=true;
+                (*i)->transmitted[sender]=true;
+                s=s+(*i)->encode_spell()+":";
+            }
         }
         s.pop_back();
         return s;

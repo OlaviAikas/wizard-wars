@@ -13,12 +13,15 @@ FireP::FireP(int start_x, int start_y, float dir_x, float dir_y)
     element = "1";
 }
 
-FireP::FireP(int start_x, int start_y, float dir_x, float dir_y, int ID) 
+FireP::FireP(int start_x, int start_y, float dir_x, float dir_y, int ID, bool transmitted[5]) 
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 20, 20, false, 20) {
     damage = 20;
     sprite = al_load_bitmap("resources/fireProjectile.bmp");
     element = "1";
     id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
 }
 
 int FireP::get_damage() {

@@ -12,7 +12,9 @@ DealingB::DealingB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bo
     damage = 2;
 
 }
-DealingB::~DealingB() { };
+DealingB::~DealingB() { 
+
+};
 
 int DealingB::get_damage() {
     return damage;

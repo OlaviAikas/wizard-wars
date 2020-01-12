@@ -8,7 +8,7 @@
 class MainShield: public Shield {
     public:
         MainShield(int start_x, int start_y, float dir_x, float dir_y, bool subshield);
-
+        ~MainShield();
         int get_damage();
 
         virtual void on_collision(MapObject &other);

@@ -18,8 +18,8 @@ Spray::Spray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int widt
     int lifetime = 2;
     int range = 3;
     bool hit = false;
-    int start_x=(*pit)->get_x() + (*pit)->get_width()/2 + (*pit)->get_width()*(*dxp);
-    int start_y=(*pit)->get_y() + (*pit)->get_height()/2 + (*pit)->get_height()*(*dyp);
+    float start_x=(*pit)->get_x() + (*pit)->get_width()/2 + (*pit)->get_width()*(*dxp);
+    float start_y=(*pit)->get_y() + (*pit)->get_height()/2 + (*pit)->get_height()*(*dyp);
     float dx=start_x+dir_x;
     float dy=start_y + dir_y;
     float a = dir_y/dir_x;

@@ -367,12 +367,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                                 cooldowns[3] = 45;
                             }
                             break;
-                        case 25: // 5*5 J+J Water+Water = WaterSpray
-                            if (cooldowns[25] == 0) {
-                                map -> spells.push_back(new WaterSpray(pit, &dxp, &dyp, &left_mouse_down, map));
-                                cooldowns[25] = 5;
-                            }
-                            break;
+                        // case 25: // 5*5 J+J Water+Water = WaterSpray
+                        //     map -> spells.push_back(new WaterSpray(pit, &dxp, &dyp, &left_mouse_down, map));
+                        //     break;
                             // ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav");
     // // must_init(music, "music");
     // al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
@@ -428,13 +425,12 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                                 cooldowns[4] = 15;
                             }
                             break;
-                        case 9: // 3*3 O + O Fire + Fire = Fire Spray
-                            if (cooldowns[9] == 0) {
-                                map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
-                                cooldowns[9] = 5;
-                            }
+                        // case 9: // 3*3 O + O Fire + Fire = Fire Spray
+                        //     map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
+                        //     break;
+                        case 11:
+                            (*pit)->hit(-10);
 
-                            break;
                         default:
 
                        // } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {

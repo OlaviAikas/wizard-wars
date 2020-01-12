@@ -23,7 +23,9 @@ FireP::FireP(int start_x, int start_y, float dir_x, float dir_y, int ID, bool tr
         this->transmitted[i]=transmitted[i];
     }
 }
-
+FireP::~FireP() {
+    al_destroy_bitmap(sprite);
+}
 int FireP::get_damage() {
     return damage;
 }

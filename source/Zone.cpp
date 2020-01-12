@@ -8,6 +8,6 @@ Zone::Zone(int start_x, int start_y, int width, int height, bool noclip)
     // this->number = number;
     this->hit_animation=false;
 }
-
+Zone::~Zone(){} 
 void Zone::move() {}
 void Zone::draw(int camera_x, int camera_y) { }

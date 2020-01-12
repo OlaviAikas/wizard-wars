@@ -12,6 +12,10 @@ HealZ::HealZ(int start_x, int start_y)
     time = 0;
 }
 
+HealZ::~HealZ() {
+    al_destroy_bitmap(sprite);
+}
+
 int HealZ::get_damage() {
     return damage;
 }

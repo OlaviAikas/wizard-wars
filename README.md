@@ -50,6 +50,7 @@ link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqP
 ## How to compile the game:
  The game uses the libraries Allegro5 and Boost. To install on ubuntu (CSE201 VM), follow these instructions:
  ### Ubuntu
+ * If you are using the virtual machine, increase the RAM, number of processors and video memory as much as possible (on the school computers we used ~24 MB of RAM, 4 processors and 128MB of video memory
  * Install Allegro5:
  ```Bash
  $ sudo apt install liballegro5-dev

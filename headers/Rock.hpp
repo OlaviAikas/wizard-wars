@@ -8,6 +8,7 @@
 class Rock: public Projectile {
     public:
         Rock(int start_x, int start_y, float dir_x, float dir_y);
+        Rock(int start_x, int start_y, float dir_x, float dir_y, int IP);
         ~Rock();
 
         int get_damage();

@@ -28,6 +28,8 @@ Map::Map(const char* name) {
     this->spawns[1] = 0;
     this->spawns[2] = 0;
     this->spawns[3] = 2;
+    iam=true;
+    iamnot=false;
 }
 
 Map::~Map() {
@@ -236,7 +238,7 @@ void Map::check_collisions() {
             }
         }
         for (std::list<MapObject*>::iterator j = statics.begin(); j != statics.end(); j++) {
-            if (*i == *j) {
+            if (**i == **j) {
                 (*i)->on_collision(**j);
                 (*j)->on_collision(**i);
             }
@@ -317,6 +319,7 @@ void Map::decode_spells(std::string mes_get){
                     std::cout<<"Found zone"<<std::endl;
                 }
                 if(std::stoi(mes2[2])==2){
+                    (*i)->counter=0;
                     (*i)->set_x(std::stoi(mes2[8]));
                     (*i)->set_y(std::stoi(mes2[9]));
                     std::cout<<"Found beam"<<std::endl;
@@ -368,10 +371,8 @@ void Map::decode_spells(std::string mes_get){
                     float dx=stof(mes2[10]);
                     float* dxp=&dx; 
                     float dy=stof(mes2[11]);
-                    float* dyp=&dy; 
-                    bool mouse_down=(stoi(mes2[13])==1);
-                    bool* mousedown=&mouse_down; 
-                    spells.push_back(new DealingB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
+                    float* dyp=&dy;
+                    spells.push_back(new DealingB(pit,dxp,dyp,&iam,this,stoi(mes2[1]), a));
                 }
                 if(std::stoi(mes2[7])==1){
                     std::list<Player*>::iterator pit=fetch_pit(stoi(mes2[12])); 
@@ -379,19 +380,15 @@ void Map::decode_spells(std::string mes_get){
                     float* dxp=&dx; 
                     float dy=stof(mes2[11]);
                     float* dyp=&dy; 
-                    bool mouse_down=(stoi(mes2[13])==1);
-                    bool* mousedown=&mouse_down;
-                    spells.push_back(new HealB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
+                    spells.push_back(new HealB(pit,dxp,dyp,&iam,this,stoi(mes2[1]), a));
                 }
                 if(std::stoi(mes2[7])==2){
                     std::list<Player*>::iterator pit=fetch_pit(stoi(mes2[12])); 
                     float dx=stof(mes2[10]);
                     float* dxp=&dx; 
                     float dy=stof(mes2[11]);
-                    float* dyp=&dy; 
-                    bool mouse_down=(stoi(mes2[13])==1);
-                    bool* mousedown=&mouse_down;
-                    spells.push_back(new WaterB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
+                    float* dyp=&dy;
+                    spells.push_back(new WaterB(pit,dxp,dyp,&iam,this,stoi(mes2[1]), a));
                 }
             }
         }

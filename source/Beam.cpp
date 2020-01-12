@@ -47,6 +47,10 @@ Beam::Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width,
 
 Beam::~Beam() { }
 
+void Beam::set_mouse_down(bool &iamnot){
+    mouse_down=&iamnot;
+}
+
 void Beam::move() {
     if (!*mouse_down) {
         noclip = true;
@@ -83,7 +87,7 @@ void Beam::move() {
 std::string Beam::encode_spell(){
     std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisspell;"+std::to_string(id)+";2;"+std::to_string(transmitted[1])+";"+std::to_string(transmitted[2])+";"+std::to_string(transmitted[3])+";"+std::to_string(transmitted[4])+";";
     s=s+element+";";
-    s=s+std::to_string(x)+";"+std::to_string(y)+";"+std::to_string(*dxp)+";"+std::to_string(*dyp)+";"+std::to_string((*pit)->get_id())+";"+std::to_string(*mouse_down);
+    s=s+std::to_string(x)+";"+std::to_string(y)+";"+std::to_string(*dxp)+";"+std::to_string(*dyp)+";"+std::to_string((*pit)->get_id());
     return s;
  }
 

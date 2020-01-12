@@ -582,15 +582,21 @@ void server_loop(Gamestatus *game_status, Interface* &interface, bool &isServer)
 
 void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer, short &client_number){
     delete interface;
+    int counter0=al_get_time();
+    int counter=0;
     isServer = false;
     boost::asio::io_service io_service;
     interface = new Client(io_service, "129.104.198.116", "13", &*game_status);
-    interface->send_string("ready");
-    std::cout<<"Sent !"<<std::endl;
     while(!interface->ready){
+        interface->send_string("ready");
+        std::cout<<"Sent !"<<std::endl;
+        while(!interface->ready && counter<counter0+3){
+            counter=al_get_time();
+        }
     }
     client_number=interface->get_client();
     game_status->game_state=2;
+    
     /*for(int i=0; i<10000; i++){
         if(interface->ready){
             game_status->game_state=2;

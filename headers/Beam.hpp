@@ -14,6 +14,7 @@ class Beam: public Spell {
 
         virtual void draw(int camera_x, int camera_y);
         std::string encode_spell();
+        void set_mouse_down(bool &iamnot);
     
     protected:
         float range;

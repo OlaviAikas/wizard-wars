@@ -26,6 +26,8 @@ Map::Map(const char* name) {
     this->spawns[1] = 0;
     this->spawns[2] = 0;
     this->spawns[3] = 2;
+    iam=true;
+    iamnot=false;
 }
 
 Map::~Map() {
@@ -267,6 +269,7 @@ void Map::decode_spells(std::string mes_get){
                     std::cout<<"Found zone"<<std::endl;
                 }
                 if(std::stoi(mes2[2])==2){
+                    (*i)->counter=0;
                     (*i)->set_x(std::stoi(mes2[8]));
                     (*i)->set_y(std::stoi(mes2[9]));
                     std::cout<<"Found beam"<<std::endl;
@@ -321,7 +324,7 @@ void Map::decode_spells(std::string mes_get){
                     float* dyp=&dy; 
                     bool mouse_down=(stoi(mes2[13])==1);
                     bool* mousedown=&mouse_down; 
-                    spells.push_back(new DealingB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
+                    spells.push_back(new DealingB(pit,dxp,dyp,&iam,this,stoi(mes2[1]), a));
                 }
                 if(std::stoi(mes2[7])==1){
                     std::list<Player*>::iterator pit=fetch_pit(stoi(mes2[12])); 
@@ -331,7 +334,7 @@ void Map::decode_spells(std::string mes_get){
                     float* dyp=&dy; 
                     bool mouse_down=(stoi(mes2[13])==1);
                     bool* mousedown=&mouse_down;
-                    spells.push_back(new HealB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
+                    spells.push_back(new HealB(pit,dxp,dyp,&iam,this,stoi(mes2[1]), a));
                 }
                 if(std::stoi(mes2[7])==2){
                     std::list<Player*>::iterator pit=fetch_pit(stoi(mes2[12])); 
@@ -341,7 +344,7 @@ void Map::decode_spells(std::string mes_get){
                     float* dyp=&dy; 
                     bool mouse_down=(stoi(mes2[13])==1);
                     bool* mousedown=&mouse_down;
-                    spells.push_back(new WaterB(pit,dxp,dyp,mousedown,this,stoi(mes2[1]), a));
+                    spells.push_back(new WaterB(pit,dxp,dyp,&iam,this,stoi(mes2[1]), a));
                 }
             }
         }

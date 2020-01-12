@@ -11,6 +11,7 @@ Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool
     this->havechanged = false;
     this->id=(x+y+int(rand())*1000)%5943;
     this->transmitted;
+    this->isBorS=false;
 }
 Spell::~Spell() { }
 
@@ -19,6 +20,9 @@ void Spell::move() { //std::cout << "(!) WARN: Generic Spell::move() called for 
 }
 bool Spell::get_havechanged(){
     return this->havechanged;
+}
+
+void Spell::set_mouse_down(bool &iamnot){
 }
 
 void Spell::reset_havechanged(){

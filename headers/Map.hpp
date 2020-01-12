@@ -73,6 +73,8 @@ class Map {
 
         std::list<Player*>::iterator fetch_pit(short n);
        // still not sure: std::list<Spell>::iterator fetch_spit(short n);
+       bool iam;
+       bool iamnot;
     private:
         ALLEGRO_BITMAP* map;
         int spawnpoint1[2];

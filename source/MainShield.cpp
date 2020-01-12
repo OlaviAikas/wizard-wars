@@ -39,7 +39,7 @@ void MainShield::draw(int camera_x, int camera_y) {
     //float angle = atan2(dir_y,dir_x);
     //al_draw_scaled_rotated_bitmap(this->sprite,50,5, x - camera_x, y - camera_y,2,2, angle,0);
     time1=time1+1;
-    if (time1>30) {
+    if (time1>300) {
         this->garbage_collect = true;
     }
     float angle = atan2(dir_y,dir_x);
@@ -49,9 +49,10 @@ void MainShield::draw(int camera_x, int camera_y) {
 }
 
 void MainShield::on_collision(MapObject &other) {
-    if (!this->get_garbage_collect() && !this->hit_animation && !other.get_noclip()) {
+    if (!this->get_garbage_collect() && !other.get_noclip()) {
         this->hit_animation = true;
         this->noclip = true;
+        //other.preventhit();
     }
 }
 

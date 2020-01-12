@@ -10,6 +10,8 @@ class Spell : public MapObject {
         virtual void move();
         bool transmitted [5]={false, false, false, false, false};
         int counter;
+        bool isBorS;
+        virtual void set_mouse_down(bool &iamnot);
 
     float get_dir_x();
     float get_dir_y();

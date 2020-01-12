@@ -79,7 +79,7 @@ class Player : public MapObject {
         int lastgoodposx;
         int lastgoodposy;
         int count;
-        int base_health = 200;
+        int base_health = 100;
         bool damaged;
         bool havechanged;
         int game_state;

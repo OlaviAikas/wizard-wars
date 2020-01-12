@@ -742,14 +742,14 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                         }
                     }
                 }
-                for(std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++){
-                    if((*i)->isBorS){
-                        ((*i)->counter)++;
-                        if(((*i)->counter)>20){
-                            (*i)->set_mouse_down(map->iamnot);
-                        }
-                    }
-                }
+                // for(std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++){
+                //     if((*i)->isBorS){
+                //         ((*i)->counter)++;
+                //         if(((*i)->counter)>20){
+                //             (*i)->set_mouse_down(map->iamnot);
+                //         }
+                //     }
+                // }
             }
         }
     //delete what you loaded

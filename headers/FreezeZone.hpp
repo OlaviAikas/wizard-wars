@@ -7,6 +7,7 @@
 class FreezeZ: public Zone {
     public:
         FreezeZ(int start_x, int start_y);
+        FreezeZ(int start_x, int start_y, int ID, bool transmitted[5]);
         ~FreezeZ();
         int get_damage();
         virtual void on_collision(Player &other);

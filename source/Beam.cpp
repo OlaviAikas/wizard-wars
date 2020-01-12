@@ -15,7 +15,7 @@
 
 Beam::Beam(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width, int height, bool noclip, bool* mouse_down, Map* map)
 : Spell( (*pit)->get_x() + (*pit)->get_width()/2 + (*pit)->get_width()*(*dxp),  (*pit)->get_y() + (*pit)->get_height()/2 + (*pit)->get_height()*(*dyp),  *dxp,  *dyp, width, height, noclip) {
-    range = 3;
+    range = 4.5;
     this->pit = pit;
     this->map = map;
     this->origin_x = (*pit)->get_x() + (*pit)->get_width()/2 + (*pit)->get_width()*(*dxp);

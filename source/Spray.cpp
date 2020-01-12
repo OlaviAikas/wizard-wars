@@ -33,20 +33,20 @@ Spray::Spray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int widt
     float b1=a1*start_x-start_y;
     float b2=a2*start_x-start_y;
     //we have a1x+b1=y, a2x+b2=y, -x/a+gam=y
-     for (float i = 1; i <= range; i = i + 0.05) {
-         for (std::list<Player*>::iterator j = map->players.begin(); j != map->players.end(); j++) {
-             for (float k=a2;k<=a1;k=k+0.05) {
+    for (float i = 1; i <= range; i = i + 0.05) {
+        for (std::list<Player*>::iterator j = map->players.begin(); j != map->players.end(); j++) {
+            for (float k=a2;k<=a1;k=k+0.05) {
                 this->x = round(x + k*i*width);
                 this->y = round(y + k*i*height);    
                 if (*this == **j) {
                     hit = true;
                     break;
                 }
-             }
-         }
-     }
- }
- 
+            }
+        }
+    }
+}
+
 
 // Spray::Spray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, int width, int height, bool noclip, bool* mouse_down, Map* map)
 //         : Spell((*pit)->get_x() + (*pit)->get_width()/2 + (*pit)->get_width()*(*dxp),  (*pit)->get_y() + (*pit)->get_height()/2 + (*pit)->get_height()*(*dyp),  *dxp,  *dyp, width, height, noclip) {
@@ -118,4 +118,4 @@ void Spray::draw(int camera_x, int camera_y) {
     // ALLEGRO_FONT *font = al_load_bitmap_font("a4_font.tga");
     // al_draw_text(font, al_map_rgb(255, 255, 255), 300, 200, ALLEGRO_ALIGN_CENTRE, "Dzooooone");
     //al_destroy_sample(music20);
- };
+}

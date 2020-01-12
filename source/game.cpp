@@ -785,31 +785,72 @@ int main(int argc, char **argv)
 
     al_start_timer(timer);
 
-    ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav"); //Play the background music
-    // must_init(music, "music");
-    al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id), 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+    
 
     while (game_status.game_state != 0) {
         if (game_status.game_state == 1) {
+            //main menu
+            ALLEGRO_SAMPLE* music = al_load_sample("resources/menu.wav"); //Play the background music
+            al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+
             main_menu_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+            al_destroy_sample(music);
         }
         if (game_status.game_state == 2) {
+            //game loop
+            ALLEGRO_SAMPLE* music = al_load_sample("resources/main_game.wav"); //Play the background music
+            al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+
             game_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, windowWidth, windowHeight, scaleX,
                     scaleY, scaleW, scaleH, sx, sy, interface, isServer, client_number);
+            al_destroy_sample(music);
         }
         if (game_status.game_state == 3) {
+            //settings
+            ALLEGRO_SAMPLE* music = al_load_sample("resources/settings.wav"); //Play the background music
+            al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+
             settings_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
+            al_destroy_sample(music);
         }
         if (game_status.game_state == 4){
+            //create game ("server")
+            ALLEGRO_SAMPLE* music = al_load_sample("resources/main_game.wav"); //Play the background music
+            al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
             server_loop(&game_status, interface, isServer);
+            al_destroy_sample(music);
         }
         if (game_status.game_state == 5){
+            //join game ("client")
+            ALLEGRO_SAMPLE* music = al_load_sample("resources/main_game.wav"); //Play the background music
+            al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
             client_loop(&game_status, interface, isServer, client_number);
+            al_destroy_sample(music);
         }
         if (game_status.game_state == 6) {
+            //game end
+            int i = 0;
+            ALLEGRO_SAMPLE* victory01 = al_load_sample("resources/victory01.wav"); //Play the background music
+            al_play_sample(victory01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+            if (victory01) i += 1;
+            if (i == 1){
+                al_destroy_sample(victory01);
+                i += 1;
+            }
+            if (i == 2) {
+                ALLEGRO_SAMPLE* victory02 = al_load_sample("resources/victory02.wav"); //Play the background music
+                al_play_sample(victory02, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+                if (victory02) i += 1;
+                if (i == 3){
+                al_destroy_sample(victory01);
+                i += 1;
+            }
+            }
+            
+            
             game_end_loop(&game_status, redraw, queue, event, timer, key, buffer, disp,
                     screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, sx, sy);
         }
@@ -820,7 +861,7 @@ int main(int argc, char **argv)
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-    al_destroy_sample(music);
+    
 
     return 0;
 }
@@ -833,6 +874,25 @@ int direction(int click_x, int click_y, int loc_x, int loc_y){
 void game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &queue, ALLEGRO_EVENT &event, ALLEGRO_TIMER* &timer,
                     unsigned char* key, ALLEGRO_BITMAP* &buffer, ALLEGRO_DISPLAY* &disp, const float &screenWidth, const float &screenHeight, const float &scaleX,
                     const float &scaleY, const float &scaleW, const float &scaleH, const float &sx, const float &sy) {
+        
+        int i = 0;
+        ALLEGRO_SAMPLE* victory01 = al_load_sample("resources/victory01.wav"); //Play the background music
+        al_play_sample(victory01, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+        if (victory01) i += 1;
+        if (i == 1){
+            al_destroy_sample(victory01);
+            i += 1;
+        }
+        if (i == 2) {
+            ALLEGRO_SAMPLE* victory02 = al_load_sample("resources/victory02.wav"); //Play the background music
+            al_play_sample(victory02, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
+            if (victory02) i += 1;
+            if (i == 3){
+            al_destroy_sample(victory01);
+            i += 1;
+        }
+        }
+
         if(redraw && al_is_event_queue_empty(queue))
         {
             al_set_target_bitmap(buffer);

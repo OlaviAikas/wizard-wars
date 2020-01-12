@@ -65,7 +65,7 @@ std::string Server::generateResponse(std::string message){
         std::cout<<answer<<std::endl;
         if(players_connected==number_players){
             ready=true;
-            answer="aaaaaaaaaaago";
+            answer="aaaaaaaaaaago"+std::to_string(players_connected);
         }
         return answer;
     }

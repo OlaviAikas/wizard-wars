@@ -88,9 +88,6 @@ void Client::onResponse(std::string message){
         client_number=4;
         connected=true;
     }
-    if(!ready && message.find("go") != std::string::npos){
-        ready=true;
-    }
     if (!connected && message.find("go2") != std::string::npos){
         client_number=2;
     }
@@ -99,6 +96,9 @@ void Client::onResponse(std::string message){
     }
     if (!connected && message.find("go4") != std::string::npos){
         client_number=4;
+    }
+    if(!ready && message.find("go") != std::string::npos){
+        ready=true;
     }
     std::vector<std::string> mes;
     for(int a=0; a==10; a++){

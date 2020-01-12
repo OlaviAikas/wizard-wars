@@ -14,10 +14,10 @@ template <typename ...Args> class Button {
             this->span_y = al_get_bitmap_height(image);
         }
 
-        void mouse_input(int mouse_x, int mouse_y, short &state, short new_state) {
+        void mouse_input(int mouse_x, int mouse_y, Args... args) {
             if (mouse_x > x && mouse_x < x + span_x){
                 if (mouse_y > y && mouse_y < y + span_y){
-                    call_callback(state, new_state);
+                    call_callback(args...);
                 }
             }
         }

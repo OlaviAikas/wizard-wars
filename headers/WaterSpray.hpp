@@ -9,8 +9,10 @@
 #include "Map.hpp"
 class WaterSpray: public Spray {
     public:
+
         WaterSpray(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map);
         ~WaterSpray();
+
 
         int get_damage();
 

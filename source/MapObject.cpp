@@ -14,10 +14,16 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->havechanged = false;
     this->garbage_collect = false;
     this->drawsprite=true;
+    this->transmitted[1]=true;
+
 }
 
 MapObject::~MapObject(){ }
 void MapObject::move() { std::cout << "momove" << std::endl; havechanged=true;}
+
+std::string MapObject::encode_spell(){
+    
+}
 
 void MapObject::set_x(int x) {
     this->x=x;

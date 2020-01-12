@@ -11,6 +11,7 @@ Spell::Spell(int x, int y, float dir_x, float dir_y, int width, int height, bool
     this->havechanged = false;
     this->id=(x+y+int(rand())*1000)%5943;
     this->transmitted;
+    this->transmitted[1]=false;
     this->isBorS=false;
 }
 Spell::~Spell() { }

@@ -97,7 +97,7 @@ void main_menu_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUEUE*
                 break;
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 game_status->game_state = 0;
-                break;
+                break;ALLEGRO_SAMPLE* music11;
 
             default:
                 break;
@@ -305,8 +305,8 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             }
                             break;
                         case 25: // 5*5 J+J Water+Water = WaterSpray
-                            map -> spells.push_back(new WaterSpray((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
-                            break;
+                            //map -> spells.push_back(new WaterSpray((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                            //break;
                             // ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav");
     // // must_init(music, "music");
     // al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
@@ -346,9 +346,9 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                             }
                             break;
                         
-                        case 9:
-                            map -> spells.push_back(new FireSpray((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
-                            break;
+                        case 9: //      O+O Fire+Fire = FireSpray
+                            // map -> spells.push_back(new FireSpray((*pit)->get_x() + (*pit)->get_width()/2 + 2*dx*(*pit)->get_width(),(*pit)->get_y() + (*pit)->get_height()/2 + 2*dy*(*pit)->get_height(),dx,dy));
+                            // break;
                         default:
 
                        // } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {
@@ -362,7 +362,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                     //     if (std::count(elementlist.begin(),elementlist.end(),6)==2) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),5)==2) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),5)==1 && std::count(elementlist.begin(),elementlist.end(),1)==1) {
-                    //     } else if (std::count(elementlist.begin(),elementlist.end(),6)==1 && std::count(elementlist.begin(),elementlist.end(),3)==1) {
+                    //     } else if (std::count(elementlist.begin(),elementlist.end(),6)==1 ALLEGRO_SAMPLE* music11;&& std::count(elementlist.begin(),elementlist.end(),3)==1) {
                     //     } else if (std::count(elementlist.begin(),elementlist.end(),1)==1 && std::count(elementlist.begin(),elementlist.end(),2)==1) {
                     //     } else {
                     //     }
@@ -547,14 +547,14 @@ int main(int argc, char **argv)
     float scaleW = screenWidth * scale;
     float scaleH = screenHeight * scale;
     float scaleX = (windowWidth - scaleW) / 2;
-    float scaleY = (windowHeight - scaleH) / 2;
+    float scaleY = (windowHeight - scaleH) / 2;ALLEGRO_SAMPLE* music11;
 
     must_init(al_init_primitives_addon(), "primitives");
 
     must_init(al_init_image_addon(), "Image addon");
 
     must_init(al_install_audio(), "Audio addon");
-    must_init(al_init_acodec_addon(), "Audio codecs addon");
+    must_init(al_init_acodec_addon(), "Audio codecs addon"); //Initialise the audio codecs. (for playing sound effects)
     must_init(al_reserve_samples(16), "reserve samples");
 
 
@@ -585,9 +585,9 @@ int main(int argc, char **argv)
 
     al_start_timer(timer);
 
-    ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav");
+    ALLEGRO_SAMPLE* music = al_load_sample("resources/background_music.wav"); //Play the background music
     // must_init(music, "music");
-    al_play_sample(music, 0.2, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+    al_play_sample(music, 0.3, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id), 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
 
     while (game_status.game_state != 0) {
         if (game_status.game_state == 1) {

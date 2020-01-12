@@ -1,11 +1,20 @@
 #include "../headers/MainShield.hpp"
 #include <iostream>
 #include <math.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 MainShield::MainShield(int start_x, int start_y) 
             : Shield::Shield(start_x, start_y, 200, 200, false) {
     damage = 0;
     sprite = al_load_bitmap("resources/shield0.bmp");
+    music11 = al_load_sample("resources/main_shield.wav");
+    if (music11) al_play_sample(music11, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id);
+    
+}
+
+MainShield::~MainShield(){
+    al_destroy_sample(music11);
 }
 
 int MainShield::get_damage() {
@@ -14,6 +23,8 @@ int MainShield::get_damage() {
 
 void MainShield::draw(int camera_x, int camera_y) {
     al_draw_scaled_bitmap(this->sprite, 0,0,64,64,x - camera_x, y - camera_y,width,height, 0);
+    
+    
 }
 
 void MainShield::move() { }

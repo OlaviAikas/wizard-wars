@@ -13,6 +13,7 @@ HealB::HealB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mo
     sprite = al_load_bitmap("resources/HealB.bmp");
     //maxdraw = 0;
     //ticks = 0;
+    element="1";
 
 }
 

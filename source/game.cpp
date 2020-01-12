@@ -708,7 +708,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             if(isServer){
                 for(std::list<Spell*>::iterator i = map->spells.begin(); i != map->spells.end(); i++){
                     (*i)->counter++;
-                    if((*i)->isBorS && (*i)->counter>10){
+                    if((*i)->isBorS && (*i)->counter>20){
                         (*i)->counter=0;
                         for(int j=1; j<5; j++){
                             (*i)->transmitted[j]=false;
@@ -770,7 +770,7 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
         int counter=0;
         interface->send_string("aaaaaaaready");
         std::cout<<"Sent !"<<std::endl;
-        while(!interface->connected && counter<counter0+5){
+        while(!interface->connected && counter<counter0+2){
             counter=al_get_time();
         }
     }
@@ -779,7 +779,7 @@ void client_loop(Gamestatus *game_status, Interface* &interface, bool &isServer,
         int counter=0;
         interface->send_string("aaaaaaaaastillthere");
         std::cout<<"Sent !"<<std::endl;
-        while(!interface->ready && counter<counter0+5){
+        while(!interface->ready && counter<counter0+2){
             counter=al_get_time();
         }
     }

@@ -12,12 +12,15 @@ Ice::Ice(int start_x, int start_y, float dir_x, float dir_y)
     element = "2";
 }
 
-Ice::Ice(int start_x, int start_y, float dir_x, float dir_y, int ID) 
+Ice::Ice(int start_x, int start_y, float dir_x, float dir_y, int ID, bool transmitted[5]) 
             : Projectile::Projectile(start_x, start_y, dir_x, dir_y, 12, 12, false, 40) {
     damage = 5;
     sprite = al_load_bitmap("resources/iceProjectiles.bmp");
     element = "2";
     id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
 }
 
 Ice::~Ice() {

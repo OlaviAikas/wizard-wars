@@ -9,7 +9,7 @@
 
 class MainShield: public Shield {
     public:
-        MainShield(int start_x, int start_y, float dir_x, float dir_y);
+        MainShield(int start_x, int start_y, float dir_x, float dir_y,bool subshield);
         ~MainShield();
 
         int get_damage();
@@ -22,5 +22,6 @@ class MainShield: public Shield {
     private:
     ALLEGRO_BITMAP* sprite;
     int damage;
+    bool subshield;
     ALLEGRO_SAMPLE* music11;
 };

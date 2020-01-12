@@ -175,10 +175,6 @@ void red_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QUE
                 if (key[ALLEGRO_KEY_ESCAPE]) {
                     game_status->game_state = 0;
                 }
-                if (key[ALLEGRO_KEY_ENTER]) {
-                    game_status->game_state = 1;
-                }
-
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
                 redraw = true;
@@ -240,9 +236,6 @@ void blue_game_end_loop(Gamestatus * game_status, bool &redraw, ALLEGRO_EVENT_QU
                 if (key[ALLEGRO_KEY_ESCAPE]) {
                     game_status->game_state = 0;
                 }
-                if (key[ALLEGRO_KEY_ENTER]) {
-                    game_status->game_state = 1;
-                }
 
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
@@ -298,10 +291,10 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
     Map* map=(interface->map);
     Minimap* minimap = new Minimap("resources/map.bmp", windowWidth, windowHeight);
     //map->decode_players("0.14868.815.713");
-    map->set_spawnpoints(200, 300, 1500,  1500, 2000, 400, 3000, 1700);
-    map->players.push_back(new Player(400, 400, 1,1));
+    map->set_spawnpoints(500, 500, 1500, 1500, 2000, 400, 3000, 1700);
+    map->players.push_back(new Player(500, 500, 1,1));
     map->players.push_back(new Player(900, 900, 2,2));
-    map->cp.push_back(new Controlpoint(200, 300, 1, 128, 1));
+    map->cp.push_back(new Controlpoint(400, 400, 1, 128, 1));
     map->cp.push_back(new Controlpoint(1500, 1500, 1, 128, 0));
     map->cp.push_back(new Controlpoint(2000, 400, 1, 128, 0));
     map->cp.push_back(new Controlpoint(3000, 1700, 1, 128, 2));
@@ -573,17 +566,17 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                                 int pmy = (*pit)->get_y() + (*pit)->get_height()/2;
                                 double rx = dy;
                                 double ry = -1*dx;
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width(),pmy + 1.5*dy*(*pit)->get_height(), dx, dy));
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 5*ry*12, dx, dy));
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 5*ry*12, dx, dy));
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 4*ry*12, dx, dy));
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 4*ry*12, dx, dy));
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 3*ry*12, dx, dy));
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 3*ry*12, dx, dy));
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 2*ry*12, dx, dy));
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 2*ry*12, dx, dy));
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 1*ry*12, dx, dy));
-                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 1*ry*12, dx, dy));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width(),pmy + 1.5*dy*(*pit)->get_height(), dx, dy,true));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 5*ry*12, dx, dy,false));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 5*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 5*ry*12, dx, dy,false));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 4*ry*12, dx, dy,false));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 4*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 4*ry*12, dx, dy,false));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 3*ry*12, dx, dy,false));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 3*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 3*ry*12, dx, dy,false));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 2*ry*12, dx, dy,false));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 2*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 2*ry*12, dx, dy,false));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() + 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() + 1*ry*12, dx, dy,true));
+                                map->statics.push_back(new MainShield(pmx + 1.5*dx*(*pit)->get_width() - 1*rx*12, pmy + 1.5*dy*(*pit)->get_height() - 1*ry*12, dx, dy,true));
                                 cooldowns[4] = 40;
                             }
                             break;
@@ -702,7 +695,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
             al_set_target_backbuffer(disp);
             al_clear_to_color(al_map_rgb(0,0,0));
             al_draw_scaled_bitmap(buffer, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
-            minimap->draw(map->players);
+            minimap->draw(map->players, map->cp);
             al_flip_display();
 
             redraw = false;
@@ -1340,7 +1333,7 @@ int main(int argc, char **argv)
                 al_play_sample(victory02, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);//(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id)
                 if (victory02) i += 1;
                 if (i == 3){
-                al_destroy_sample(victory01);
+                al_destroy_sample(victory02);
                 i += 1;
             }
             }

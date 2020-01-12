@@ -51,7 +51,7 @@ int MapObject::get_next_y(){
 	return this->y;
 }
 
-unsigned int MapObject::get_speed(){
+int MapObject::get_speed(){
 	return 0;
 }
 
@@ -93,7 +93,7 @@ bool MapObject::operator<=(MapObject &other){
 #endif
     int newpos_x = this->get_next_x();
     int newpos_y = this->get_next_y();
-    unsigned int speed = this->get_speed();
+    int speed = this->get_speed();
     int othx = other.get_x();
     int othy = other.get_y();
     int othheight = other.get_height();
@@ -124,7 +124,7 @@ bool MapObject::operator<=(MapObject &other){
 		return false;
 	}
 
-	for (size_t k = speed; k > 1; k--) {
+	for (int k = speed; k > 1; k--) {
         int dxx = round(x + (newpos_x - x)/k);
 		int dyy = round(y + (newpos_y - y)/k);
 		if (dxx >= othx && dxx <= othx + othwidth) {

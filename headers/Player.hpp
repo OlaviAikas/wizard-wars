@@ -75,11 +75,11 @@ class Player : public MapObject {
         int old_y;
         int dest_x;
         int dest_y;
-        int hit_points=100;
+        int hit_points=200;
         int lastgoodposx;
         int lastgoodposy;
         int count;
-        const char base_health = 100;
+        int base_health = 100;
         bool damaged;
         bool havechanged;
         int game_state;

@@ -3,6 +3,7 @@
 #include <allegro5/allegro5.h>
 #include <list>
 #include "../headers/Player.hpp"
+#include "../headers/Controlpoint.hpp"
 
 class Minimap : public HUDobject {
     public:
@@ -10,7 +11,7 @@ class Minimap : public HUDobject {
         ~Minimap();
         void update();
         using HUDobject::draw;
-        void draw(std::list<Player*> players);
+        void draw(std::list<Player*> players, std::list<Controlpoint*> cp);
 
     private:
         ALLEGRO_BITMAP* map;

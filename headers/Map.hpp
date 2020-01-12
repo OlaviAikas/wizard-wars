@@ -10,6 +10,8 @@
 #include <vector>
 #include <sstream>
 // #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 #include "Controlpoint.hpp"
 
@@ -24,7 +26,7 @@ class Map {
         void garbage_collect();
         void modif_lives(int team , bool change);
         void check_dead();
-        void set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3,int x4, int y4);
+        void set_spawnpoints(int x1, int y1, int x2, int y2,int x3, int y3);
         bool game_ended();
         int get_winner();
 
@@ -73,14 +75,15 @@ class Map {
 
         std::list<Player*>::iterator fetch_pit(short n);
        // still not sure: std::list<Spell>::iterator fetch_spit(short n);
+       bool iam;
+       bool iamnot;
     private:
         ALLEGRO_BITMAP* map;
         int spawnpoint1[2];
         int spawnpoint2[2];
         int spawnpoint3[2];
-        int spawnpoint4[2];
         bool spawnred = true;
         bool spawnblue = true;
-        int spawns[4];
+        int spawns[3];
         int winner = 0;
 };

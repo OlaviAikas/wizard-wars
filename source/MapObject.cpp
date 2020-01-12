@@ -14,10 +14,16 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->havechanged = false;
     this->garbage_collect = false;
     this->drawsprite=true;
+    this->transmitted[1]=true;
+
 }
 
 MapObject::~MapObject(){ }
 void MapObject::move() { std::cout << "momove" << std::endl; havechanged=true;}
+
+std::string MapObject::encode_spell(){
+    return "";
+}
 
 void MapObject::set_x(int x) {
     this->x=x;
@@ -51,7 +57,7 @@ int MapObject::get_next_y(){
 	return this->y;
 }
 
-unsigned int MapObject::get_speed(){
+int MapObject::get_speed(){
 	return 0;
 }
 
@@ -93,7 +99,7 @@ bool MapObject::operator<=(MapObject &other){
 #endif
     int newpos_x = this->get_next_x();
     int newpos_y = this->get_next_y();
-    unsigned int speed = this->get_speed();
+    int speed = this->get_speed();
     int othx = other.get_x();
     int othy = other.get_y();
     int othheight = other.get_height();
@@ -124,7 +130,7 @@ bool MapObject::operator<=(MapObject &other){
 		return false;
 	}
 
-	for (size_t k = speed; k > 1; k--) {
+	for (int k = speed; k > 1; k--) {
         int dxx = round(x + (newpos_x - x)/k);
 		int dyy = round(y + (newpos_y - y)/k);
 		if (dxx >= othx && dxx <= othx + othwidth) {
@@ -159,3 +165,8 @@ bool MapObject::get_drawsprite() const{
 void MapObject::draw(int camera_x, int camera_y) {
     //al_draw_filled_rectangle(x - camera_x, y - camera_y, x + width - camera_x, y + height - camera_y, al_map_rgb(255, 0, 0));
 }
+
+//void MapObject::preventhit(){
+  //  garbage_collect = true;
+//}
+

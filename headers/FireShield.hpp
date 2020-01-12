@@ -7,11 +7,10 @@
 #include <allegro5/allegro_acodec.h>
 #include <list>
 
-class MainShield: public Shield {
+class FireShield: public Shield {
     public:
-        MainShield(int start_x, int start_y, float dir_x, float dir_y,bool subshield);
-        MainShield(int start_x, int start_y, float dir_x, float dir_y,bool subshield, int ID, bool transmitted[5]);
-        ~MainShield();
+        FireShield(int start_x, int start_y, float dir_x, float dir_y,bool subshield);
+        ~FireShield();
 
         int get_damage();
 
@@ -19,7 +18,6 @@ class MainShield: public Shield {
         virtual void draw(int camera_x, int camera_y);
         
         std::list<std::list<int>> generate_subshield_coordinates();
-        std::string encode_spell();
 
     private:
     ALLEGRO_BITMAP* sprite;

@@ -11,8 +11,21 @@ DealingB::DealingB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bo
             : Beam::Beam(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
     damage = 2;
     //sprite = al_load_bitmap("resources/HealB_Collision.bmp");
+    element="0";
 
 }
+
+DealingB::DealingB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map, int ID, bool transmitted[5]) 
+            : Beam::Beam(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
+    damage = 2;
+    //sprite = al_load_bitmap("resources/HealB_Collision.bmp");
+    element="0";
+    id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
+}
+
 DealingB::~DealingB() { 
 
 }

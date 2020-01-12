@@ -9,6 +9,7 @@
 class WaterB: public Beam {
     public:
         WaterB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map);
+        WaterB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map, int IP, bool transmitted[5]);
         ~WaterB();
 
         int get_damage();

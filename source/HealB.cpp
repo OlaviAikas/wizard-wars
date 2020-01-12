@@ -15,7 +15,19 @@ HealB::HealB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mo
     //ticks = 0;
     music15 = al_load_sample("resources/heal_beam.wav");
     if (music15) al_play_sample(music15, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id);
+    element="1";
 
+}
+
+HealB::HealB(std::list<Player*>::iterator &pit, float* dxp, float* dyp, bool* mouse_down, Map* map, int ID, bool transmitted[5]) 
+            : Beam::Beam(pit, dxp, dyp, 12, 12, false, mouse_down, map) {
+    damage = 2;
+    //sprite = al_load_bitmap("resources/HealB_Collision.bmp");
+    element="1";
+    id=ID;
+    for(int i=0; i<5; i++){        
+        this->transmitted[i]=transmitted[i];
+    }
 }
 HealB::~HealB() { 
     al_destroy_bitmap(sprite);

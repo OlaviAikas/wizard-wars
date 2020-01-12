@@ -39,7 +39,7 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 * Mihails
 * Yasamin
 * Seorim
-* Wanqi
+* Wanqi <br>
 link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqPbSf0No7_KN3GhcqFwKOEsrraRNXdxw/edit?usp=sharing
 
 ### Team 4: Networking:
@@ -60,3 +60,11 @@ link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqP
   - make for linux
   - make mac for mac users
 * Then, write ./game to run the game
+* The connection to the server: 
+  - Once the server is running on one computer, an another player can connect to the server by putting the ip after clicking on "join game".
+  - the maximum number of player that can join a game is 2, due to the server capacity.
+* The rule:
+  -We have 3 control points on the map : the player should capture all the control points and kill the opponent in order to win the game. There are multiple spells that can kill or heal players, and the player should combine elements with keys to cast spells (life=u, shield=i, fire=o, water=j, ice=k, rock=l). The selected elements are on the bottom right.(see link to the google sheet above for the list of spells)
+  
+  
+  

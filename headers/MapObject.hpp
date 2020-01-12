@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <allegro5/allegro5.h>
 #include <cmath>
 
@@ -12,8 +13,11 @@ class MapObject {
         virtual void move();
         virtual void on_collision(MapObject &other);
         virtual void hit(const int amount);
+        virtual std::string encode_spell();
         // I addded a knockback function for the special functions of spray
         virtual void knockback(float di_x, float di_y);
+        //virtual void preventhit();
+        bool transmitted[5];
 
         int get_x() const;
         int get_y() const;
@@ -28,7 +32,7 @@ class MapObject {
         bool get_drawsprite() const;
         int get_next_x();
         int get_next_y();
-        unsigned int get_speed();
+        int get_speed();
         
     protected:
         bool noclip;

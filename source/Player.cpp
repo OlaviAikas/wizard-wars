@@ -9,7 +9,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 
-Player::Player(int start_x, int start_y, short number,int team) : MapObject(start_x, start_y, 64, 64, false) {
+Player::Player(int start_x, int start_y, short number,int team) : MapObject(start_x, start_y, 48, 54, false) {
     this->dest_x = start_x;
     this->dest_y = start_y;
     this->team = team;
@@ -85,10 +85,12 @@ void Player::hit(int amount) {
 
 void Player::die() {
     // potentially only if server
-    set_x(curspawn1);
-    set_y(curspawn2);
-    this->dest_x=this->x;
-    this->dest_y=this->y;
+    change_x(curspawn1);
+    change_y(curspawn2);
+    this->x = curspawn1;
+    this->y = curspawn2;
+    this->dest_x=curspawn1;
+    this->dest_y=curspawn2;
     this->old_x=this->x;
     this->old_y=this->y;
     this->respawn_timer=0;
@@ -252,7 +254,7 @@ void Player::draw(int camera_x, int camera_y) {
 
     if (this->drawsprite && this->hit_points>0) {
         al_draw_filled_rectangle(x-camera_x, y-40-camera_y,x+50-camera_x,y-45-camera_y, al_map_rgb(255,0,0));
-		al_draw_filled_rectangle(x-camera_x, y-40-camera_y,x-camera_x + 50*(hit_points)/100,y-45-camera_y, al_map_rgb(0,255,0));
+		al_draw_filled_rectangle(x-camera_x, y-40-camera_y,x-camera_x + 50*(hit_points)/base_health,y-45-camera_y, al_map_rgb(0,255,0));
         this->count = this->count + 1; // The draw function is called at every frame, we keep track of frames
         //Code to take care of walking animation
         if (this -> dest_x == this-> x && this-> dest_y == this-> y){ //This means that the character is not moving

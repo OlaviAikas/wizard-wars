@@ -78,12 +78,10 @@ std::string Server::generateResponse(std::string message){
             if(!(*i)->transmitted[sender]){
                 spell=true;
                 (*i)->transmitted[sender]=true;
-                s=s+(*i)->encode_spell();
+                s=s+(*i)->encode_spell()+":";
             }
         }
-        if(!spell){
-            s.pop_back();
-        }
+        s.pop_back();
         return s;
     }
 

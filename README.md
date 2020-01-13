@@ -26,14 +26,14 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 
 ## Team assignments:
 ### Team 1: Map:
-* Paul
-* Johannes
+* Paul (during the first part of the project)
 * Ruiyao
 * Damien
+* Olavi (during the first part of the project)
 
 ### Team 2: UI/HUD:
 * Chloe
-* Olavi
+* Olavi (joined at mid-project since map was mostly finished)
 
 ### Team 3: Magic:
 * Mihails
@@ -43,9 +43,11 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqPbSf0No7_KN3GhcqFwKOEsrraRNXdxw/edit?usp=sharing
 
 ### Team 4: Networking:
+* Johannes (left in December due to him returning in his university)
 * Ashish
 * Joci
 * Uranchimeg
+* Paul (joined at mid-project since map was mostly finished)
 
 ## How to compile the game:
  The game uses the libraries Allegro5 and Boost. To install on ubuntu (CSE201 VM), follow these instructions:

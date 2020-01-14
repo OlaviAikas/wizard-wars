@@ -15,6 +15,9 @@ MapObject::MapObject(int x, int y, int width, int height, bool noclip) {
     this->garbage_collect = false;
     this->drawsprite=true;
     this->transmitted[1]=true;
+    this->transmitted[2]=true;
+    this->transmitted[3]=true;
+    this->transmitted[4]=true;
 
 }
 

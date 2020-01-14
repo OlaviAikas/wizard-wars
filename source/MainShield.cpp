@@ -14,6 +14,7 @@ MainShield::MainShield(int start_x, int start_y, float dir_x, float dir_y,bool s
     music11 = al_load_sample("resources/main_shield.wav");
     if (music11) al_play_sample(music11, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0); //(SAMPLE NAME, gain(volumn), pan(balance), speed, play_mode, sample_id);
     element="0";
+    transmitted[1]=false;
 }
 
 MainShield::MainShield(int start_x, int start_y, float dir_x, float dir_y,bool subshield, int ID, bool transmitted[5]) 

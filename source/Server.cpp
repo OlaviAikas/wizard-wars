@@ -76,7 +76,6 @@ std::string Server::generateResponse(std::string message){
         return("yup");
     }
     if(message.find("thisisplayer") != std::string::npos){
-        bool spell=false;
         int sender=(this->map)->decode_players(message, client_number);
         std::string s="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaathisisplayer:";
         for(std::list<Player*>::iterator i = (this->map)->players.begin(); i != (this->map)->players.end(); i++){
@@ -86,7 +85,12 @@ std::string Server::generateResponse(std::string message){
         s=s+"|";
         for (std::list<Spell*>::iterator i = (this->map)->spells.begin(); i != (this->map)->spells.end(); i++){
             if(!(*i)->transmitted[sender]){
-                spell=true;
+                (*i)->transmitted[sender]=true;
+                s=s+(*i)->encode_spell()+":";
+            }
+        }
+        for (std::list<MapObject*>::iterator i = (this->map)->statics.begin(); i != (this->map)->statics.end(); i++){
+            if(!(*i)->transmitted[sender]){
                 (*i)->transmitted[sender]=true;
                 s=s+(*i)->encode_spell()+":";
             }

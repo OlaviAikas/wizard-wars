@@ -47,6 +47,7 @@ Player::Player(int start_x, int start_y, short number,int team) : MapObject(star
     this->prevent_movement = false;
     this->drawsprite = true;
     this->spawnable = true;
+    this->hit_points = base_health;
 
 }
 

@@ -26,14 +26,14 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 
 ## Team assignments:
 ### Team 1: Map:
-* Paul
-* Johannes
+* Paul (during the first part of the project)
 * Ruiyao
 * Damien
+* Olavi (during the first part of the project)
 
 ### Team 2: UI/HUD:
 * Chloe
-* Olavi
+* Olavi (joined at mid-project since map was mostly finished)
 
 ### Team 3: Magic:
 * Mihails
@@ -43,9 +43,11 @@ Notice that the files `main` and `game` are in .gitignore, remove if required.
 link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqPbSf0No7_KN3GhcqFwKOEsrraRNXdxw/edit?usp=sharing
 
 ### Team 4: Networking:
+* Johannes (left in December due to him returning in his university)
 * Ashish
 * Joci
 * Uranchimeg
+* Paul (joined at mid-project since map was mostly finished)
 
 ## How to compile the game:
  The game uses the libraries Allegro5 and Boost. To install on ubuntu (CSE201 VM), follow these instructions:
@@ -92,10 +94,12 @@ link to the google sheet : https://docs.google.com/spreadsheets/d/1U292Xuc60-sqP
  $ cd wizard-wars
  $ make mac
  ```
+### Running the game alone
+* Press "Enter" on the main menu.
 ### Running the game in server mode
 * The connection to the server: 
   - Running the server requires running the game as super-user (`sudo ./game`) and pressing the Create game button, entering 2 with the number keys on the next screen (not with the numpad) and pressing Enter (again, not on the numpad). 
-  - Once the server is running on one computer, an another player can connect to the server by putting the ip after clicking on "join game".
+  - Once the server is running on one computer, an another player can connect to the server by putting the ip after clicking on "join game" (it also require to launch the game as a super user).
   - the maximum number of player that can join a game is 2, due to the server capacity (as in, the game has a server no more than 1 client).
 * The rule:
   - We have 3 control points on the map : the player should capture all the control points and kill the opponent in order to win the game. There are multiple spells that can kill or heal players, and the player should combine elements with keys to cast spells (life=u, shield=i, fire=o, water=j, ice=k, rock=l). The selected elements are on the bottom right.(see link to the google sheet above for the list of spells)

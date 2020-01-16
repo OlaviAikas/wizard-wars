@@ -711,7 +711,7 @@ void game_loop (Gamestatus* game_status, bool &redraw, ALLEGRO_EVENT_QUEUE* &que
                         case 9: // 3*3 O + O Fire + Fire = Fire Spray
                             map -> spells.push_back(new FireSpray(pit, &dxp, &dyp, &left_mouse_down, map));
                             break;
-                        case 11:
+                        case 11: // 11*1 U+L life+rock Autoheal
                             (*pit)->hit(-10);
                             break;
 
